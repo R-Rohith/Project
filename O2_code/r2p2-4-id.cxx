@@ -19,7 +19,7 @@ struct r2p24id{
 	HistogramRegistry histos{"R2P2",{},OutputObjHandlingPolicy::AnalysisObject};
 	void init(InitContext const &)
 	{
-		const AxisSpec phi{36,0,2.0*PI,"phi"},eta{24,-0.8,0.8,"eta"},etaphi1{864,0,864,"etaphi1"},etaphi2{864,0,864,"etaphi2"};
+		const AxisSpec phi{36,0,2.0*constants::math::PI,"phi"},eta{24,-0.8,0.8,"eta"},etaphi1{864,0,864,"etaphi1"},etaphi2{864,0,864,"etaphi2"};
 		histos.add("phi","phi",kTH1D,{phi});
 		histos.add("eta","eta",kTH1D,{eta});
 		histos.add("test","tst",kTH2D,{{100,0,5,"pt"},{200,0,200,"de/dx"}});
@@ -42,34 +42,55 @@ struct r2p24id{
 		histos.add("h2d_npt_eta1Phi1Eta2Phi2PM","npt for +ve-ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_npt_eta1Phi1Eta2Phi2PP","npt for +ve+ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_npt_eta1Phi1Eta2Phi2MM","npt for -ve-ve",kTH2D,{etaphi1,etaphi2});
-		histos.add("bb1_b","bb_before",kTH2D,{{100,0,5,"pt"},{100,-5,5,"nsigma"}});
-		histos.add("bb1_a","bb_after",kTH2D,{{100,0,5,"pt"},{100,-5,5,"nsigma"}});
-		histos.add("bb2_b","bb_before",kTH2D,{{100,0,5,"pt"},{100,-5,5,"nsigma"}});
-		histos.add("bb2_a","bb_after",kTH2D,{{100,0,5,"pt"},{100,-5,5,"nsigma"}});
-		histos.add("1","2",kTH1D,{{100,-5,5,"nsigma"}});
+		histos.add("pt1","pt",kTH1D,{{100,0,5,"pt"}});
+		histos.add("pt2","pt",kTH1D,{{100,0,5,"pt"}});
+		histos.add("bb1","tpc",kTH2D,{{100,0,5,"pt"},{200,0,200,"de/dx"}});
+		histos.add("bb3","tpc",kTH2D,{{100,0,5,"pt"},{200,0,200,"de/dx"}});
+		histos.add("bb2","tof",kTH2D,{{100,0,5,"pt"},{50,0.2,1.2,"beta"}});
+		histos.add("bb4","tof",kTH2D,{{100,0,5,"pt"},{50,0.2,1.2,"beta"}});
+		histos.add("bb1_b","bb_before",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("bb1_a","bb_after",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("bb2_b","bb_before",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("bb2_a","bb_after",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("proj1","tpc_proj",kTH1D,{{400,-5,5,"nsigma"}});
+		histos.add("proj2","tof_proj",kTH1D,{{400,-5,5,"nsigma"}});
 	}
-	void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection,aod::pidTPCPi,aod::pidTOFPi,aod::pidTOFbeta,aod::TracksExtra>> const& tracks)
+	void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection,aod::pidTPCKa,aod::pidTOFKa,aod::pidTPCEl,aod::pidTOFbeta,aod::TracksExtra>> const& tracks)
 	{
 			int mult=0;
 			int etabin1,etabin2,phibin1,phibin2;
+			float tpccut,tofcut;
 		for(auto track1:tracks)
 		{
 //			if((fabs(track1.eta())>0.1)||(fabs(track1.phi()-5)>0.5))continue;
-			histos.fill(HIST("bb1_b"),track1.pt(),track1.tpcNSigmaPi());
-			histos.fill(HIST("bb2_b"),track1.pt(),track1.tofNSigmaPi());
-			histos.fill(HIST("test"),track1.eta(),track1.phi());
-			if(fabs(track1.tpcNSigmaPi())>3)continue;
-//			if(track1.hasTOF())
-//				if(fabs(track1.tofNSigmaPi())>3)continue;
-//PION
-//			if((track1.pt()>0.2)&&(track1.pt()<0.6))//TPC only
-//			else if((track1.pt()>0.5)&&(track1.pt()<1.3))//TOF
-//			else continue;
-			histos.fill(HIST("test"),track1.pt(),track1.tpcSignal());
-			histos.fill(HIST("bb1_a"),track1.pt(),track1.tpcNSigmaPi());
-//			ifcontinue;
-			histos.fill(HIST("bb2_a"),track1.pt(),track1.tofNSigmaPi());
-			mult++;
+//---------------------------------------PID--------------------------------------------
+			histos.fill(HIST("pt1"),track1.pt());
+			histos.fill(HIST("bb1_b"),track1.pt(),track1.tpcNSigmaKa());
+			histos.fill(HIST("bb2_b"),track1.pt(),track1.tofNSigmaKa());
+			histos.fill(HIST("bb2"),track1.pt(),track1.beta());
+			histos.fill(HIST("bb1"),track1.pt(),track1.tpcSignal());
+			if(track1.hasTOF())
+			histos.fill(HIST("pt2"),track1.pt());
+
+			tpccut=2.5;
+			tofcut=2.5;
+			if(fabs(track1.tpcNSigmaKa())>=tpccut) continue;	
+			if(track1.hasTOF())
+			{
+			if(fabs(track1.tofNSigmaKa())>=tofcut) continue;
+			}
+			else if(track1.pt()>=0.7)
+				continue;
+			if(fabs(track1.tpcNSigmaEl())<1.2) continue;
+
+			histos.fill(HIST("bb4"),track1.pt(),track1.beta());
+			histos.fill(HIST("bb1_a"),track1.pt(),track1.tpcNSigmaKa());
+			histos.fill(HIST("bb3"),track1.pt(),track1.tpcSignal());
+			histos.fill(HIST("proj1"),track1.tpcNSigmaKa());
+			histos.fill(HIST("bb2_a"),track1.pt(),track1.tofNSigmaKa());
+			histos.fill(HIST("proj2"),track1.tofNSigmaKa());
+
+//--------------------------------------------------------END----------------------------------------------------------*/
 			histos.fill(HIST("phi"),track1.phi());
 			histos.fill(HIST("eta"),track1.eta());
 			if(track1.sign()==1)
@@ -86,15 +107,29 @@ struct r2p24id{
 			}
 				if(track1.eta()>=(0.8)||track1.eta()<=-0.8)continue;
 				etabin1=(track1.eta()+0.8)*15;
-				phibin1=36*track1.phi()/(2*PI);
-
+				phibin1=36*track1.phi()/(2*constants::math::PI);
+				mult++;
 			for(auto track2:tracks)
 			{
 				if(track1.index()==track2.index())continue;
-				if(/*(fabs(track2.tpcNSigmaPi())>3)||*/(fabs(track2.tofNSigmaPi())>3))continue;
+
+
+				tpccut=2.5;
+				tofcut=2.5;
+				if(fabs(track2.tpcNSigmaKa())>=tpccut) continue;	
+				if(track2.hasTOF())
+				{
+				if(fabs(track2.tofNSigmaKa())>=tofcut) continue;
+				}
+				else if(track2.pt()>=0.7)
+					continue;
+				if(fabs(track2.tpcNSigmaEl())<1.2) continue;
+
+
+//				if(/*(fabs(track2.tpcNSigmaKa())>3)||*/(fabs(track2.tofNSigmaKa())>3))continue;
 				if(track2.eta()>=(0.8)||track2.eta()<=-0.8)continue;
 				etabin2=(track2.eta()+0.8)*15;
-				phibin2=36*track2.phi()/(2*PI);
+				phibin2=36*track2.phi()/(2*constants::math::PI);
 				if((etabin1>=0)&&(etabin2>=0)&&(phibin1>=0)&&(phibin2>=0)&&(etabin1<24)&&(etabin2<24)&&(phibin1<36)&&(phibin2<36))
 				{
 					if(track1.sign()*track2.sign()==-1)

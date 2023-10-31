@@ -81,7 +81,7 @@ void R2P2B2_prc_v3(/*const TString ptCase, const TString strMult, const TString 
       break;
     }
     kminpt=0.2;
-    kmaxpt=1.3;
+    kmaxpt=2.0;
   
   cout <<"\nPt Range: "<<kminpt<<"\t"<< kmaxpt<<endl;
 
@@ -89,7 +89,7 @@ void R2P2B2_prc_v3(/*const TString ptCase, const TString strMult, const TString 
   
   //----------Getter-----------------------------------------
   //TFile *ftpcorr      = TFile::Open("TwoParticleCorrScaled.root");
-  TFile *ftpcorr      = TFile::Open(/*"TwoParticleCorrScaled_"+strMult+"_"+strPt+"*/"tst.root", "read");
+  TFile *ftpcorr      = TFile::Open(/*"TwoParticleCorrScaled_"+strMult+"_"+strPt+"*/"AnalysisResults.root", "read");
   //TFile *ftpcorr      = 
   //TFile::Open("ScaledPythia_qq2qq_HighPt.root");
   if (!ftpcorr) return;
@@ -104,28 +104,28 @@ void R2P2B2_prc_v3(/*const TString ptCase, const TString strMult, const TString 
   TH1D *h1d_n1_phiM   = (TH1D*)ftpcorr->Get("h1d_n1_phiM");
   TH1D *h1d_n1_ptM    = (TH1D*)ftpcorr->Get("h1d_n1_ptM");
   */
-  TH1D *h1d_n1_ptP    = (TH1D*)ftpcorr->Get("r2p24id/h1d_n1_ptP");
-  TH1D *h1d_n1_ptM    = (TH1D*)ftpcorr->Get("r2p24id/h1d_n1_ptM");
+  TH1D *h1d_n1_ptP    = (TH1D*)ftpcorr->Get("h1d_n1_ptP");
+  TH1D *h1d_n1_ptM    = (TH1D*)ftpcorr->Get("h1d_n1_ptM");
 
   //----------R2----------------------------
-  TH2D *h2d_n1_etaPhiP             = (TH2D*)ftpcorr->Get("r2p24id/h2d_n1_etaPhiP");
-  TH2D *h2d_n1_etaPhiM             = (TH2D*)ftpcorr->Get("r2p24id/h2d_n1_etaPhiM");
-  TH2D *h2d_n2_eta1Phi1Eta2Phi2PM  = (TH2D*)ftpcorr->Get("r2p24id/h2d_n2_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_n2_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("r2p24id/h2d_n2_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_n2_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("r2p24id/h2d_n2_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_n1_etaPhiP             = (TH2D*)ftpcorr->Get("h2d_n1_etaPhiP");
+  TH2D *h2d_n1_etaPhiM             = (TH2D*)ftpcorr->Get("h2d_n1_etaPhiM");
+  TH2D *h2d_n2_eta1Phi1Eta2Phi2PM  = (TH2D*)ftpcorr->Get("h2d_n2_eta1Phi1Eta2Phi2PM");
+  TH2D *h2d_n2_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("h2d_n2_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_n2_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("h2d_n2_eta1Phi1Eta2Phi2MM");
 
   //--------------------DpTDpT---------------------
-  TH2D *h2d_pt_etaPhiP               = (TH2D*)ftpcorr->Get("r2p24id/h2d_pt_etaPhiP");
-  TH2D *h2d_pt_etaPhiM               = (TH2D*)ftpcorr->Get("r2p24id/h2d_pt_etaPhiM");
-  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PM  = (TH2D*)ftpcorr->Get("r2p24id/h2d_ptpt_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("r2p24id/h2d_ptpt_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("r2p24id/h2d_ptpt_eta1Phi1Eta2Phi2MM");
-  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PM   = (TH2D*)ftpcorr->Get("r2p24id/h2d_ptn_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("r2p24id/h2d_ptn_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_ptn_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("r2p24id/h2d_ptn_eta1Phi1Eta2Phi2MM");
-  TH2D *h2d_npt_eta1Phi1Eta2Phi2PM   = (TH2D*)ftpcorr->Get("r2p24id/h2d_npt_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_npt_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("r2p24id/h2d_npt_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_npt_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("r2p24id/h2d_npt_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_pt_etaPhiP               = (TH2D*)ftpcorr->Get("h2d_pt_etaPhiP");
+  TH2D *h2d_pt_etaPhiM               = (TH2D*)ftpcorr->Get("h2d_pt_etaPhiM");
+  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PM  = (TH2D*)ftpcorr->Get("h2d_ptpt_eta1Phi1Eta2Phi2PM");
+  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("h2d_ptpt_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("h2d_ptpt_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PM   = (TH2D*)ftpcorr->Get("h2d_ptn_eta1Phi1Eta2Phi2PM");
+  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("h2d_ptn_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_ptn_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("h2d_ptn_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_npt_eta1Phi1Eta2Phi2PM   = (TH2D*)ftpcorr->Get("h2d_npt_eta1Phi1Eta2Phi2PM");
+  TH2D *h2d_npt_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("h2d_npt_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_npt_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("h2d_npt_eta1Phi1Eta2Phi2MM");
 
 
 
@@ -229,18 +229,18 @@ void R2P2B2_prc_v3(/*const TString ptCase, const TString strMult, const TString 
 
   TH2D *h2d_r2_DetaDphiPM
     = new TH2D("h2d_r2_DetaDphiPM",
-               "h2d_r2_DetaDphiPM",
+               "h2d_r2_DetaDphiPM;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, 0., 2.*TMath::Pi());
 
   TH2D *h2d_r2_DetaDphiPP
     = new TH2D("h2d_r2_DetaDphiPP",
-               "h2d_r2_DetaDphiPP",
+               "h2d_r2_DetaDphiPP;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, 0., 2.*TMath::Pi());
   TH2D *h2d_r2_DetaDphiMM
     = new TH2D("h2d_r2_DetaDphiMM",
-               "h2d_r2_DetaDphiMM",
+               "h2d_r2_DetaDphiMM;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, 0., 2.*TMath::Pi());
 
@@ -280,39 +280,39 @@ void R2P2B2_prc_v3(/*const TString ptCase, const TString strMult, const TString 
 
   TH2D *h2d_r2_DetaDphiPM_ShiftY
     = new TH2D("h2d_r2_DetaDphiPM_ShiftY",
-               "h2d_r2_DetaDphiPM_ShiftY",
+               "h2d_r2_DetaDphiPM_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_r2_DetaDphiPP_ShiftY
     = new TH2D("h2d_r2_DetaDphiPP_ShiftY",
-               "h2d_r2_DetaDphiPP_ShiftY",
+               "h2d_r2_DetaDphiPP_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_r2_DetaDphiMM_ShiftY
     = new TH2D("h2d_r2_DetaDphiMM_ShiftY",
-               "h2d_r2_DetaDphiMM_ShiftY",
+               "h2d_r2_DetaDphiMM_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_r2_DetaDphiLS
     = new TH2D("h2d_r2_DetaDphiLS",
-               "h2d_r2_DetaDphiLS",
+               "h2d_r2_DetaDphiLS;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 
 
   TH2D *h2d_r2CI_DetaDphi
     = new TH2D("h2d_r2CI_DetaDphi",
-               "h2d_r2CI_DetaDphi",
+               "h2d_r2CI_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_r2CD_DetaDphi
     = new TH2D("h2d_r2CD_DetaDphi",
-               "h2d_r2CD_DetaDphi",
+               "h2d_r2CD_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_B2_DetaDphi
     = new TH2D("h2d_B2_DetaDphi",
-               "h2d_B2_DetaDphi",
+               "h2d_B2_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 
@@ -353,17 +353,17 @@ void R2P2B2_prc_v3(/*const TString ptCase, const TString strMult, const TString 
 
   TH2D *h2d_p2DptDpt_eta1Phi1Eta2Phi2PM
     = new TH2D("h2d_p2DptDpt_eta1Phi1Eta2Phi2PM",
-               "h2d_p2DptDpt_eta1Phi1Eta2Phi2PM",
+               "h2d_p2DptDpt_eta1Phi1Eta2Phi2PM;deta;dphi",
                knetaphibinsx, kminetaphi, kmaxetaphi,
                knetaphibinsy, kminetaphi, kmaxetaphi);
   TH2D *h2d_p2DptDpt_eta1Phi1Eta2Phi2PP
     = new TH2D("h2d_p2DptDpt_eta1Phi1Eta2Phi2PP",
-               "h2d_p2DptDpt_eta1Phi1Eta2Phi2PP",
+               "h2d_p2DptDpt_eta1Phi1Eta2Phi2PP;deta;dphi",
                knetaphibinsx, kminetaphi, kmaxetaphi,
                knetaphibinsy, kminetaphi, kmaxetaphi);
   TH2D *h2d_p2DptDpt_eta1Phi1Eta2Phi2MM
     = new TH2D("h2d_p2DptDpt_eta1Phi1Eta2Phi2MM",
-               "h2d_p2DptDpt_eta1Phi1Eta2Phi2MM",
+               "h2d_p2DptDpt_eta1Phi1Eta2Phi2MM;deta;dphi",
                knetaphibinsx, kminetaphi, kmaxetaphi,
                knetaphibinsy, kminetaphi, kmaxetaphi);
 
@@ -450,99 +450,99 @@ void R2P2B2_prc_v3(/*const TString ptCase, const TString strMult, const TString 
 
   TH2D *h2d_DptDpt_DetaDphiPM_ShiftY
     = new TH2D("h2d_DptDpt_DetaDphiPM_ShiftY",
-               "h2d_DptDpt_DetaDphiPM_ShiftY",
+               "h2d_DptDpt_DetaDphiPM_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_DptDpt_DetaDphiPP_ShiftY
     = new TH2D("h2d_DptDpt_DetaDphiPP_ShiftY",
-               "h2d_DptDpt_DetaDphiPP_ShiftY",
+               "h2d_DptDpt_DetaDphiPP_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_DptDpt_DetaDphiMM_ShiftY
     = new TH2D("h2d_DptDpt_DetaDphiMM_ShiftY",
-               "h2d_DptDpt_DetaDphiMM_ShiftY",
+               "h2d_DptDpt_DetaDphiMM_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 
   TH2D *h2d_DptDptCI_DetaDphi
     = new TH2D("h2d_DptDptCI_DetaDphi",
-               "h2d_DptDptCI_DetaDphi",
+               "h2d_DptDptCI_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_DptDptCD_DetaDphi
     = new TH2D("h2d_DptDptCD_DetaDphi",
-               "h2d_DptDptCD_DetaDphi",
+               "h2d_DptDptCD_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 
   TH2D *h2d_B2DptDpt_DetaDphi
     = new TH2D("h2d_B2DptDpt_DetaDphi",
-               "h2d_B2DptDpt_DetaDphi",
+               "h2d_B2DptDpt_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 
   TH2D *h2d_p2DptDpt_DetaDphiPM
     = new TH2D("h2d_p2DptDpt_DetaDphiPM",
-               "h2d_p2DptDpt_DetaDphiPM",
+               "h2d_p2DptDpt_DetaDphiPM;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, 0., 2.*TMath::Pi());
 
   TH2D *h2d_p2DptDpt_DetaDphiPP
     = new TH2D("h2d_p2DptDpt_DetaDphiPP",
-               "h2d_p2DptDpt_DetaDphiPP",
+               "h2d_p2DptDpt_DetaDphiPP;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, 0., 2.*TMath::Pi());
 
   TH2D *h2d_p2DptDpt_DetaDphiMM
     = new TH2D("h2d_p2DptDpt_DetaDphiMM",
-               "h2d_p2DptDpt_DetaDphiMM",
+               "h2d_p2DptDpt_DetaDphiMM;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, 0., 2.*TMath::Pi());
 
   TH2D *h2d_p2DptDpt_DetaDphiPM_ShiftY
     = new TH2D("h2d_p2DptDpt_DetaDphiPM_ShiftY",
-               "h2d_p2DptDpt_DetaDphiPM_ShiftY",
+               "h2d_p2DptDpt_DetaDphiPM_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_p2DptDpt_DetaDphiPP_ShiftY
     = new TH2D("h2d_p2DptDpt_DetaDphiPP_ShiftY",
-               "h2d_p2DptDpt_DetaDphiPP_ShiftY",
+               "h2d_p2DptDpt_DetaDphiPP_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_p2DptDpt_DetaDphiMM_ShiftY
     = new TH2D("h2d_p2DptDpt_DetaDphiMM_ShiftY",
-               "h2d_p2DptDpt_DetaDphiMM_ShiftY",
+               "h2d_p2DptDpt_DetaDphiMM_ShiftY;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_p2DptDpt_DetaDphiLS
     = new TH2D("h2d_p2DptDpt_DetaDphiLS",
-               "h2d_p2DptDpt_DetaDphiLS",
+               "h2d_p2DptDpt_DetaDphiLS;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 
   TH2D *h2d_p2DptDptCI_DetaDphi
     = new TH2D("h2d_p2DptDptCI_DetaDphi",
-               "h2d_p2DptDptCI_DetaDphi",
+               "h2d_p2DptDptCI_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
   TH2D *h2d_p2DptDptCD_DetaDphi
     = new TH2D("h2d_p2DptDptCD_DetaDphi",
-               "h2d_p2DptDptCD_DetaDphi",
+               "h2d_p2DptDptCD_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 TH2D *h2d_p2DptDptCD_DetaDphiRebined
     = new TH2D("h2d_p2DptDptCD_DetaDphiRebined",
-               "h2d_p2DptDptCD_DetaDphiRebined",
+               "h2d_p2DptDptCD_DetaDphiRebined;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 
   TH2D *h2d_B2p2DptDpt_DetaDphi
     = new TH2D("h2d_B2p2DptDpt_DetaDphi",
-               "h2d_B2p2DptDpt_DetaDphi",
+               "h2d_B2p2DptDpt_DetaDphi;deta;dphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 //-------------------------------------------------------------------------------------------------------
-TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("r2p24id/h1i_n1_multPM");
+TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("h1i_n1_multPM");
 	double sigmaFrac = 1.0;
 	double nevt = h1i_n1_multPM->GetEntries();
 	double scale = sigmaFrac / nevt;
@@ -563,7 +563,7 @@ TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("r2p24id/h1i_n1_multPM");
 	Normalize2D(h2d_ptn_eta1Phi1Eta2Phi2PP, scale, dphi2, deta2);
 	Normalize2D(h2d_ptn_eta1Phi1Eta2Phi2MM, scale, dphi2, deta2);
 
-//-----------------_______________________________--------------------------------------___________________--------------------
+//-----------------_______________________________--------------------------------------___________________--------------------*/
 
   //--------R2---------------------------------
 
