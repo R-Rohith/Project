@@ -64,7 +64,7 @@ case $1 in
 	;;
 	"3")
 		cd ~/Tutorials
-		time o2-practice-pid1 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option 
+		time o2-practice-pid1 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-pid-tpc-full $option 
 		root AnalysisResults.root
 	;;
 	"4")
@@ -84,9 +84,9 @@ case $1 in
 		esac
 	;;
 	"5")
-		cd ~/Tutorials
-		time o2-practice-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option 
-		root AnalysisResults.root
+#		cd ~/Tutorials
+		time o2-practice-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option 
+#		root R2P2B2_prc_v3.C
 	;;
 	*)
 		echo "Specify Version"
@@ -127,6 +127,35 @@ case $1 in
 ;;
 "debug")
 	~/alice/O2Physics/Scripts/find_dependencies.py -t $2
+;;
+"cpcnfg")
+	cnt=1
+	while [ $cnt -le $2 ]
+	do
+#		cnt2=0
+#		while [ $cnt2 -le $(($2%10)) ]
+#		do
+			cp ~/Tutorials/Analysis/my_config.json ~/Tutorials/Analysis/$cnt
+#echo $cnt1$cnt2
+#			((cnt2++))
+#		done
+		((cnt++))
+	done
+;;
+"runall")
+	cnt=$2
+	while [ $cnt -le $3 ]
+	do
+			cd ~/Tutorials/Analysis/$cnt
+			rm AnalysisResults.root
+			time o2-practice-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option &>output.log
+		((cnt++))
+	done
+;;
+"shutdown")
+	rm ~/Project/O2_code -r -f
+	cp ~/alice/O2Physics/Tutorials/Practice -r -f ~/Project
+	mv ~/Project/Practice -r -f ~/Project/O2_code
 ;;
 "pyth")
 	g++ ~/Tutorials/pythia/sim1.cpp -I~/alice/ -lpythia8 -L~/alice/
