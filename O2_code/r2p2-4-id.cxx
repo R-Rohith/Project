@@ -48,12 +48,12 @@ struct r2p24id{
 		histos.add("bb3","tpc",kTH2D,{{100,0,5,"pt"},{200,0,200,"de/dx"}});
 		histos.add("bb2","tof",kTH2D,{{100,0,5,"pt"},{50,0.2,1.2,"beta"}});
 		histos.add("bb4","tof",kTH2D,{{100,0,5,"pt"},{50,0.2,1.2,"beta"}});
-		histos.add("bb1_b","bb_before",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
-		histos.add("bb1_a","bb_after",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
-		histos.add("bb2_b","bb_before",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
-		histos.add("bb2_a","bb_after",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
-		histos.add("proj1","tpc_proj",kTH1D,{{400,-5,5,"nsigma"}});
-		histos.add("proj2","tof_proj",kTH1D,{{400,-5,5,"nsigma"}});
+		histos.add("bb1_b","tpcnsigma_before",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("bb1_a","tpcnsigma_after",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("bb2_b","tofnsigma_before",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("bb2_a","tofnsigma_after",kTH2D,{{100,0,5,"pt"},{25,-5,5,"nsigma"}});
+		histos.add("proj1","tpc_proj",kTH1D,{{25,-5,5,"nsigma"}});
+		histos.add("proj2","tof_proj",kTH1D,{{25,-5,5,"nsigma"}});
 	}
 	void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection,aod::pidTPCKa,aod::pidTOFKa,aod::pidTPCEl,aod::pidTOFbeta,aod::TracksExtra>> const& tracks)
 	{
@@ -71,24 +71,81 @@ struct r2p24id{
 			histos.fill(HIST("bb1"),track1.pt(),track1.tpcSignal());
 			if(track1.hasTOF())
 			histos.fill(HIST("pt2"),track1.pt());
-
+/*/-----------------------------PION---------------------------------------------------
 			tpccut=2.5;
 			tofcut=2.5;
-			if(fabs(track1.tpcNSigmaKa())>=tpccut) continue;	
+			if(fabs(track1.tpcNSigmaPi())>=tpccut) continue;	
 			if(track1.hasTOF())
 			{
-			if(fabs(track1.tofNSigmaKa())>=tofcut) continue;
+			if(fabs(track1.tofNSigmaPi())>=tofcut) continue;
 			}
 			else if(track1.pt()>=0.7)
 				continue;
+//---------------------------------------------------------------------------------*/
+//--------------------KAON------------------------------------------------------
+			tpccut=2;
+			tofcut=2;
+			if(track1.pt()<0.6)
+			{
+				if(track1.pt()<0.45)tpccut=2;
+				else if(track1.pt()<0.55)tpccut=1;
+				else tpccut=0.6;
+				if(track1.hasTOF())
+				{
+					tpccut=2;
+					if((fabs(track1.tofNSigmaKa())>tofcut)||(fabs(track1.tpcNSigmaKa())>tpccut))continue;
+				}
+				else
+					if(fabs(track1.tpcNSigmaKa())>tpccut) continue;
+			}
+			else if(track1.hasTOF())
+			{
+//				if(track1.pt()<1)tofcut=3;
+//				else if(track1.pt()<1.2)tofcut=2;
+//				else if(track1.pt()<1.3)tofcut=1;
+//				else tofcut=3;
+				if((fabs(track1.tpcNSigmaKa())>tpccut)||(fabs(track1.tofNSigmaKa())>tofcut)) continue;
+			}
+			else
+			continue;
+//-----------------------------------------------------------------------------------------------------------*/				
+/*/-------------------Proton------------------------------------
+			tpccut=2.2;
+			tofcut=2;
+			if(track1.tpcNClsCrossedRows()<70) continue;
+			if(track1.pt()<1.1)
+			{
+				if(track1.pt()<0.85)tpccut=2.2;
+				else tpccut=1;
+				if(track1.hasTOF())
+				{
+					tpccut=2.2;
+					if((fabs(track1.tofNSigmaPr())>tofcut)||(fabs(track1.tpcNSigmaPr())>tpccut))continue;
+				}
+				else
+					if(fabs(track1.tpcNSigmaPr())>tpccut) continue;
+			}
+			else if(track1.hasTOF())
+			{
+//				if(track1.pt()<1.6)tofcut=3;
+//				else if(track1.pt()<1.9)tofcut=2;
+//				else if(track1.pt()<2.4)tofcut=1;
+//				else if(track1.pt()<3.5)tofcut=0;	
+//				else tofcut=3;
+				if((fabs(track1.tpcNSigmaPr())>tpccut)||(fabs(track1.tofNSigmaPr())>tofcut)) continue;
+			}
+			else
+			continue;
+
+//--------------------------------------*/
 			if(fabs(track1.tpcNSigmaEl())<1.2) continue;
 
 			histos.fill(HIST("bb4"),track1.pt(),track1.beta());
 			histos.fill(HIST("bb1_a"),track1.pt(),track1.tpcNSigmaKa());
-			histos.fill(HIST("bb3"),track1.pt(),track1.tpcSignal());
 			histos.fill(HIST("proj1"),track1.tpcNSigmaKa());
 			histos.fill(HIST("bb2_a"),track1.pt(),track1.tofNSigmaKa());
 			histos.fill(HIST("proj2"),track1.tofNSigmaKa());
+			histos.fill(HIST("bb3"),track1.pt(),track1.tpcSignal());
 
 //--------------------------------------------------------END----------------------------------------------------------*/
 			histos.fill(HIST("phi"),track1.phi());
@@ -112,21 +169,78 @@ struct r2p24id{
 			for(auto track2:tracks)
 			{
 				if(track1.index()==track2.index())continue;
-
-
+//---------------------------------------------------PID---------------------------------------
+/*/-----------------------------PION-----------------------------------------------------------
 				tpccut=2.5;
 				tofcut=2.5;
-				if(fabs(track2.tpcNSigmaKa())>=tpccut) continue;	
+				if(fabs(track2.tpcNSigmaPi())>=tpccut) continue;	
 				if(track2.hasTOF())
 				{
-				if(fabs(track2.tofNSigmaKa())>=tofcut) continue;
+				if(fabs(track2.tofNSigmaPi())>=tofcut) continue;
 				}
 				else if(track2.pt()>=0.7)
 					continue;
+//-------------------------------------------------------------------------------------------*/
+//----------------------------Kaon------------------------------------------------------------
+				tpccut=2;
+				tofcut=2;
+				if(track1.pt()<0.6)
+				{
+					if(track1.pt()<0.45)tpccut=2;
+					else if(track1.pt()<0.55)tpccut=1;
+					else tpccut=0.6;
+					if(track1.hasTOF())
+					{
+						tpccut=2;
+						if((fabs(track1.tofNSigmaKa())>tofcut)||(fabs(track1.tpcNSigmaKa())>tpccut))continue;
+					}
+					else
+						if(fabs(track1.tpcNSigmaKa())>tpccut) continue;
+				}
+				else if(track1.hasTOF())
+				{
+//					if(track1.pt()<1)tofcut=3;
+//					else if(track1.pt()<1.2)tofcut=2;
+//					else if(track1.pt()<1.3)tofcut=1;
+//					else tofcut=3;
+					if((fabs(track1.tpcNSigmaKa())>tpccut)||(fabs(track1.tofNSigmaKa())>tofcut)) continue;
+				}
+				else
+				continue;
+//-----------------------------------------------------------------------------------------------*/	
+/*/-------------------Proton------------------------------------
+				tpccut=2.2;
+				tofcut=2;
+				if(track1.tpcNClsCrossedRows()<70) continue;
+				if(track1.pt()<1.1)
+				{
+					if(track1.pt()<0.85)tpccut=2.2;
+					else tpccut=1;
+					if(track1.hasTOF())
+					{
+						tpccut=2.2;
+						if((fabs(track1.tofNSigmaPr())>tofcut)||(fabs(track1.tpcNSigmaPr())>tpccut))continue;
+					}
+					else
+						if(fabs(track1.tpcNSigmaPr())>tpccut) continue;
+				}
+				else if(track1.hasTOF())
+				{
+//					if(track1.pt()<1.6)tofcut=3;
+//					else if(track1.pt()<1.9)tofcut=2;
+//					else if(track1.pt()<2.4)tofcut=1;
+//					else if(track1.pt()<3.5)tofcut=0;	
+//					else tofcut=3;
+					if((fabs(track1.tpcNSigmaPr())>tpccut)||(fabs(track1.tofNSigmaPr())>tofcut)) continue;
+				}
+				else
+				continue;
+
+//--------------------------------------*/								
+								
 				if(fabs(track2.tpcNSigmaEl())<1.2) continue;
 
-
-//				if(/*(fabs(track2.tpcNSigmaKa())>3)||*/(fabs(track2.tofNSigmaKa())>3))continue;
+//------------------------------------------PID----END----------------------------------------
 				if(track2.eta()>=(0.8)||track2.eta()<=-0.8)continue;
 				etabin2=(track2.eta()+0.8)*15;
 				phibin2=36*track2.phi()/(2*constants::math::PI);
@@ -167,3 +281,9 @@ WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
     adaptAnalysisTask<r2p24id>(cfgc)
     };
 }
+
+/*
+Electron tpccut to be changed to 2
+ADD stuff like tpcNClsCrossedRows...
+
+*/
