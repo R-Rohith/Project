@@ -9,7 +9,7 @@ using namespace o2;
 using namespace o2::framework;
 using namespace o2::framework::expressions;
 
-struct r2p24id{
+struct crossr2p24id{
 	Filter col = aod::evsel::sel8 == true;
 	Filter collisionFilter = nabs(aod::collision::posZ) < 10.f;
 	Filter ptfilter=aod::track::pt>0.2f&&aod::track::pt<2.0f;		//till 0.5 no delta peak....peak seems to begin from 0.25.
@@ -23,16 +23,22 @@ struct r2p24id{
 		histos.add("phi","phi",kTH1D,{phi});
 		histos.add("eta","eta",kTH1D,{eta});
 		histos.add("test","tst",kTH2D,{{100,0,5,"pt"},{200,0,200,"de/dx"}});
-		histos.add("h1d_n1_ptP","pt for +ve",kTH1D,{{30,0,6,"pt"}});
-		histos.add("h1d_n1_ptM","pt for -ve",kTH1D,{{30,0,6,"pt"}});
+		histos.add("h1d_n1_ptP1","pt for +ve_1",kTH1D,{{30,0,6,"pt"}});
+		histos.add("h1d_n1_ptM1","pt for -ve_1",kTH1D,{{30,0,6,"pt"}});
+		histos.add("h1d_n1_ptP2","pt for +ve_2",kTH1D,{{30,0,6,"pt"}});
+		histos.add("h1d_n1_ptM2","pt for -ve_2",kTH1D,{{30,0,6,"pt"}});
 		histos.add("h1i_n1_multPM","multiplicity",kTH1I,{{200,0,200,"mult"}});		
-		histos.add("h2d_n1_etaPhiP","rho_1 for +ve particle",kTH2D,{eta,phi});
-		histos.add("h2d_n1_etaPhiM","rho_1 for -ve particle",kTH2D,{eta,phi});
+		histos.add("h2d_n1_etaPhiP1","rho_1 for +ve particle1",kTH2D,{eta,phi});
+		histos.add("h2d_n1_etaPhiM1","rho_1 for -ve particle1",kTH2D,{eta,phi});
+		histos.add("h2d_n1_etaPhiP2","rho_1 for +ve particle2",kTH2D,{eta,phi});
+		histos.add("h2d_n1_etaPhiM2","rho_1 for -ve particle2",kTH2D,{eta,phi});
 		histos.add("h2d_n2_eta1Phi1Eta2Phi2PP","rho_2 for +ve+ve particle",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_n2_eta1Phi1Eta2Phi2PM","rho_2 for +ve-ve particle",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_n2_eta1Phi1Eta2Phi2MM","rho_2 for -ve-ve particle",kTH2D,{etaphi1,etaphi2});
-		histos.add("h2d_pt_etaPhiP","pt for +ve",kTH2D,{eta,phi});
-		histos.add("h2d_pt_etaPhiM","pt for -ve",kTH2D,{eta,phi});
+		histos.add("h2d_pt_etaPhiP1","pt for +ve_1",kTH2D,{eta,phi});
+		histos.add("h2d_pt_etaPhiM1","pt for -ve_1",kTH2D,{eta,phi});
+		histos.add("h2d_pt_etaPhiP2","pt for +ve_2",kTH2D,{eta,phi});
+		histos.add("h2d_pt_etaPhiM2","pt for -ve_2",kTH2D,{eta,phi});
 		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2PM","ptpt for +ve-ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2PP","ptpt for +ve+ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2MM","ptpt for -ve-ve",kTH2D,{etaphi1,etaphi2});
@@ -55,21 +61,110 @@ struct r2p24id{
 		histos.add("proj1","tpc_proj",kTH1D,{{25,-5,5,"nsigma"}});
 		histos.add("proj2","tof_proj",kTH1D,{{25,-5,5,"nsigma"}});
 	}
-	void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection,aod::pidTPCPr,aod::pidTOFPr,aod::pidTPCEl,aod::pidTOFbeta,aod::TracksExtra>> const& tracks)
+	void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection,aod::pidTPCPi,aod::pidTOFPi,aod::pidTPCKa,aod::pidTOFKa,aod::pidTPCEl,aod::pidTOFbeta,aod::TracksExtra>> const& tracks)
 	{
+			bool flag;
 			int mult=0;
 			int etabin1,etabin2,phibin1,phibin2;
 			float tpccut,tofcut;
 		for(auto track1:tracks)
 		{
-//---------------------------------------PID--------------------------------------------
-			histos.fill(HIST("pt1"),track1.pt());
-			histos.fill(HIST("bb1_b"),track1.pt(),track1.tpcNSigmaPr());
-			histos.fill(HIST("bb2_b"),track1.pt(),track1.tofNSigmaPr());
-			histos.fill(HIST("bb2"),track1.pt(),track1.beta());
-			histos.fill(HIST("bb1"),track1.pt(),track1.tpcSignal());
+//---------------------------------------PID2--------------------------------------------
+			flag=true;
+/*/-----------------------------PION---------------------------------------------------
+			tpccut=2.5;
+			tofcut=2.5;
+			if(fabs(track1.tpcNSigmaPi())>=tpccut) flag=false;	
 			if(track1.hasTOF())
-			histos.fill(HIST("pt2"),track1.pt());
+			{
+			if(fabs(track1.tofNSigmaPi())>=tofcut) flag=false;
+			}
+			else if(track1.pt()>=0.6)
+				flag=false;
+//---------------------------------------------------------------------------------*/
+//--------------------KAON------------------------------------------------------
+			tpccut=2;
+			tofcut=2;
+			if(track1.pt()<0.6)
+			{
+				if(track1.pt()<0.45)tpccut=2;
+				else if(track1.pt()<0.55)tpccut=1;
+				else tpccut=0.6;
+				if(track1.hasTOF())
+				{
+					tpccut=2;
+					if((fabs(track1.tofNSigmaKa())>tofcut)||(fabs(track1.tpcNSigmaKa())>tpccut))flag=false;
+				}
+				else
+					if(fabs(track1.tpcNSigmaKa())>tpccut)flag=false;
+			}
+			else if(track1.hasTOF())
+			{
+//				if(track1.pt()<1)tofcut=3;
+//				else if(track1.pt()<1.2)tofcut=2;
+//				else if(track1.pt()<1.3)tofcut=1;
+//				else tofcut=3;
+				if((fabs(track1.tpcNSigmaKa())>tpccut)||(fabs(track1.tofNSigmaKa())>tofcut))flag=false;
+			}
+			else
+			flag=false;
+//-----------------------------------------------------------------------------------------------------------*/				
+/*/-------------------Proton------------------------------------
+			tpccut=2.2;
+			tofcut=2;
+//			if(track1.tpcNClsCrossedRows()<70) flag=false;
+			if(track1.pt()<1.1)
+			{
+				if(track1.pt()<0.85)tpccut=2.2;
+				else tpccut=1;
+				if(track1.hasTOF())
+				{
+					tpccut=2.2;
+					if((fabs(track1.tofNSigmaPr())>tofcut)||(fabs(track1.tpcNSigmaPr())>tpccut))flag=false;
+				}
+				else
+					if(fabs(track1.tpcNSigmaPr())>tpccut) flag=false;
+			}
+			else if(track1.hasTOF())
+			{
+//				if(track1.pt()<1.6)tofcut=3;
+//				else if(track1.pt()<1.9)tofcut=2;
+//				else if(track1.pt()<2.4)tofcut=1;
+//				else if(track1.pt()<3.5)tofcut=0;	
+//				else tofcut=3;
+				if((fabs(track1.tpcNSigmaPr())>tpccut)||(fabs(track1.tofNSigmaPr())>tofcut)) flag=false;
+			}
+			else
+			flag=false;
+
+//--------------------------------------*/
+			if(fabs(track1.tpcNSigmaEl())<1.2) flag=false;
+			if(flag==true)
+			{
+				histos.fill(HIST("bb2"),track1.pt(),track1.beta());
+				histos.fill(HIST("bb1"),track1.pt(),track1.tpcSignal());
+				histos.fill(HIST("phi"),track1.phi());	
+				histos.fill(HIST("eta"),track1.eta());
+				if(track1.sign()==1)
+				{	
+					histos.fill(HIST("h2d_n1_etaPhiP2"),track1.eta(),track1.phi());
+					histos.fill(HIST("h1d_n1_ptP2"),track1.pt());
+					histos.fill(HIST("h2d_pt_etaPhiP2"),track1.eta(),track1.phi(),track1.pt());
+				}
+				else
+				{
+					histos.fill(HIST("h2d_n1_etaPhiM2"),track1.eta(),track1.phi());
+					histos.fill(HIST("h2d_pt_etaPhiM2"),track1.eta(),track1.phi(),track1.pt());
+					histos.fill(HIST("h1d_n1_ptM2"),track1.pt());
+				}
+			}
+
+
+
+
+
+
+//---------------------------------------PID1--------------------------------------------
 /*/-----------------------------PION---------------------------------------------------
 			tpccut=2.5;
 			tofcut=2.5;
@@ -81,7 +176,7 @@ struct r2p24id{
 			else if(track1.pt()>=0.6)
 				continue;
 //---------------------------------------------------------------------------------*/
-/*/--------------------KAON------------------------------------------------------
+//--------------------KAON------------------------------------------------------
 			tpccut=2;
 			tofcut=2;
 			if(track1.pt()<0.6)
@@ -108,7 +203,7 @@ struct r2p24id{
 			else
 			continue;
 //-----------------------------------------------------------------------------------------------------------*/				
-//-------------------Proton------------------------------------
+/*/-------------------Proton------------------------------------
 			tpccut=2.2;
 			tofcut=2;
 //			if(track1.tpcNClsCrossedRows()<70) continue;
@@ -140,10 +235,6 @@ struct r2p24id{
 			if(fabs(track1.tpcNSigmaEl())<1.2) continue;
 
 			histos.fill(HIST("bb4"),track1.pt(),track1.beta());
-			histos.fill(HIST("bb1_a"),track1.pt(),track1.tpcNSigmaPr());
-			histos.fill(HIST("proj1"),track1.tpcNSigmaPr());
-			histos.fill(HIST("bb2_a"),track1.pt(),track1.tofNSigmaPr());
-			histos.fill(HIST("proj2"),track1.tofNSigmaPr());
 			histos.fill(HIST("bb3"),track1.pt(),track1.tpcSignal());
 
 //--------------------------------------------------------END----------------------------------------------------------*/
@@ -151,15 +242,15 @@ struct r2p24id{
 			histos.fill(HIST("eta"),track1.eta());
 			if(track1.sign()==1)
 			{
-				histos.fill(HIST("h2d_n1_etaPhiP"),track1.eta(),track1.phi());
-				histos.fill(HIST("h1d_n1_ptP"),track1.pt());
-				histos.fill(HIST("h2d_pt_etaPhiP"),track1.eta(),track1.phi(),track1.pt());
+				histos.fill(HIST("h2d_n1_etaPhiP1"),track1.eta(),track1.phi());
+				histos.fill(HIST("h1d_n1_ptP1"),track1.pt());
+				histos.fill(HIST("h2d_pt_etaPhiP1"),track1.eta(),track1.phi(),track1.pt());
 			}
 			else
 			{
-				histos.fill(HIST("h2d_n1_etaPhiM"),track1.eta(),track1.phi());
-				histos.fill(HIST("h2d_pt_etaPhiM"),track1.eta(),track1.phi(),track1.pt());
-				histos.fill(HIST("h1d_n1_ptM"),track1.pt());
+				histos.fill(HIST("h2d_n1_etaPhiM1"),track1.eta(),track1.phi());
+				histos.fill(HIST("h2d_pt_etaPhiM1"),track1.eta(),track1.phi(),track1.pt());
+				histos.fill(HIST("h1d_n1_ptM1"),track1.pt());
 			}
 				if(track1.eta()>=(0.8)||track1.eta()<=-0.8)continue;
 				etabin1=(track1.eta()+0.8)*15;
@@ -168,7 +259,7 @@ struct r2p24id{
 			for(auto track2:tracks)
 			{
 				if(track1.index()==track2.index())continue;
-//---------------------------------------------------PID---------------------------------------
+//---------------------------------------------------PID2---------------------------------------
 /*/-----------------------------PION-----------------------------------------------------------
 				tpccut=2.5;
 				tofcut=2.5;
@@ -180,7 +271,7 @@ struct r2p24id{
 				else if(track2.pt()>=0.6)
 					continue;
 //-------------------------------------------------------------------------------------------*/
-/*/----------------------------Kaon------------------------------------------------------------
+//----------------------------Kaon------------------------------------------------------------
 				tpccut=2;
 				tofcut=2;
 				if(track2.pt()<0.6)
@@ -207,7 +298,7 @@ struct r2p24id{
 				else
 				continue;
 //-----------------------------------------------------------------------------------------------*/	
-//-------------------Proton------------------------------------
+/*/-------------------Proton------------------------------------
 				tpccut=2.2;
 				tofcut=2;
 //				if(track2.tpcNClsCrossedRows()<70) continue;
@@ -277,7 +368,7 @@ struct r2p24id{
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
 {
   return WorkflowSpec{
-    adaptAnalysisTask<r2p24id>(cfgc)
+    adaptAnalysisTask<crossr2p24id>(cfgc)
     };
 }
 

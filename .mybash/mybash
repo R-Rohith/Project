@@ -1,0 +1,205 @@
+#!/bin/bash
+option='-b --configuration json://my_config.json'
+case $1 in
+"build")
+	case $2 in
+	"1")
+#		cd ~/alice
+#		aliBuild build O2Physics --defaults o2 -j 12
+#		alienv load O2Physics/latest ninja/latest
+		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+		ninja install O2Physicsexe-practice-r2
+	;;
+	"2")
+		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+	        ninja install O2Physicsexe-practice-slfr2
+        ;;
+        "3")
+	        cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+	        ninja install O2Physicsexe-practice-pid1
+        ;;
+        "4")
+        	case $3 in
+		"1")
+			cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+	  		ninja install O2Physicsexe-practice-p2
+		;;
+		"2")
+			cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+	        	ninja install O2Physicsexe-practice-p2pre
+		;;
+		*)
+			echo "Specify Version"
+		;;
+		esac
+	        
+        ;;
+        "5")
+		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+	        ninja install O2Physicsexe-practice-r2p2-4-id
+        ;;
+        "6")
+		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+	        ninja install O2Physicsexe-practice-cross-r2p2-4-id
+        ;;
+        *)
+		echo "Specify Version"
+	;;
+	esac
+;;
+"run")
+	case $2 in
+	"1")
+		cd ~/Tutorials
+		time o2-practice-r2 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option
+#		source run.sh
+#		root AnalysisResults.root
+#		rm two_par_corr.root two_par_scaled.root outfile.root
+#		mv AnalysisResults.root two_par_corr.root
+#		root two_par_scale.cc
+#		root r2p2corr.cc
+#		root outfile.root
+	;;
+	"2")
+		cd ~/Tutorials
+#		time o2-practice-slfr2 -b --aod-file AO2D.root
+		time o2-practice-slfr2 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option
+		root AnalysisResults.root
+	;;
+	"3")
+		cd ~/Tutorials
+		time o2-practice-pid1 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-pid-tpc-full $option 
+		root AnalysisResults.root
+	;;
+	"4")
+		case $3 in
+		"1")
+			cd ~/Tutorials
+			mv AnalysisResults.root p2pre.root
+			time o2-practice-p2 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option 
+		;;
+		"2")
+			cd ~/Tutorials
+			time o2-practice-p2pre $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option 
+		;;
+		*)
+			echo "Specify Version"
+		;;
+		esac
+	;;
+	"5")
+#		cd ~/Tutorials
+		time o2-practice-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option 
+#		root R2P2B2_prc_v3.C
+	;;
+	"6")
+#		cd ~/Tutorials
+		time o2-practice-cross-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option 
+#		root R2P2B2_prc_v3.C
+	;;
+	*)
+		echo "Specify Version"
+	;;
+	esac
+;;
+"source")
+	case $2 in
+	"1")
+		gedit ~/alice/O2Physics/Tutorials/Practice/r2.cxx &
+	;;
+	"2")
+		gedit ~/alice/O2Physics/Tutorials/Practice/slfr2.cxx &
+	;;
+	"3")
+		gedit ~/alice/O2Physics/Tutorials/Practice/pid1.cxx &
+	;;
+	"4")
+		case $3 in
+		"1")
+			gedit ~/alice/O2Physics/Tutorials/Practice/p2.cxx &
+		;;
+		"2")
+			gedit ~/alice/O2Physics/Tutorials/Practice/p2pre.cxx &
+		;;
+		*)
+			echo "Specify Version"
+		;;
+		esac
+	;;
+	"5")
+		gedit ~/alice/O2Physics/Tutorials/Practice/r2p2-4-id.cxx &
+	;;
+	"6")
+		gedit ~/alice/O2Physics/Tutorials/Practice/cross-r2p2-4-id.cxx &
+	;;
+	*)
+		echo "Specify Version"
+	;;
+	esac
+;;
+"debug")
+	~/alice/O2Physics/Scripts/find_dependencies.py -t $2
+;;
+"cpcnfg")
+	cnt=1
+	while [ $cnt -le $2 ]
+	do
+#		cnt2=0
+#		while [ $cnt2 -le $(($2%10)) ]
+#		do
+			cp ~/Tutorials/Analysis/my_config.json ~/Tutorials/Analysis/$cnt
+#echo $cnt1$cnt2
+#			((cnt2++))
+#		done
+		((cnt++))
+	done
+;;
+"runall")
+	cnt=$2
+	while [ $cnt -le $3 ]
+	do
+			cd ~/Tutorials/Analysis/$cnt
+			rm AnalysisResults.root
+			time o2-practice-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option &>output.log
+		((cnt++))
+	done
+;;
+"bkp")
+	rm ~/Project/O2_code -r -f
+	rm ~/Project/.mybash -r -f
+	cp ~/.mybash ~/Project -r
+	cp ~/alice/O2Physics/Tutorials/Practice -r -f ~/Project
+	mv ~/Project/Practice ~/Project/O2_code
+	cd ~/Project
+	git stage --all
+	git commit --all -m "$2"
+	git push -u origin
+;;
+"pyth")
+	g++ ~/Tutorials/pythia/sim1.cpp -I~/alice/ -lpythia8 -L~/alice/
+;;
+"test")
+	lspci | less | q
+	echo q
+;;
+"edit")
+	gedit ~/.mybash/mybash &
+;;
+"ssh")
+	ssh -XY rohith@10.112.22.14
+;;
+"games")
+	case $2 in
+	"fallout1")
+		cd ~/Games/Fallout_1
+		wine falloutwHR.exe
+	;;
+	*)
+                echo "Specify Game"
+        ;;
+        esac
+;;
+*)
+	echo "Improper argument"
+;;
+esac
