@@ -33,19 +33,23 @@ struct crossr2p24id{
 		histos.add("h2d_n1_etaPhiP2","rho_1 for +ve particle2",kTH2D,{eta,phi});
 		histos.add("h2d_n1_etaPhiM2","rho_1 for -ve particle2",kTH2D,{eta,phi});
 		histos.add("h2d_n2_eta1Phi1Eta2Phi2PP","rho_2 for +ve+ve particle",kTH2D,{etaphi1,etaphi2});
-		histos.add("h2d_n2_eta1Phi1Eta2Phi2PM","rho_2 for +ve-ve particle",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_n2_eta1Phi1Eta2Phi2PM12","rho_2 for +ve_1 -ve_2 particle",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_n2_eta1Phi1Eta2Phi2PM21","rho_2 for +ve_2 -ve_1 particle",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_n2_eta1Phi1Eta2Phi2MM","rho_2 for -ve-ve particle",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_pt_etaPhiP1","pt for +ve_1",kTH2D,{eta,phi});
 		histos.add("h2d_pt_etaPhiM1","pt for -ve_1",kTH2D,{eta,phi});
 		histos.add("h2d_pt_etaPhiP2","pt for +ve_2",kTH2D,{eta,phi});
 		histos.add("h2d_pt_etaPhiM2","pt for -ve_2",kTH2D,{eta,phi});
-		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2PM","ptpt for +ve-ve",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2PM12","ptpt for +ve_1 -ve_2",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2PM21","ptpt for +ve_2 -ve_1",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2PP","ptpt for +ve+ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_ptpt_eta1Phi1Eta2Phi2MM","ptpt for -ve-ve",kTH2D,{etaphi1,etaphi2});
-		histos.add("h2d_ptn_eta1Phi1Eta2Phi2PM","ptn for +ve-ve",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_ptn_eta1Phi1Eta2Phi2PM12","ptn for +ve_1 -ve_2",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_ptn_eta1Phi1Eta2Phi2PM21","ptn for +ve_2 -ve_1",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_ptn_eta1Phi1Eta2Phi2PP","ptn for +ve+ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_ptn_eta1Phi1Eta2Phi2MM","ptn for -ve-ve",kTH2D,{etaphi1,etaphi2});
-		histos.add("h2d_npt_eta1Phi1Eta2Phi2PM","npt for +ve-ve",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_npt_eta1Phi1Eta2Phi2PM12","npt for +ve_1 -ve_2",kTH2D,{etaphi1,etaphi2});
+		histos.add("h2d_npt_eta1Phi1Eta2Phi2PM21","npt for +ve_1 -ve_2",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_npt_eta1Phi1Eta2Phi2PP","npt for +ve+ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("h2d_npt_eta1Phi1Eta2Phi2MM","npt for -ve-ve",kTH2D,{etaphi1,etaphi2});
 		histos.add("pt1","pt",kTH1D,{{100,0,5,"pt"}});
@@ -61,7 +65,7 @@ struct crossr2p24id{
 		histos.add("proj1","tpc_proj",kTH1D,{{25,-5,5,"nsigma"}});
 		histos.add("proj2","tof_proj",kTH1D,{{25,-5,5,"nsigma"}});
 	}
-	void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection,aod::pidTPCPi,aod::pidTOFPi,aod::pidTPCKa,aod::pidTOFKa,aod::pidTPCEl,aod::pidTOFbeta,aod::TracksExtra>> const& tracks)
+	void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection,aod::pidTPCPi,aod::pidTOFPi,aod::pidTPCPr,aod::pidTOFPr,aod::pidTPCKa,aod::pidTOFKa,aod::pidTPCEl,aod::pidTOFbeta,aod::TracksExtra>> const& tracks)
 	{
 			bool flag;
 			int mult=0;
@@ -176,7 +180,7 @@ struct crossr2p24id{
 			else if(track1.pt()>=0.6)
 				continue;
 //---------------------------------------------------------------------------------*/
-//--------------------KAON------------------------------------------------------
+/*/--------------------KAON------------------------------------------------------
 			tpccut=2;
 			tofcut=2;
 			if(track1.pt()<0.6)
@@ -203,7 +207,7 @@ struct crossr2p24id{
 			else
 			continue;
 //-----------------------------------------------------------------------------------------------------------*/				
-/*/-------------------Proton------------------------------------
+//-------------------Proton------------------------------------
 			tpccut=2.2;
 			tofcut=2;
 //			if(track1.tpcNClsCrossedRows()<70) continue;
@@ -338,10 +342,20 @@ struct crossr2p24id{
 				{
 					if(track1.sign()*track2.sign()==-1)
 					{
-						histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5);
-						histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track2.pt());
-						histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track1.pt());
-						histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track1.pt()*track2.pt());
+						if(track1.sign()==1)
+						{
+							histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM12"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5);
+							histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM12"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track2.pt());
+							histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM12"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track1.pt());
+							histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM12"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track1.pt()*track2.pt());
+						}
+						else
+						{
+							histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM21"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5);
+							histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM21"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track2.pt());
+							histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM21"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track1.pt());
+							histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM21"),36*etabin1+phibin1+0.5,36*etabin2+phibin2+0.5,track1.pt()*track2.pt());
+						}
 					}
 					else if(track1.sign()==1)
 					{

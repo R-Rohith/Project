@@ -98,34 +98,38 @@ void R2P2(/*const TString ptCase, const TString strMult, const TString strPt*/)
   TH1D *h1d_n1_phiM   = (TH1D*)ftpcorr->Get("h1d_n1_phiM");
   TH1D *h1d_n1_ptM    = (TH1D*)ftpcorr->Get("h1d_n1_ptM");
   */
-  TH1D *h1d_n1_ptP1    = (TH1D*)ftpcorr->Get("crossr2p24id/h1d_n1_ptP1");
-  TH1D *h1d_n1_ptM1    = (TH1D*)ftpcorr->Get("crossr2p24id/h1d_n1_ptM1");
-  TH1D *h1d_n1_ptP2    = (TH1D*)ftpcorr->Get("crossr2p24id/h1d_n1_ptP2");
-  TH1D *h1d_n1_ptM2    = (TH1D*)ftpcorr->Get("crossr2p24id/h1d_n1_ptM2");
+  TH1D *h1d_n1_ptP1    = (TH1D*)ftpcorr->Get("h1d_n1_ptP1");
+  TH1D *h1d_n1_ptM1    = (TH1D*)ftpcorr->Get("h1d_n1_ptM1");
+  TH1D *h1d_n1_ptP2    = (TH1D*)ftpcorr->Get("h1d_n1_ptP2");
+  TH1D *h1d_n1_ptM2    = (TH1D*)ftpcorr->Get("h1d_n1_ptM2");
 
   //----------R2----------------------------
-  TH2D *h2d_n1_etaPhiP1             = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_n1_etaPhiP1");
-  TH2D *h2d_n1_etaPhiM1             = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_n1_etaPhiM1");
-  TH2D *h2d_n1_etaPhiP2             = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_n1_etaPhiP2");
-  TH2D *h2d_n1_etaPhiM2             = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_n1_etaPhiM2");
-  TH2D *h2d_n2_eta1Phi1Eta2Phi2PM  = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_n2_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_n2_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_n2_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_n2_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_n2_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_n1_etaPhiP1             = (TH2D*)ftpcorr->Get("h2d_n1_etaPhiP1");
+  TH2D *h2d_n1_etaPhiM1             = (TH2D*)ftpcorr->Get("h2d_n1_etaPhiM1");
+  TH2D *h2d_n1_etaPhiP2             = (TH2D*)ftpcorr->Get("h2d_n1_etaPhiP2");
+  TH2D *h2d_n1_etaPhiM2             = (TH2D*)ftpcorr->Get("h2d_n1_etaPhiM2");
+  TH2D *h2d_n2_eta1Phi1Eta2Phi2PM12  = (TH2D*)ftpcorr->Get("h2d_n2_eta1Phi1Eta2Phi2PM12");
+  TH2D *h2d_n2_eta1Phi1Eta2Phi2PM21  = (TH2D*)ftpcorr->Get("h2d_n2_eta1Phi1Eta2Phi2PM21");
+  TH2D *h2d_n2_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("h2d_n2_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_n2_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("h2d_n2_eta1Phi1Eta2Phi2MM");
 
   //--------------------DpTDpT---------------------
-  TH2D *h2d_pt_etaPhiP1               = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_pt_etaPhiP1");
-  TH2D *h2d_pt_etaPhiM1               = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_pt_etaPhiM1");
-  TH2D *h2d_pt_etaPhiP2               = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_pt_etaPhiP2");
-  TH2D *h2d_pt_etaPhiM2               = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_pt_etaPhiM2");
-  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PM  = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_ptpt_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_ptpt_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_ptpt_eta1Phi1Eta2Phi2MM");
-  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PM   = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_ptn_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_ptn_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_ptn_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_ptn_eta1Phi1Eta2Phi2MM");
-  TH2D *h2d_npt_eta1Phi1Eta2Phi2PM   = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_npt_eta1Phi1Eta2Phi2PM");
-  TH2D *h2d_npt_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_npt_eta1Phi1Eta2Phi2PP");
-  TH2D *h2d_npt_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("crossr2p24id/h2d_npt_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_pt_etaPhiP1               = (TH2D*)ftpcorr->Get("h2d_pt_etaPhiP1");
+  TH2D *h2d_pt_etaPhiM1               = (TH2D*)ftpcorr->Get("h2d_pt_etaPhiM1");
+  TH2D *h2d_pt_etaPhiP2               = (TH2D*)ftpcorr->Get("h2d_pt_etaPhiP2");
+  TH2D *h2d_pt_etaPhiM2               = (TH2D*)ftpcorr->Get("h2d_pt_etaPhiM2");
+  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PM12  = (TH2D*)ftpcorr->Get("h2d_ptpt_eta1Phi1Eta2Phi2PM12");
+  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PM21  = (TH2D*)ftpcorr->Get("h2d_ptpt_eta1Phi1Eta2Phi2PM21");
+  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2PP  = (TH2D*)ftpcorr->Get("h2d_ptpt_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_ptpt_eta1Phi1Eta2Phi2MM  = (TH2D*)ftpcorr->Get("h2d_ptpt_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PM12   = (TH2D*)ftpcorr->Get("h2d_ptn_eta1Phi1Eta2Phi2PM12");
+  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PM21   = (TH2D*)ftpcorr->Get("h2d_ptn_eta1Phi1Eta2Phi2PM21");
+  TH2D *h2d_ptn_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("h2d_ptn_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_ptn_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("h2d_ptn_eta1Phi1Eta2Phi2MM");
+  TH2D *h2d_npt_eta1Phi1Eta2Phi2PM12   = (TH2D*)ftpcorr->Get("h2d_npt_eta1Phi1Eta2Phi2PM12");
+  TH2D *h2d_npt_eta1Phi1Eta2Phi2PM21   = (TH2D*)ftpcorr->Get("h2d_npt_eta1Phi1Eta2Phi2PM21");
+  TH2D *h2d_npt_eta1Phi1Eta2Phi2PP   = (TH2D*)ftpcorr->Get("h2d_npt_eta1Phi1Eta2Phi2PP");
+  TH2D *h2d_npt_eta1Phi1Eta2Phi2MM   = (TH2D*)ftpcorr->Get("h2d_npt_eta1Phi1Eta2Phi2MM");
 
 
 
@@ -652,7 +656,7 @@ TH2D *h2d_p2DptDptCD_DetaDphiRebined
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -0.5 * TMath::Pi(), 1.5 * TMath::Pi());
 //-------------------------------------------------------------------------------------------------------
-TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("crossr2p24id/h1i_n1_multPM");
+TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("h1i_n1_multPM");
 	double sigmaFrac = 1.0;
 	double nevt = h1i_n1_multPM->GetEntries();
 	double scale = sigmaFrac / nevt;
@@ -660,20 +664,24 @@ TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("crossr2p24id/h1i_n1_multPM");
 	Normalize2D(h2d_n1_etaPhiM1, scale, dphi, deta);
 	Normalize2D(h2d_n1_etaPhiP2, scale, dphi, deta);
 	Normalize2D(h2d_n1_etaPhiM2, scale, dphi, deta);
-	Normalize2D(h2d_n2_eta1Phi1Eta2Phi2PM, scale, dphi2, deta2);
+	Normalize2D(h2d_n2_eta1Phi1Eta2Phi2PM12, scale, dphi2, deta2);
+	Normalize2D(h2d_n2_eta1Phi1Eta2Phi2PM21, scale, dphi2, deta2);
 	Normalize2D(h2d_n2_eta1Phi1Eta2Phi2PP, scale, dphi2, deta2);
 	Normalize2D(h2d_n2_eta1Phi1Eta2Phi2MM, scale, dphi2, deta2);
 	Normalize2D(h2d_pt_etaPhiP1, scale, dphi, deta);
 	Normalize2D(h2d_pt_etaPhiM1, scale, dphi, deta);
 	Normalize2D(h2d_pt_etaPhiP2, scale, dphi, deta);
 	Normalize2D(h2d_pt_etaPhiM2, scale, dphi, deta);
-	Normalize2D(h2d_npt_eta1Phi1Eta2Phi2PM, scale, dphi2, deta2);
+	Normalize2D(h2d_npt_eta1Phi1Eta2Phi2PM12, scale, dphi2, deta2);
+	Normalize2D(h2d_npt_eta1Phi1Eta2Phi2PM21, scale, dphi2, deta2);
 	Normalize2D(h2d_npt_eta1Phi1Eta2Phi2PP, scale, dphi2, deta2);
 	Normalize2D(h2d_npt_eta1Phi1Eta2Phi2MM, scale, dphi2, deta2);
-	Normalize2D(h2d_ptpt_eta1Phi1Eta2Phi2PM, scale, dphi2, deta2);
+	Normalize2D(h2d_ptpt_eta1Phi1Eta2Phi2PM12, scale, dphi2, deta2);
+	Normalize2D(h2d_ptpt_eta1Phi1Eta2Phi2PM21, scale, dphi2, deta2);
 	Normalize2D(h2d_ptpt_eta1Phi1Eta2Phi2PP, scale, dphi2, deta2);
 	Normalize2D(h2d_ptpt_eta1Phi1Eta2Phi2MM, scale, dphi2, deta2);
-	Normalize2D(h2d_ptn_eta1Phi1Eta2Phi2PM, scale, dphi2, deta2);
+	Normalize2D(h2d_ptn_eta1Phi1Eta2Phi2PM12, scale, dphi2, deta2);
+	Normalize2D(h2d_ptn_eta1Phi1Eta2Phi2PM21, scale, dphi2, deta2);
 	Normalize2D(h2d_ptn_eta1Phi1Eta2Phi2PP, scale, dphi2, deta2);
 	Normalize2D(h2d_ptn_eta1Phi1Eta2Phi2MM, scale, dphi2, deta2);
 
@@ -772,23 +780,23 @@ TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("crossr2p24id/h1i_n1_multPM");
   Rho1Rho1EtaPhi(h2d_pt_etaPhiM, h2d_pt_etaPhiM, h2d_pt1pt1_eta1Phi1Eta2Phi2MM);
 */
   //---------------calculation of r2-----------------------
-  CalculateR2(h2d_n2_eta1Phi1Eta2Phi2PM, h2d_n1n1_eta1Phi1Eta2Phi2PM12,  h2d_r2_eta1Phi1Eta2Phi2PM12);
-  CalculateR2(h2d_n2_eta1Phi1Eta2Phi2PM, h2d_n1n1_eta1Phi1Eta2Phi2PM21,  h2d_r2_eta1Phi1Eta2Phi2PM21);
+  CalculateR2(h2d_n2_eta1Phi1Eta2Phi2PM12, h2d_n1n1_eta1Phi1Eta2Phi2PM12,  h2d_r2_eta1Phi1Eta2Phi2PM12);
+  CalculateR2(h2d_n2_eta1Phi1Eta2Phi2PM21, h2d_n1n1_eta1Phi1Eta2Phi2PM21,  h2d_r2_eta1Phi1Eta2Phi2PM21);
   CalculateR2(h2d_n2_eta1Phi1Eta2Phi2PP, h2d_n1n1_eta1Phi1Eta2Phi2PP,  h2d_r2_eta1Phi1Eta2Phi2PP);
   CalculateR2(h2d_n2_eta1Phi1Eta2Phi2MM, h2d_n1n1_eta1Phi1Eta2Phi2MM , h2d_r2_eta1Phi1Eta2Phi2MM);
 
 
   //--------------calculation of DpTDpT---------------------
-  calculateDptDpt(h2d_ptpt_eta1Phi1Eta2Phi2PM, h2d_ptn_eta1Phi1Eta2Phi2PM,
-                  h2d_npt_eta1Phi1Eta2Phi2PM, h2d_n2_eta1Phi1Eta2Phi2PM,
+  calculateDptDpt(h2d_ptpt_eta1Phi1Eta2Phi2PM12, h2d_ptn_eta1Phi1Eta2Phi2PM12,
+                  h2d_npt_eta1Phi1Eta2Phi2PM12, h2d_n2_eta1Phi1Eta2Phi2PM12,
                   h1d_n1_ptP1,
                   h1d_n1_ptM2,
                   kminpt,
                   kmaxpt,
                   h2d_p2DptDpt_eta1Phi1Eta2Phi2PM12, h2d_DptDpt_eta1Phi1Eta2Phi2PM12,
                   knetabins,  knphibins);
-  calculateDptDpt(h2d_ptpt_eta1Phi1Eta2Phi2PM, h2d_ptn_eta1Phi1Eta2Phi2PM,
-                  h2d_npt_eta1Phi1Eta2Phi2PM, h2d_n2_eta1Phi1Eta2Phi2PM,
+  calculateDptDpt(h2d_ptpt_eta1Phi1Eta2Phi2PM21, h2d_ptn_eta1Phi1Eta2Phi2PM21,
+                  h2d_npt_eta1Phi1Eta2Phi2PM21, h2d_n2_eta1Phi1Eta2Phi2PM21,
                   h1d_n1_ptP2,
                   h1d_n1_ptM1,
                   kminpt,
@@ -985,7 +993,7 @@ smoothFunXRebinY(h2d_p2DptDptCD_DetaDphi, h2d_p2DptDptCD_DetaDphiRebined);
 f->cd();
  TH2D *h2d[25] = {h2d_r2_DetaDphiPM12_ShiftY,h2d_r2_DetaDphiPM21_ShiftY, h2d_r2_DetaDphiPP_ShiftY, h2d_r2_DetaDphiMM_ShiftY, h2d_r2_DetaDphiLS,h2d_r2_DetaDphiUS, h2d_r2CI_DetaDphi, h2d_r2CD_DetaDphi, h2d_B2_DetaDphi,  h2d_DptDpt_DetaDphiPM12_ShiftY,h2d_DptDpt_DetaDphiPM21_ShiftY, h2d_DptDpt_DetaDphiPP_ShiftY, h2d_DptDpt_DetaDphiMM_ShiftY, h2d_DptDptCI_DetaDphi, h2d_DptDptCD_DetaDphi,  h2d_p2DptDpt_DetaDphiPM12_ShiftY,h2d_p2DptDpt_DetaDphiPM21_ShiftY, h2d_p2DptDpt_DetaDphiPP_ShiftY, h2d_p2DptDpt_DetaDphiMM_ShiftY, h2d_p2DptDpt_DetaDphiLS,h2d_p2DptDpt_DetaDphiUS, h2d_p2DptDptCI_DetaDphi, h2d_p2DptDptCD_DetaDphi, h2d_p2DptDptCD_DetaDphiRebined,h2d_B2p2DptDpt_DetaDphi};
 
-  for (Int_t iHist2d = 0; iHist2d < 23; ++iHist2d)
+  for (Int_t iHist2d = 0; iHist2d < 25; ++iHist2d)
   {
     h2d[iHist2d]->Write();
     delete h2d[iHist2d];
