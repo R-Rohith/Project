@@ -67,9 +67,9 @@ case $1 in
 		root AnalysisResults.root
 	;;
 	"3")
-		cd ~/Tutorials
+#		cd ~/Tutorials
 		time o2-practice-pid1 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-pid-tpc-full $option 
-		root AnalysisResults.root
+#		root AnalysisResults.root
 	;;
 	"4")
 		case $3 in

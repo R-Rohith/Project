@@ -1,0 +1,2 @@
+Electron subtraction only removes 0.1-4% of total particles. Its fine
+Using TOF in the low pt regions rejects about 11.3in Pion to 87% in Proton. Not good.
