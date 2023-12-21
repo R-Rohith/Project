@@ -105,21 +105,21 @@ case $1 in
 "source")
 	case $2 in
 	"1")
-		gedit ~/alice/O2Physics/Tutorials/Practice/r2.cxx &
+		kate ~/alice/O2Physics/Tutorials/Practice/r2.cxx &
 	;;
 	"2")
-		gedit ~/alice/O2Physics/Tutorials/Practice/slfr2.cxx &
+		kate ~/alice/O2Physics/Tutorials/Practice/slfr2.cxx &
 	;;
 	"3")
-		gedit ~/alice/O2Physics/Tutorials/Practice/pid1.cxx &
+		kate ~/alice/O2Physics/Tutorials/Practice/pid1.cxx &
 	;;
 	"4")
 		case $3 in
 		"1")
-			gedit ~/alice/O2Physics/Tutorials/Practice/p2.cxx &
+			kate ~/alice/O2Physics/Tutorials/Practice/p2.cxx &
 		;;
 		"2")
-			gedit ~/alice/O2Physics/Tutorials/Practice/p2pre.cxx &
+			kate ~/alice/O2Physics/Tutorials/Practice/p2pre.cxx &
 		;;
 		*)
 			echo "Specify Version"
@@ -127,10 +127,10 @@ case $1 in
 		esac
 	;;
 	"5")
-		gedit ~/alice/O2Physics/Tutorials/Practice/r2p2-4-id.cxx &
+		kate ~/alice/O2Physics/Tutorials/Practice/r2p2-4-id.cxx &
 	;;
 	"6")
-		gedit ~/alice/O2Physics/Tutorials/Practice/cross-r2p2-4-id.cxx &
+		kate ~/alice/O2Physics/Tutorials/Practice/cross-r2p2-4-id.cxx &
 	;;
 	*)
 		echo "Specify Version"
@@ -183,7 +183,7 @@ case $1 in
 	echo q
 ;;
 "edit")
-	gedit ~/.mybash/mybash &
+	kate ~/.mybash/mybash &
 ;;
 "ssh")
 	ssh -XY rohith@10.112.22.14
