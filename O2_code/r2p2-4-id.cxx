@@ -20,6 +20,60 @@ using namespace o2;
 using namespace o2::framework;
 using namespace o2::framework::expressions;
 
+template <typename T> bool PID_PION(T track)
+{
+  float tpccut = 2.5, tofcut = 2.5;
+  if (fabs(track.tpcNSigmaPi()) >= tpccut)
+   return false;
+  if (track.pt() >= 0.6) {
+   if (track.hasTOF()) {
+     if (fabs(track.tofNSigmaPi()) >= tofcut)
+      return false;
+   } else {
+    return false;
+   }
+  }
+  return true;
+}
+template <typename T> bool PID_KAON(T track)
+{
+  float tpccut = 2, tofcut = 2;
+  if (track.pt() < 0.6) {
+   if (track.pt() < 0.45)
+    tpccut = 2;
+   else if (track.pt() < 0.55)
+    tpccut = 1;
+   else
+    tpccut = 0.6;
+   if (fabs(track.tpcNSigmaKa()) > tpccut)
+    return false;
+  } else if (track.hasTOF()) {
+   if ((fabs(track.tpcNSigmaKa()) > tpccut) || (fabs(track.tofNSigmaKa()) > tofcut))
+    return false;
+  } else {
+   return false;
+  }
+  return true;
+}
+template <typename T> bool PID_PROTON(T track)
+{
+  float tpccut = 2.2, tofcut = 2;
+  if (track.pt() < 1.1) {
+   if (track.pt() < 0.85)
+    tpccut = 2.2;
+   else
+    tpccut = 1;
+   if (fabs(track.tpcNSigmaPr()) > tpccut)
+    return false;
+  } else if (track.hasTOF()) {
+   if ((fabs(track.tpcNSigmaPr()) > tpccut) || (fabs(track.tofNSigmaPr()) > tofcut))
+    return false;
+  } else {
+   return false;
+  }
+  return true;
+}
+
 struct r2p24ch {
   //-----Track&Event Selection----------------------------------------------
   Filter col = aod::evsel::sel8 == true;
@@ -63,8 +117,10 @@ struct r2p24ch {
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
-    int mult = 0;
+    int mult = 0, sign;
     int etabin1, etabin2, phibin1, phibin2;
+    std::shared_ptr<TH2> h2d_1p[2][2]={{histos.get<TH2>(HIST("h2d_n1_etaPhiM")),histos.get<TH2>(HIST("h2d_pt_etaPhiM"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP")),histos.get<TH2>(HIST("h2d_pt_etaPhiP"))}},h2d_2p[3][4]={{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"))}};
+    std::shared_ptr<TH1> h1i_1p[2]={histos.get<TH1>(HIST("h1d_n1_ptP")),histos.get<TH1>(HIST("h1d_n1_ptM"))};
     for (auto track1 : tracks) {
       //-----Single Particle Distribution---------------------------------------
       histos.fill(HIST("h1d_n1_pt"), track1.pt());
@@ -75,18 +131,13 @@ struct r2p24ch {
 
       histos.fill(HIST("h1d_n1_phi"), track1.phi());
       histos.fill(HIST("h1d_n1_eta"), track1.eta());
-      if (track1.sign() == 1) //+ve particles
-      {
-        histos.fill(HIST("h2d_n1_etaPhiP"), track1.eta(), track1.phi());
-        histos.fill(HIST("h1d_n1_ptP"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        histos.fill(HIST("h2d_pt_etaPhiP"), track1.eta(), track1.phi(), track1.pt());
-      } else { //-ve particles
-        histos.fill(HIST("h2d_n1_etaPhiM"), track1.eta(), track1.phi());
-        histos.fill(HIST("h2d_pt_etaPhiM"), track1.eta(), track1.phi(), track1.pt());
-        histos.fill(HIST("h1d_n1_ptM"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-      }
+      sign=(track1.sign()+1)/2;
+      h1i_1p[sign]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+      h2d_1p[sign][0]->Fill(track1.eta(), track1.phi());
+      h2d_1p[sign][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       etabin1 = (track1.eta() + 0.8) * 15;
       phibin1 = 36 * track1.phi() / (2 * constants::math::PI);
+      if((etabin1<0)||(etabin1>=24)||(phibin1<0)||(phibin1>=36))continue;
       mult++;
       //------------------------------------------------------------------------
       for (auto track2 : tracks) {
@@ -96,25 +147,12 @@ struct r2p24ch {
 
         etabin2 = (track2.eta() + 0.8) * 15;
         phibin2 = 36 * track2.phi() / (2 * constants::math::PI);
-        if ((etabin1 >= 0) && (etabin2 >= 0) && (phibin1 >= 0) && (phibin2 >= 0) && (etabin1 < 24) && (etabin2 < 24) && (phibin1 < 36) && (phibin2 < 36)) {
-          if (track1.sign() * track2.sign() == -1) // Unlike-Sign particles
-          {
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else if (track1.sign() == 1) { //+ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else { //-ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          }
-        }
+        if((etabin2<0)||(etabin2>=24)||(phibin2<0)||(phibin2>=36))continue;
+            sign=(track1.sign()+track2.sign()+2)/2;
+            h2d_2p[sign][0]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
+            h2d_2p[sign][1]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
+            h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
+            h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
       }
     }
@@ -171,9 +209,10 @@ struct r2p24pi {
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
-    int mult = 0;
+    int mult = 0, sign;
     int etabin1, etabin2, phibin1, phibin2;
-    float tpccut, tofcut;
+    std::shared_ptr<TH2> h2d_1p[2][2]={{histos.get<TH2>(HIST("h2d_n1_etaPhiM")),histos.get<TH2>(HIST("h2d_pt_etaPhiM"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP")),histos.get<TH2>(HIST("h2d_pt_etaPhiP"))}},h2d_2p[3][4]={{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"))}};
+    std::shared_ptr<TH1> h1i_1p[2]={histos.get<TH1>(HIST("h1d_n1_ptP")),histos.get<TH1>(HIST("h1d_n1_ptM"))};
     for (auto track1 : tracks) {
       //-----Single Particle Distribution---------------------------------------
       //-----PION PID----------------------------------------------------------------
@@ -182,18 +221,7 @@ struct r2p24pi {
       histos.fill(HIST("h2d_n1_nsigmatof1"), track1.p(), track1.tofNSigmaPi());
       histos.fill(HIST("h2d_n1_tof1"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc1"), track1.p(), track1.tpcSignal());
-      tpccut = 2.5;
-      tofcut = 2.5;
-      if (fabs(track1.tpcNSigmaPi()) >= tpccut)
-        continue;
-      if (track1.pt() >= 0.6) {
-        if (track1.hasTOF()) {
-          if (fabs(track1.tofNSigmaPi()) >= tofcut)
-            continue;
-        } else {
-          continue;
-        }
-      }
+      if(!PID_PION(track1)) continue;
       histos.fill(HIST("h2d_n1_tof2"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_nsigmatpc2"), track1.p(), track1.tpcNSigmaPi());
       histos.fill(HIST("h1d_n1_tpcproj"), track1.tpcNSigmaPi());
@@ -203,18 +231,13 @@ struct r2p24pi {
       //------------------------------------------------------------------------
       histos.fill(HIST("h1d_n1_phi"), track1.phi());
       histos.fill(HIST("h1d_n1_eta"), track1.eta());
-      if (track1.sign() == 1) //+ve particles
-      {
-        histos.fill(HIST("h2d_n1_etaPhiP"), track1.eta(), track1.phi());
-        histos.fill(HIST("h1d_n1_ptP"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        histos.fill(HIST("h2d_pt_etaPhiP"), track1.eta(), track1.phi(), track1.pt());
-      } else { //-ve particles
-        histos.fill(HIST("h2d_n1_etaPhiM"), track1.eta(), track1.phi());
-        histos.fill(HIST("h2d_pt_etaPhiM"), track1.eta(), track1.phi(), track1.pt());
-        histos.fill(HIST("h1d_n1_ptM"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-      }
+      sign=(track1.sign()+1)/2;
+      h1i_1p[sign]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+      h2d_1p[sign][0]->Fill(track1.eta(), track1.phi());
+      h2d_1p[sign][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       etabin1 = (track1.eta() + 0.8) * 15;
       phibin1 = 36 * track1.phi() / (2 * constants::math::PI);
+      if((etabin1<0)||(etabin1>=24)||(phibin1<0)||(phibin1>=36))continue;
       mult++;
       //------------------------------------------------------------------------
       for (auto track2 : tracks) {
@@ -222,40 +245,16 @@ struct r2p24pi {
         if (track1.index() == track2.index())
           continue; // No auto-correlations
         //-----PION PID-----------------------------------------------------------
-        tpccut = 2.5;
-        tofcut = 2.5;
-        if (fabs(track2.tpcNSigmaPi()) >= tpccut)
-          continue;
-        if (track2.pt() >= 0.6) {
-          if (track2.hasTOF()) {
-            if (fabs(track2.tofNSigmaPi()) >= tofcut)
-              continue;
-          } else {
-            continue;
-          }
-        }
+        if(!PID_PION(track2))continue;
         //------------------------------------------------------------------------
         etabin2 = (track2.eta() + 0.8) * 15;
         phibin2 = 36 * track2.phi() / (2 * constants::math::PI);
-        if ((etabin1 >= 0) && (etabin2 >= 0) && (phibin1 >= 0) && (phibin2 >= 0) && (etabin1 < 24) && (etabin2 < 24) && (phibin1 < 36) && (phibin2 < 36)) {
-          if (track1.sign() * track2.sign() == -1) // Unlike-sign particles
-          {
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else if (track1.sign() == 1) { //+ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else { //-ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          }
-        }
+        if((etabin2<0)||(etabin2>=24)||(phibin2<0)||(phibin2>=36))continue;
+          sign=(track1.sign()+track2.sign()+2)/2;
+            h2d_2p[sign][0]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
+            h2d_2p[sign][1]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
+            h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
+            h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
       }
     }
@@ -312,9 +311,10 @@ struct r2p24ka {
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
-    int mult = 0;
+    int mult = 0, sign;
     int etabin1, etabin2, phibin1, phibin2;
-    float tpccut, tofcut;
+    std::shared_ptr<TH2> h2d_1p[2][2]={{histos.get<TH2>(HIST("h2d_n1_etaPhiM")),histos.get<TH2>(HIST("h2d_pt_etaPhiM"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP")),histos.get<TH2>(HIST("h2d_pt_etaPhiP"))}},h2d_2p[3][4]={{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"))}};
+    std::shared_ptr<TH1> h1i_1p[2]={histos.get<TH1>(HIST("h1d_n1_ptP")),histos.get<TH1>(HIST("h1d_n1_ptM"))};
     for (auto track1 : tracks) {
       //-----Single Particle Distribution--------------------------------------------
       histos.fill(HIST("h1d_n1_pt"), track1.pt());
@@ -323,23 +323,7 @@ struct r2p24ka {
       histos.fill(HIST("h2d_n1_tof1"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc1"), track1.p(), track1.tpcSignal());
       //-----KAON PID-----------------------------------------------------------
-      tpccut = 2;
-      tofcut = 2;
-      if (track1.pt() < 0.6) {
-        if (track1.pt() < 0.45)
-          tpccut = 2;
-        else if (track1.pt() < 0.55)
-          tpccut = 1;
-        else
-          tpccut = 0.6;
-        if (fabs(track1.tpcNSigmaKa()) > tpccut)
-          continue;
-      } else if (track1.hasTOF()) {
-        if ((fabs(track1.tpcNSigmaKa()) > tpccut) || (fabs(track1.tofNSigmaKa()) > tofcut))
-          continue;
-      } else {
-        continue;
-      }
+      if(!PID_KAON(track1))continue;
 
       histos.fill(HIST("h2d_n1_tof2"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_nsigmatpc2"), track1.pt(), track1.tpcNSigmaKa());
@@ -351,19 +335,13 @@ struct r2p24ka {
       //------------------------------------------------------------------------
       histos.fill(HIST("h1d_n1_phi"), track1.phi());
       histos.fill(HIST("h1d_n1_eta"), track1.eta());
-      if (track1.sign() == 1) //+ve particle
-      {
-        histos.fill(HIST("h2d_n1_etaPhiP"), track1.eta(), track1.phi());
-        histos.fill(HIST("h1d_n1_ptP"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        histos.fill(HIST("h2d_pt_etaPhiP"), track1.eta(), track1.phi(), track1.pt());
-      } else { //-ve particle
-        histos.fill(HIST("h2d_n1_etaPhiM"), track1.eta(), track1.phi());
-        histos.fill(HIST("h2d_pt_etaPhiM"), track1.eta(), track1.phi(), track1.pt());
-        histos.fill(HIST("h1d_n1_ptM"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-      }
-
+      sign=(track1.sign()+1)/2;
+      h1i_1p[sign]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+      h2d_1p[sign][0]->Fill(track1.eta(), track1.phi());
+      h2d_1p[sign][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       etabin1 = (track1.eta() + 0.8) * 15;
       phibin1 = 36 * track1.phi() / (2 * constants::math::PI);
+      if((etabin1<0)||(etabin1>=24)||(phibin1<0)||(phibin1>=36))continue;
       mult++;
       //------------------------------------------------------------------------
       for (auto track2 : tracks) {
@@ -371,46 +349,17 @@ struct r2p24ka {
         if (track1.index() == track2.index())
           continue; // No auto-correlations
         //-----KAON PID-----------------------------------------------------------
-        tpccut = 2;
-        tofcut = 2;
-        if (track2.pt() < 0.6) {
-          if (track2.pt() < 0.45)
-            tpccut = 2;
-          else if (track2.pt() < 0.55)
-            tpccut = 1;
-          else
-            tpccut = 0.6;
-          if (fabs(track2.tpcNSigmaKa()) > tpccut)
-            continue;
-        } else if (track2.hasTOF()) {
-          if ((fabs(track2.tpcNSigmaKa()) > tpccut) || (fabs(track2.tofNSigmaKa()) > tofcut))
-            continue;
-        } else {
-          continue;
-        }
+        if(!PID_KAON(track2))continue;
         //------------------------------------------------------------------------
 
         etabin2 = (track2.eta() + 0.8) * 15;
         phibin2 = 36 * track2.phi() / (2 * constants::math::PI);
-        if ((etabin1 >= 0) && (etabin2 >= 0) && (phibin1 >= 0) && (phibin2 >= 0) && (etabin1 < 24) && (etabin2 < 24) && (phibin1 < 36) && (phibin2 < 36)) {
-          if (track1.sign() * track2.sign() == -1) // Unlike-sign particles
-          {
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else if (track1.sign() == 1) { //+ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else { //-ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          }
-        }
+        if((etabin2<0)||(etabin2>=24)||(phibin2<0)||(phibin2>=36))continue;
+          sign=(track1.sign()+track2.sign()+2)/2;
+            h2d_2p[sign][0]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
+            h2d_2p[sign][1]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
+            h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
+            h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
       }
     }
@@ -467,9 +416,10 @@ struct r2p24pr {
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
-    int mult = 0;
+    int mult = 0, sign;
     int etabin1, etabin2, phibin1, phibin2;
-    float tpccut, tofcut;
+    std::shared_ptr<TH2> h2d_1p[2][2]={{histos.get<TH2>(HIST("h2d_n1_etaPhiM")),histos.get<TH2>(HIST("h2d_pt_etaPhiM"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP")),histos.get<TH2>(HIST("h2d_pt_etaPhiP"))}},h2d_2p[3][4]={{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"))}};
+    std::shared_ptr<TH1> h1i_1p[2]={histos.get<TH1>(HIST("h1d_n1_ptP")),histos.get<TH1>(HIST("h1d_n1_ptM"))};
     for (auto track1 : tracks) {
       //-----Single Particle Distribution---------------------------------------
       //-----PROTON PID---------------------------------------------------------
@@ -478,23 +428,7 @@ struct r2p24pr {
       histos.fill(HIST("h2d_n1_nsigmatof1"), track1.pt(), track1.tofNSigmaPr());
       histos.fill(HIST("h2d_n1_tof1"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc1"), track1.p(), track1.tpcSignal());
-
-      tpccut = 2.2;
-      tofcut = 2;
-      if (track1.pt() < 1.1) {
-        if (track1.pt() < 0.85)
-          tpccut = 2.2;
-        else
-          tpccut = 1;
-        if (fabs(track1.tpcNSigmaPr()) > tpccut)
-          continue;
-      } else if (track1.hasTOF()) {
-        if ((fabs(track1.tpcNSigmaPr()) > tpccut) || (fabs(track1.tofNSigmaPr()) > tofcut))
-          continue;
-      } else {
-        continue;
-      }
-
+      if(!PID_PROTON(track1))continue;
       histos.fill(HIST("h2d_n1_tof2"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_nsigmatpc2"), track1.pt(), track1.tpcNSigmaPr());
       histos.fill(HIST("h1d_n1_tpcproj"), track1.tpcNSigmaPr());
@@ -505,19 +439,13 @@ struct r2p24pr {
       //------------------------------------------------------------------------
       histos.fill(HIST("h1d_n1_phi"), track1.phi());
       histos.fill(HIST("h1d_n1_eta"), track1.eta());
-      if (track1.sign() == 1) //+ve particle
-      {
-        histos.fill(HIST("h2d_n1_etaPhiP"), track1.eta(), track1.phi());
-        histos.fill(HIST("h1d_n1_ptP"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        histos.fill(HIST("h2d_pt_etaPhiP"), track1.eta(), track1.phi(), track1.pt());
-      } else { //-ve particle
-        histos.fill(HIST("h2d_n1_etaPhiM"), track1.eta(), track1.phi());
-        histos.fill(HIST("h2d_pt_etaPhiM"), track1.eta(), track1.phi(), track1.pt());
-        histos.fill(HIST("h1d_n1_ptM"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-      }
-
+      sign=(track1.sign()+1)/2;
+      h1i_1p[sign]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+      h2d_1p[sign][0]->Fill(track1.eta(), track1.phi());
+      h2d_1p[sign][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       etabin1 = (track1.eta() + 0.8) * 15;
       phibin1 = 36 * track1.phi() / (2 * constants::math::PI);
+      if((etabin1<0)||(etabin1>=24)||(phibin1<0)||(phibin1>=36))continue;
       mult++;
       //------------------------------------------------------------------------
       for (auto track2 : tracks) {
@@ -525,45 +453,18 @@ struct r2p24pr {
         if (track1.index() == track2.index())
           continue; // No auto-correlations
         //-----PROTON PID---------------------------------------------------------
-        tpccut = 2.2;
-        tofcut = 2;
-        if (track2.pt() < 1.1) {
-          if (track2.pt() < 0.85)
-            tpccut = 2.2;
-          else
-            tpccut = 1;
-          if (fabs(track2.tpcNSigmaPr()) > tpccut)
-            continue;
-        } else if (track2.hasTOF()) {
-          if ((fabs(track2.tpcNSigmaPr()) > tpccut) || (fabs(track2.tofNSigmaPr()) > tofcut))
-            continue;
-        } else {
-          continue;
-        }
+        if(!PID_PROTON(track2))continue;
 
         //------------------------------------------------------------------------
 
         etabin2 = (track2.eta() + 0.8) * 15;
         phibin2 = 36 * track2.phi() / (2 * constants::math::PI);
-        if ((etabin1 >= 0) && (etabin2 >= 0) && (phibin1 >= 0) && (phibin2 >= 0) && (etabin1 < 24) && (etabin2 < 24) && (phibin1 < 36) && (phibin2 < 36)) {
-          if (track1.sign() * track2.sign() == -1) // Unlike-sign particle pair
-          {
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else if (track1.sign() == 1) { //+ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else { //-ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          }
-        }
+        if((etabin2<0)||(etabin2>=24)||(phibin2<0)||(phibin2>=36))continue;
+          sign=(track1.sign()+track2.sign()+2)/2;
+            h2d_2p[sign][0]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
+            h2d_2p[sign][1]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
+            h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
+            h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
       }
     }
@@ -633,78 +534,40 @@ struct crossr2p24pik {
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
     bool flag;
-    int mult = 0;
+    int mult = 0,sign1,sign2;
     int etabin1, etabin2, phibin1, phibin2;
-    float tpccut, tofcut;
+    std::shared_ptr<TH2> h2d_1p[2][2][2]={{{histos.get<TH2>(HIST("h2d_n1_etaPhiM1")),histos.get<TH2>(HIST("h2d_pt_etaPhiM1"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP1")),histos.get<TH2>(HIST("h2d_pt_etaPhiP1"))}},{{histos.get<TH2>(HIST("h2d_n1_etaPhiM2")),histos.get<TH2>(HIST("h2d_pt_etaPhiM2"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP2")),histos.get<TH2>(HIST("h2d_pt_etaPhiP2"))}}},h2d_2p[2][2][4] ={{{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM21"))}},{{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM12"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"))}}};
+    std::shared_ptr<TH1> h1i_1p[2][2]={{histos.get<TH1>(HIST("h1d_n1_ptP1")),histos.get<TH1>(HIST("h1d_n1_ptM1"))},{histos.get<TH1>(HIST("h1d_n1_ptP2")),histos.get<TH1>(HIST("h1d_n1_ptM2"))}};
     for (auto track1 : tracks) {
       //-----Single Particle Distribution---------------------------------------
       //-----KAON PID Particle2-------------------------------------------------
-      flag = true;
-      tpccut = 2;
-      tofcut = 2;
-      if (track1.pt() < 0.6) {
-        if (track1.pt() < 0.45)
-          tpccut = 2;
-        else if (track1.pt() < 0.55)
-          tpccut = 1;
-        else
-          tpccut = 0.6;
-        if (fabs(track1.tpcNSigmaKa()) > tpccut)
-          flag = false;
-      } else if (track1.hasTOF()) {
-        if ((fabs(track1.tpcNSigmaKa()) > tpccut) || (fabs(track1.tofNSigmaKa()) > tofcut))
-          flag = false;
-      } else {
-        flag = false;
-      }
+      flag=PID_KAON(track1);
       //------------------------------------------------------------------------
       if (flag == true) {
         histos.fill(HIST("h2d_n1_tof1"), track1.pt(), track1.beta());
         histos.fill(HIST("h2d_n1_tpc1"), track1.pt(), track1.tpcSignal());
         histos.fill(HIST("h1d_n1_phi1"), track1.phi());
         histos.fill(HIST("h1d_n1_eta1"), track1.eta());
-        if (track1.sign() == 1) //+ve particle 2
-        {
-          histos.fill(HIST("h2d_n1_etaPhiP2"), track1.eta(), track1.phi());
-          histos.fill(HIST("h1d_n1_ptP2"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-          histos.fill(HIST("h2d_pt_etaPhiP2"), track1.eta(), track1.phi(), track1.pt());
-        } else { //-ve particle 2
-          histos.fill(HIST("h2d_n1_etaPhiM2"), track1.eta(), track1.phi());
-          histos.fill(HIST("h2d_pt_etaPhiM2"), track1.eta(), track1.phi(), track1.pt());
-          histos.fill(HIST("h1d_n1_ptM2"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        }
+        sign1=(track1.sign()+1)/2;
+        h1i_1p[1][sign1]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+        h2d_1p[1][sign1][0]->Fill(track1.eta(), track1.phi());
+        h2d_1p[1][sign1][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       }
 
       //-----PION PID Particle1-------------------------------------------------
-      tpccut = 2.5;
-      tofcut = 2.5;
-      if (fabs(track1.tpcNSigmaPi()) >= tpccut)
-        continue;
-      if (track1.pt() >= 0.6) {
-        if (track1.hasTOF()) {
-          if (fabs(track1.tofNSigmaPi()) >= tofcut)
-            continue;
-        } else {
-          continue;
-        }
-      }
+      if(!PID_PION(track1))continue;
       histos.fill(HIST("h2d_n1_tof2"), track1.pt(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc2"), track1.pt(), track1.tpcSignal());
       histos.fill(HIST("h1d_n1_phi2"), track1.phi());
       histos.fill(HIST("h1d_n1_eta2"), track1.eta());
-      if (track1.sign() == 1) //+ve particle1
-      {
-        histos.fill(HIST("h2d_n1_etaPhiP1"), track1.eta(), track1.phi());
-        histos.fill(HIST("h1d_n1_ptP1"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        histos.fill(HIST("h2d_pt_etaPhiP1"), track1.eta(), track1.phi(), track1.pt());
-      } else { //-ve particle1
-        histos.fill(HIST("h2d_n1_etaPhiM1"), track1.eta(), track1.phi());
-        histos.fill(HIST("h2d_pt_etaPhiM1"), track1.eta(), track1.phi(), track1.pt());
-        histos.fill(HIST("h1d_n1_ptM1"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-      }
+      sign1=(track1.sign()+1)/2;
+      h1i_1p[2][sign1]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+      h2d_1p[2][sign1][0]->Fill(track1.eta(), track1.phi());
+      h2d_1p[2][sign1][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       //------------------------------------------------------------------------
       etabin1 = (track1.eta() + 0.8) * 15;
       phibin1 = 36 * track1.phi() / (2 * constants::math::PI);
+      if((etabin1<0)||(etabin1>=24)||(phibin1<0)||(phibin1>=36))continue;
       mult++;
       //------------------------------------------------------------------------
       for (auto track2 : tracks) {
@@ -712,54 +575,17 @@ struct crossr2p24pik {
         if (track1.index() == track2.index())
           continue; // No auto-correlations
         //-----KAON PID-----------------------------------------------------------
-        tpccut = 2;
-        tofcut = 2;
-        if (track2.pt() < 0.6) {
-          if (track2.pt() < 0.45)
-            tpccut = 2;
-          else if (track2.pt() < 0.55)
-            tpccut = 1;
-          else
-            tpccut = 0.6;
-          if (fabs(track2.tpcNSigmaKa()) > tpccut)
-            continue;
-        } else if (track2.hasTOF()) {
-          if ((fabs(track2.tpcNSigmaKa()) > tpccut) || (fabs(track2.tofNSigmaKa()) > tofcut))
-            continue;
-        } else {
-          continue;
-        }
+        if(!PID_KAON(track2))continue;
         //------------------------------------------------------------------------
 
         etabin2 = (track2.eta() + 0.8) * 15;
         phibin2 = 36 * track2.phi() / (2 * constants::math::PI);
-        if ((etabin1 >= 0) && (etabin2 >= 0) && (phibin1 >= 0) && (phibin2 >= 0) && (etabin1 < 24) && (etabin2 < 24) && (phibin1 < 36) && (phibin2 < 36)) {
-          if (track1.sign() * track2.sign() == -1) // Unlike-Sign particle pair
-          {
-            if (track1.sign() == 1) // Particle1 +ve
-            {
-              histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-              histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-              histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-              histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-            } else { // Particle2 +ve
-              histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-              histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-              histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-              histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-            }
-          } else if (track1.sign() == 1) { //+ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else { //-ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          }
-        }
+        if((etabin2<0)||(etabin2>=24)||(phibin2<0)||(phibin2>=36))continue;
+          sign2=(track2.sign()+1)/2;
+          h2d_2p[sign1][sign2][0]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
+          h2d_2p[sign1][sign2][1]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
+          h2d_2p[sign1][sign2][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
+          h2d_2p[sign1][sign2][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
       }
     }
@@ -829,77 +655,39 @@ struct crossr2p24pip {
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
     bool flag;
-    int mult = 0;
+    int mult = 0,sign1,sign2;
     int etabin1, etabin2, phibin1, phibin2;
-    float tpccut, tofcut;
+    std::shared_ptr<TH2> h2d_1p[2][2][2]={{{histos.get<TH2>(HIST("h2d_n1_etaPhiM1")),histos.get<TH2>(HIST("h2d_pt_etaPhiM1"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP1")),histos.get<TH2>(HIST("h2d_pt_etaPhiP1"))}},{{histos.get<TH2>(HIST("h2d_n1_etaPhiM2")),histos.get<TH2>(HIST("h2d_pt_etaPhiM2"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP2")),histos.get<TH2>(HIST("h2d_pt_etaPhiP2"))}}},h2d_2p[2][2][4] ={{{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM21"))}},{{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM12"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"))}}};
+    std::shared_ptr<TH1> h1i_1p[2][2]={{histos.get<TH1>(HIST("h1d_n1_ptP1")),histos.get<TH1>(HIST("h1d_n1_ptM1"))},{histos.get<TH1>(HIST("h1d_n1_ptP2")),histos.get<TH1>(HIST("h1d_n1_ptM2"))}};
     for (auto track1 : tracks) {
       //-----Single Particle Distribution---------------------------------------
       //-----PROTON PID Particle2-----------------------------------------------
-      flag = true;
-      tpccut = 2.2;
-      tofcut = 2;
-      if (track1.pt() < 1.1) {
-        if (track1.pt() < 0.85)
-          tpccut = 2.2;
-        else
-          tpccut = 1;
-        if (fabs(track1.tpcNSigmaPr()) > tpccut)
-          flag = false;
-      } else if (track1.hasTOF()) {
-        if ((fabs(track1.tpcNSigmaPr()) > tpccut) || (fabs(track1.tofNSigmaPr()) > tofcut))
-          flag = false;
-      } else {
-        flag = false;
-      }
-
+      flag =PID_PROTON(track1);
       if (flag == true) {
         histos.fill(HIST("h2d_n1_tof1"), track1.pt(), track1.beta());
         histos.fill(HIST("h2d_n1_tpc1"), track1.pt(), track1.tpcSignal());
         histos.fill(HIST("h1d_n1_phi1"), track1.phi());
         histos.fill(HIST("h1d_n1_eta1"), track1.eta());
-        if (track1.sign() == 1) //+ve particle2
-        {
-          histos.fill(HIST("h2d_n1_etaPhiP2"), track1.eta(), track1.phi());
-          histos.fill(HIST("h1d_n1_ptP2"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-          histos.fill(HIST("h2d_pt_etaPhiP2"), track1.eta(), track1.phi(), track1.pt());
-        } else { //-ve particle2
-          histos.fill(HIST("h2d_n1_etaPhiM2"), track1.eta(), track1.phi());
-          histos.fill(HIST("h2d_pt_etaPhiM2"), track1.eta(), track1.phi(), track1.pt());
-          histos.fill(HIST("h1d_n1_ptM2"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        }
+        sign1=(track1.sign()+1)/2;
+        h1i_1p[1][sign1]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+        h2d_1p[1][sign1][0]->Fill(track1.eta(), track1.phi());
+        h2d_1p[1][sign1][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       }
       //------------------------------------------------------------------------
       //-----PION PID Partcile1-------------------------------------------------
-      tpccut = 2.5;
-      tofcut = 2.5;
-      if (fabs(track1.tpcNSigmaPi()) >= tpccut)
-        continue;
-      if (track1.pt() >= 0.6) {
-        if (track1.hasTOF()) {
-          if (fabs(track1.tofNSigmaPi()) >= tofcut)
-            continue;
-        } else {
-          continue;
-        }
-      }
-
+      if(!PID_PION(track1))continue;
       histos.fill(HIST("h2d_n1_tof2"), track1.pt(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc2"), track1.pt(), track1.tpcSignal());
       histos.fill(HIST("h1d_n1_phi2"), track1.phi());
       histos.fill(HIST("h1d_n1_eta2"), track1.eta());
-      if (track1.sign() == 1) //+ve particle 1
-      {
-        histos.fill(HIST("h2d_n1_etaPhiP1"), track1.eta(), track1.phi());
-        histos.fill(HIST("h1d_n1_ptP1"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        histos.fill(HIST("h2d_pt_etaPhiP1"), track1.eta(), track1.phi(), track1.pt());
-      } else { //-ve partcile1
-        histos.fill(HIST("h2d_n1_etaPhiM1"), track1.eta(), track1.phi());
-        histos.fill(HIST("h2d_pt_etaPhiM1"), track1.eta(), track1.phi(), track1.pt());
-        histos.fill(HIST("h1d_n1_ptM1"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-      }
+      sign1=(track1.sign()+1)/2;
+      h1i_1p[2][sign1]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+      h2d_1p[2][sign1][0]->Fill(track1.eta(), track1.phi());
+      h2d_1p[2][sign1][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       //------------------------------------------------------------------------
       etabin1 = (track1.eta() + 0.8) * 15;
       phibin1 = 36 * track1.phi() / (2 * constants::math::PI);
+      if((etabin1<0)||(etabin1>=24)||(phibin1<0)||(phibin1>=36))continue;
       mult++;
       //------------------------------------------------------------------------
       for (auto track2 : tracks) {
@@ -907,53 +695,17 @@ struct crossr2p24pip {
         if (track1.index() == track2.index())
           continue; // No auto-correlations
         //-----PROTON PID Particle2-----------------------------------------------
-        tpccut = 2.2;
-        tofcut = 2;
-        if (track2.pt() < 1.1) {
-          if (track2.pt() < 0.85)
-            tpccut = 2.2;
-          else
-            tpccut = 1;
-          if (fabs(track2.tpcNSigmaPr()) > tpccut)
-            continue;
-        } else if (track2.hasTOF()) {
-          if ((fabs(track2.tpcNSigmaPr()) > tpccut) || (fabs(track2.tofNSigmaPr()) > tofcut))
-            continue;
-        } else {
-          continue;
-        }
-
+        if(!PID_PROTON(track2))continue;
         //------------------------------------------------------------------------
 
         etabin2 = (track2.eta() + 0.8) * 15;
         phibin2 = 36 * track2.phi() / (2 * constants::math::PI);
-        if ((etabin1 >= 0) && (etabin2 >= 0) && (phibin1 >= 0) && (phibin2 >= 0) && (etabin1 < 24) && (etabin2 < 24) && (phibin1 < 36) && (phibin2 < 36)) {
-          if (track1.sign() * track2.sign() == -1) // Unlike-Sign particle pair
-          {
-            if (track1.sign() == 1) // Particle1 +ve
-            {
-              histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-              histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-              histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-              histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-            } else { // Particle2 +ve
-              histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-              histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-              histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-              histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-            }
-          } else if (track1.sign() == 1) { //+ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else { //-ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          }
-        }
+        if((etabin2<0)||(etabin2>=24)||(phibin2<0)||(phibin2>=36))continue;
+          sign2=(track2.sign()+1)/2;
+          h2d_2p[sign1][sign2][0]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
+          h2d_2p[sign1][sign2][1]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
+          h2d_2p[sign1][sign2][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
+          h2d_2p[sign1][sign2][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
       }
     }
@@ -1023,83 +775,40 @@ struct crossr2p24pk {
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
     bool flag;
-    int mult = 0;
+    int mult = 0,sign1,sign2;
     int etabin1, etabin2, phibin1, phibin2;
-    float tpccut, tofcut;
+    std::shared_ptr<TH2> h2d_1p[2][2][2]={{{histos.get<TH2>(HIST("h2d_n1_etaPhiM1")),histos.get<TH2>(HIST("h2d_pt_etaPhiM1"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP1")),histos.get<TH2>(HIST("h2d_pt_etaPhiP1"))}},{{histos.get<TH2>(HIST("h2d_n1_etaPhiM2")),histos.get<TH2>(HIST("h2d_pt_etaPhiM2"))},{histos.get<TH2>(HIST("h2d_n1_etaPhiP2")),histos.get<TH2>(HIST("h2d_pt_etaPhiP2"))}}},h2d_2p[2][2][4] ={{{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM21")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM21"))}},{{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM12")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM12"))},{histos.get<TH2>(HIST("h2d_n2_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_npt_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP")),histos.get<TH2>(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"))}}};
+    std::shared_ptr<TH1> h1i_1p[2][2]={{histos.get<TH1>(HIST("h1d_n1_ptP1")),histos.get<TH1>(HIST("h1d_n1_ptM1"))},{histos.get<TH1>(HIST("h1d_n1_ptP2")),histos.get<TH1>(HIST("h1d_n1_ptM2"))}};
     for (auto track1 : tracks) {
       //-----Single Particle Distribution---------------------------------------
       //-----KAON PID Particle2-------------------------------------------------
-      flag = true;
-      tpccut = 2;
-      tofcut = 2;
-      if (track1.pt() < 0.6) {
-        if (track1.pt() < 0.45)
-          tpccut = 2;
-        else if (track1.pt() < 0.55)
-          tpccut = 1;
-        else
-          tpccut = 0.6;
-        if (fabs(track1.tpcNSigmaKa()) > tpccut)
-          flag = false;
-      } else if (track1.hasTOF()) {
-        if ((fabs(track1.tpcNSigmaKa()) > tpccut) || (fabs(track1.tofNSigmaKa()) > tofcut))
-          flag = false;
-      } else {
-        flag = false;
-      }
-
+      flag =PID_KAON(track1);
       if (flag == true) {
         histos.fill(HIST("h2d_n1_tof1"), track1.pt(), track1.beta());
         histos.fill(HIST("h2d_n1_tpc1"), track1.pt(), track1.tpcSignal());
         histos.fill(HIST("h1d_n1_phi1"), track1.phi());
         histos.fill(HIST("h1d_n1_eta1"), track1.eta());
-        if (track1.sign() == 1) //+ve particle2
-        {
-          histos.fill(HIST("h2d_n1_etaPhiP2"), track1.eta(), track1.phi());
-          histos.fill(HIST("h1d_n1_ptP2"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-          histos.fill(HIST("h2d_pt_etaPhiP2"), track1.eta(), track1.phi(), track1.pt());
-        } else { //-ve particle1
-          histos.fill(HIST("h2d_n1_etaPhiM2"), track1.eta(), track1.phi());
-          histos.fill(HIST("h2d_pt_etaPhiM2"), track1.eta(), track1.phi(), track1.pt());
-          histos.fill(HIST("h1d_n1_ptM2"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        }
+        sign1=(track1.sign()+1)/2;
+        h1i_1p[1][sign1]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+        h2d_1p[1][sign1][0]->Fill(track1.eta(), track1.phi());
+        h2d_1p[1][sign1][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       }
 
       //------------------------------------------------------------------------
       //-----PROTON PID Particle1-----------------------------------------------
-      tpccut = 2.2;
-      tofcut = 2;
-      if (track1.pt() < 1.1) {
-        if (track1.pt() < 0.85)
-          tpccut = 2.2;
-        else
-          tpccut = 1;
-        if (fabs(track1.tpcNSigmaPr()) > tpccut)
-          continue;
-      } else if (track1.hasTOF()) {
-        if ((fabs(track1.tpcNSigmaPr()) > tpccut) || (fabs(track1.tofNSigmaPr()) > tofcut))
-          continue;
-      } else {
-        continue;
-      }
-
+      if(!PID_PROTON(track1))continue;
       histos.fill(HIST("h2d_n1_tof2"), track1.pt(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc2"), track1.pt(), track1.tpcSignal());
       histos.fill(HIST("h1d_n1_phi2"), track1.phi());
       histos.fill(HIST("h1d_n1_eta2"), track1.eta());
-      if (track1.sign() == 1) //+ve particle 1
-      {
-        histos.fill(HIST("h2d_n1_etaPhiP1"), track1.eta(), track1.phi());
-        histos.fill(HIST("h1d_n1_ptP1"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-        histos.fill(HIST("h2d_pt_etaPhiP1"), track1.eta(), track1.phi(), track1.pt());
-      } else { //-ve particle 2
-        histos.fill(HIST("h2d_n1_etaPhiM1"), track1.eta(), track1.phi());
-        histos.fill(HIST("h2d_pt_etaPhiM1"), track1.eta(), track1.phi(), track1.pt());
-        histos.fill(HIST("h1d_n1_ptM1"), track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
-      }
+      sign1=(track1.sign()+1)/2;
+      h1i_1p[2][sign1]->Fill( track1.pt(), 1.0 / (2.0 * constants::math::PI * track1.pt()));
+      h2d_1p[2][sign1][0]->Fill(track1.eta(), track1.phi());
+      h2d_1p[2][sign1][1]->Fill(track1.eta(), track1.phi(), track1.pt());
       //------------------------------------------------------------------------
       etabin1 = (track1.eta() + 0.8) * 15;
       phibin1 = 36 * track1.phi() / (2 * constants::math::PI);
+      if((etabin1<0)||(etabin1>=24)||(phibin1<0)||(phibin1>=36))continue;
       mult++;
       //------------------------------------------------------------------------
       for (auto track2 : tracks) {
@@ -1107,53 +816,16 @@ struct crossr2p24pk {
         if (track1.index() == track2.index())
           continue; // No auto-correlations
         //-----KAON PID Particle 2------------------------------------------------
-        tpccut = 2;
-        tofcut = 2;
-        if (track2.pt() < 0.6) {
-          if (track2.pt() < 0.45)
-            tpccut = 2;
-          else if (track2.pt() < 0.55)
-            tpccut = 1;
-          else
-            tpccut = 0.6;
-          if (fabs(track2.tpcNSigmaKa()) > tpccut)
-            continue;
-        } else if (track2.hasTOF()) {
-          if ((fabs(track2.tpcNSigmaKa()) > tpccut) || (fabs(track2.tofNSigmaKa()) > tofcut))
-            continue;
-        } else {
-          continue;
-        }
+        if(!PID_KAON(track2))continue;
         //------------------------------------------------------------------------
         etabin2 = (track2.eta() + 0.8) * 15;
         phibin2 = 36 * track2.phi() / (2 * constants::math::PI);
-        if ((etabin1 >= 0) && (etabin2 >= 0) && (phibin1 >= 0) && (phibin2 >= 0) && (etabin1 < 24) && (etabin2 < 24) && (phibin1 < 36) && (phibin2 < 36)) {
-          if (track1.sign() * track2.sign() == -1) // Unlike-Sign particle pair
-          {
-            if (track1.sign() == 1) // Particle1 +ve
-            {
-              histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-              histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-              histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-              histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM12"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-            } else { // Particle2 +ve
-              histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-              histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-              histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-              histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PM21"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-            }
-          } else if (track1.sign() == 1) { //+ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2PP"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          } else { //-ve particle pair
-            histos.fill(HIST("h2d_n2_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
-            histos.fill(HIST("h2d_npt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
-            histos.fill(HIST("h2d_ptn_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
-            histos.fill(HIST("h2d_ptpt_eta1Phi1Eta2Phi2MM"), 36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
-          }
-        }
+        if((etabin2<0)||(etabin2>=24)||(phibin2<0)||(phibin2>=36))continue;
+          sign2=(track2.sign()+1)/2;
+          h2d_2p[sign1][sign2][0]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5);
+          h2d_2p[sign1][sign2][1]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track2.pt());
+          h2d_2p[sign1][sign2][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
+          h2d_2p[sign1][sign2][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
       }
     }

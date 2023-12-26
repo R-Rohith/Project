@@ -89,12 +89,18 @@ case $1 in
 	;;
 	"5")
 #		cd ~/Tutorials
-		time o2-practice-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option 
+		time o2-practice-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option
 #		root R2P2B2_prc_v3.C
 	;;
 	"6")
 #		cd ~/Tutorials
-		time o2-practice-cross-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option 
+#		time o2-practice-cross-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option
+#		root R2P2B2_prc_v3.C | o2-analysis-onthefly-tracker $option
+		time o2-practice-cross-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option
+	;;
+	"7")
+#		cd ~/Tutorials
+		time o2-analysis-cf-r2p24id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option
 #		root R2P2B2_prc_v3.C
 	;;
 	*)
@@ -187,6 +193,9 @@ case $1 in
 ;;
 "ssh")
 	ssh -XY rohith@10.112.22.14
+;;
+"mount")
+	sudo mount 10.112.22.5:/homes/ /mnt/qnap2
 ;;
 "games")
 	case $2 in
