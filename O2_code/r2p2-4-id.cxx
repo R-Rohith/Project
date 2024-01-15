@@ -199,10 +199,10 @@ struct r2p24pi {
     histos.add("h2d_n1_tpc2", "TPC", kTH2D, {{100, 0, 5, "p"}, {200, 0, 200, "#frac{dE}{dx}"}});
     histos.add("h2d_n1_tof1", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
     histos.add("h2d_n1_tof2", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
-    histos.add("h2d_n1_nsigmatpc1", "N#sigma_{TPC} Before PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
-    histos.add("h2d_n1_nsigmatpc2", "N#sigma_{TPC} After PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
-    histos.add("h2d_n1_nsigmatof1", "N#sigma_{TOF} Before PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
-    histos.add("h2d_n1_nsigmatof2", "N#sigma_{TOF} After PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatpc1", "N#sigma_{TPC} Before PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatpc2", "N#sigma_{TPC} After PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatof1", "N#sigma_{TOF} Before PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatof2", "N#sigma_{TOF} After PID", kTH2D, {{100, 0, 5, "p_T"}, {50, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     //------------------------------------------------------------------------
@@ -301,9 +301,9 @@ struct r2p24ka {
     histos.add("h2d_n1_tpc2", "TPC", kTH2D, {{100, 0, 5, "p"}, {200, 0, 200, "#frac{dE}{dx}"}});
     histos.add("h2d_n1_tof1", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
     histos.add("h2d_n1_tof2", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
-    histos.add("h2d_n1_nsigmatpc1", "N#sigma_{TPC} Before PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
-    histos.add("h2d_n1_nsigmatpc2", "N#sigma_{TPC} After PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
-    histos.add("h2d_n1_nsigmatof1", "N#sigma_{TOF} Before PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatpc1", "N#sigma_{TPC} Before PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatpc2", "N#sigma_{TPC} After PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatof1", "N#sigma_{TOF} Before PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
     histos.add("h2d_n1_nsigmatof2", "N#sigma_{TOF} After PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
@@ -318,8 +318,8 @@ struct r2p24ka {
     for (auto track1 : tracks) {
       //-----Single Particle Distribution--------------------------------------------
       histos.fill(HIST("h1d_n1_pt"), track1.pt());
-      histos.fill(HIST("h2d_n1_nsigmatpc1"), track1.pt(), track1.tpcNSigmaKa());
-      histos.fill(HIST("h2d_n1_nsigmatof1"), track1.pt(), track1.tofNSigmaKa());
+      histos.fill(HIST("h2d_n1_nsigmatpc1"), track1.p(), track1.tpcNSigmaKa());
+      histos.fill(HIST("h2d_n1_nsigmatof1"), track1.p(), track1.tofNSigmaKa());
       histos.fill(HIST("h2d_n1_tof1"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc1"), track1.p(), track1.tpcSignal());
       //-----KAON PID-----------------------------------------------------------
@@ -406,9 +406,9 @@ struct r2p24pr {
     histos.add("h2d_n1_tpc2", "TPC", kTH2D, {{100, 0, 5, "p"}, {200, 0, 200, "#frac{dE}{dx}"}});
     histos.add("h2d_n1_tof1", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
     histos.add("h2d_n1_tof2", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
-    histos.add("h2d_n1_nsigmatpc1", "N#sigma_{TPC} Before PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
-    histos.add("h2d_n1_nsigmatpc2", "N#sigma_{TPC} After PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
-    histos.add("h2d_n1_nsigmatof1", "N#sigma_{TOF} Before PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatpc1", "N#sigma_{TPC} Before PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatpc2", "N#sigma_{TPC} After PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
+    histos.add("h2d_n1_nsigmatof1", "N#sigma_{TOF} Before PID", kTH2D, {{100, 0, 3, "p_T"}, {50, -5, 5, "N#sigma"}});
     histos.add("h2d_n1_nsigmatof2", "N#sigma_{TOF} After PID", kTH2D, {{100, 0, 5, "p_T"}, {25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
@@ -424,8 +424,8 @@ struct r2p24pr {
       //-----Single Particle Distribution---------------------------------------
       //-----PROTON PID---------------------------------------------------------
       histos.fill(HIST("h1d_n1_pt"), track1.pt());
-      histos.fill(HIST("h2d_n1_nsigmatpc1"), track1.pt(), track1.tpcNSigmaPr());
-      histos.fill(HIST("h2d_n1_nsigmatof1"), track1.pt(), track1.tofNSigmaPr());
+      histos.fill(HIST("h2d_n1_nsigmatpc1"), track1.p(), track1.tpcNSigmaPr());
+      histos.fill(HIST("h2d_n1_nsigmatof1"), track1.p(), track1.tofNSigmaPr());
       histos.fill(HIST("h2d_n1_tof1"), track1.p(), track1.beta());
       histos.fill(HIST("h2d_n1_tpc1"), track1.p(), track1.tpcSignal());
       if(!PID_PROTON(track1))continue;

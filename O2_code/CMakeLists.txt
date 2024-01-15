@@ -9,9 +9,13 @@ o2physics_add_dpl_workflow(r2p2-4-id
                   PUBLIC_LINK_LIBRARIES O2Physics::AnalysisCore
                   COMPONENT_NAME Practice)
 
-o2physics_add_dpl_workflow(cross-r2p2-4-id
-                  SOURCES cross-r2p2-4-id.cxx
+o2physics_add_dpl_workflow(cros-r2p2-4-id
+                  SOURCES cros-r2p2-4-id.cxx
                   PUBLIC_LINK_LIBRARIES O2Physics::AnalysisCore
                   COMPONENT_NAME Practice)
-             
+o2physics_add_dpl_workflow(mcpid
+                  SOURCES MCPID.cxx
+                  PUBLIC_LINK_LIBRARIES O2Physics::AnalysisCore
+                  COMPONENT_NAME Practice)
+
 
