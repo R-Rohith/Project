@@ -114,6 +114,7 @@ struct r2p24ch {
     histos.add("h2d_n1_tof1", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
     histos.add("h2d_n1_tof2", "TOF", kTH2D, {{100, 0, 5, "p"}, {50, 0.2, 1.2, "#beta"}});
     //------------------------------------------------------------------------
+    histos.add("tst","test",kTH1I,{{20,-1.5,18.5,"cnt"}});
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
@@ -154,6 +155,7 @@ struct r2p24ch {
             h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
             h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
+        histos.fill(HIST("tst"),0);
       }
     }
     histos.fill(HIST("h1i_n1_multPM"), mult);
@@ -206,6 +208,7 @@ struct r2p24pi {
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     //------------------------------------------------------------------------
+    histos.add("tst","test",kTH1I,{{20,-1.5,18.5,"cnt"}});
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
@@ -256,6 +259,7 @@ struct r2p24pi {
             h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
             h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
+            histos.fill(HIST("tst"),2);
       }
     }
     histos.fill(HIST("h1i_n1_multPM"), mult);
@@ -308,6 +312,7 @@ struct r2p24ka {
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     //------------------------------------------------------------------------
+    histos.add("tst","test",kTH1I,{{20,-1.5,18.5,"cnt"}});
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
@@ -361,6 +366,7 @@ struct r2p24ka {
             h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
             h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
+            histos.fill(HIST("tst"),4);
       }
     }
     histos.fill(HIST("h1i_n1_multPM"), mult);
@@ -413,6 +419,7 @@ struct r2p24pr {
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     //------------------------------------------------------------------------
+    histos.add("tst","test",kTH1I,{{20,-1.5,18.5,"cnt"}});
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
@@ -466,6 +473,7 @@ struct r2p24pr {
             h2d_2p[sign][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
             h2d_2p[sign][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
+            histos.fill(HIST("tst"),6);
       }
     }
     histos.fill(HIST("h1i_n1_multPM"), mult);
@@ -530,6 +538,7 @@ struct crossr2p24pik {
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     //------------------------------------------------------------------------
+    histos.add("tst","test",kTH1I,{{20,-1.5,18.5,"cnt"}});
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
@@ -587,6 +596,7 @@ struct crossr2p24pik {
           h2d_2p[sign1][sign2][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
           h2d_2p[sign1][sign2][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
+        histos.fill(HIST("tst"),8);
       }
     }
     histos.fill(HIST("h1i_n1_multPM"), mult);
@@ -651,6 +661,7 @@ struct crossr2p24pip {
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     //------------------------------------------------------------------------
+    histos.add("tst","test",kTH1I,{{20,-1.5,18.5,"cnt"}});
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
@@ -707,6 +718,7 @@ struct crossr2p24pip {
           h2d_2p[sign1][sign2][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
           h2d_2p[sign1][sign2][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
+        histos.fill(HIST("tst"),10);
       }
     }
     histos.fill(HIST("h1i_n1_multPM"), mult);
@@ -771,6 +783,7 @@ struct crossr2p24pk {
     histos.add("h1d_n1_tpcproj", "TPC Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     histos.add("h1d_n1_tofproj", "TOF Projection", kTH1D, {{25, -5, 5, "N#sigma"}});
     //------------------------------------------------------------------------
+    histos.add("tst","test",kTH1I,{{20,-1.5,18.5,"cnt"}});
   }
   void process(soa::Filtered<soa::Join<aod::Collisions, aod::EvSels>>::iterator const& filteredCollisions, soa::Filtered<soa::Join<aod::Tracks, aod::TrackSelection, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::pidTOFbeta, aod::TracksExtra>> const& tracks)
   {
@@ -827,6 +840,7 @@ struct crossr2p24pk {
           h2d_2p[sign1][sign2][2]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt());
           h2d_2p[sign1][sign2][3]->Fill(36 * etabin1 + phibin1 + 0.5, 36 * etabin2 + phibin2 + 0.5, track1.pt() * track2.pt());
         //------------------------------------------------------------------------
+        histos.fill(HIST("tst"),12);
       }
     }
     histos.fill(HIST("h1i_n1_multPM"), mult);
