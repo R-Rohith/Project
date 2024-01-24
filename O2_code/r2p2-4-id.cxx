@@ -854,8 +854,8 @@ WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
     adaptAnalysisTask<r2p24pi>(cfgc),
     adaptAnalysisTask<r2p24ka>(cfgc),
     adaptAnalysisTask<r2p24pr>(cfgc),
-    adaptAnalysisTask<crossr2p24pik>(cfgc),
+    /*adaptAnalysisTask<crossr2p24pik>(cfgc),
     adaptAnalysisTask<crossr2p24pip>(cfgc),
-    adaptAnalysisTask<crossr2p24pk>(cfgc),
+    adaptAnalysisTask<crossr2p24pk>(cfgc),*/
   };
 }
