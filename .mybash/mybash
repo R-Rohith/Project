@@ -8,25 +8,25 @@ case $1 in
 #		aliBuild build O2Physics --defaults o2 -j 12
 #		alienv load O2Physics/latest ninja/latest
 		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-		ninja install O2Physicsexe-practice-r2 -j 12
+		ninja install O2Physicsexe-practice-r2 -j 4
 	;;
 	"2")
 		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-	        ninja install O2Physicsexe-practice-slfr2 -j 12
+	        ninja install O2Physicsexe-practice-slfr2 -j 4
         ;;
         "3")
 	        cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-	        ninja install O2Physicsexe-practice-pid1 -j 12
+	        ninja install O2Physicsexe-practice-pid1 -j 4
         ;;
         "4")
         	case $3 in
 		"1")
 			cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-	  		ninja install O2Physicsexe-practice-p2 -j 12
+	  		ninja install O2Physicsexe-practice-p2 -j 4
 		;;
 		"2")
 			cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-	        	ninja install O2Physicsexe-practice-p2pre -j 12
+	        	ninja install O2Physicsexe-practice-p2pre -j 4
 		;;
 		*)
 			echo "Specify Version"
@@ -36,15 +36,19 @@ case $1 in
         ;;
         "5")
 		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-	        ninja install O2Physicsexe-practice-r2p2-4-id -j 12
+	        ninja install O2Physicsexe-practice-r2p2-4-id -j 4
         ;;
         "6")
 		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-	        ninja install O2Physicsexe-practice-cros-r2p2-4-id -j 12
+	        ninja install O2Physicsexe-practice-cros-r2p2-4-id -j 4
         ;;
         "7")
 		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
-	        ninja install O2Physicsexe-practice-mcpid -j 12
+	        ninja install O2Physicsexe-practice-mcpid -j 4
+        ;;
+        "8")
+		cd ~/alice/sw/BUILD/O2Physics-latest/O2Physics
+	        ninja install O2Physicsexe-practice-test -j 4
         ;;
         *)
 		echo "Specify Version"
@@ -100,15 +104,19 @@ case $1 in
 #		cd ~/Tutorials
 #		time o2-practice-cross-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option
 #		root R2P2B2_prc_v3.C | o2-analysis-onthefly-tracker $option
-		time o2-practice-cros-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option
+		time o2-practice-cros-r2p2-4-id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option | o2-analysis-multiplicity-table $option
 	;;
 	"7")
 		time o2-practice-mcpid $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tpc-full $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-pid-bayes $option |  o2-analysis-bc-converter $option | o2-analysis-multiplicity-table $option | o2-analysis-tracks-extra-converter $option
 	;;
 	"8")
 #		cd ~/Tutorials
-		time o2-analysis-cf-r2p24id $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option
+		time o2-practice-test $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option | o2-analysis-multiplicity-table $option
 #		root R2P2B2_prc_v3.C
+	;;
+	"9")
+		time o2-analysistutorial-mm-my-example-task $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option | o2-analysis-multiplicity-table $option
+#
 	;;
 	*)
 		echo "Specify Version"
@@ -147,6 +155,9 @@ case $1 in
 	;;
 	"7")
 		kate ~/alice/O2Physics/Tutorials/Practice/MCPID.cxx &
+	;;
+	"8")
+		kate ~/alice/O2Physics/Tutorials/Practice/test.cxx &
 	;;
 	*)
 		echo "Specify Version"

@@ -1,68 +1,3 @@
-/*
-float tpcnsigmaarray[3]={fabs(track.tpcNSigmaPi()),fabs(track.tpcNSigmaKa()),fabs(track.tpcNSigmaPr())},
-      tofnsigmaarray[3]={fabs(track.tofNSigmaPi()),fabs(track.tofNSigmaKa()),fabs(track.tofNSigmaPr())};
-
-int p1,p2;
-float nsigp1,nsigp2;
-nsigp1=6;nsigp2=6;
-for(int i=0;i<3;i++)
-{
-  if(nsigp1>tpcnsigmaarray[i])
-  {
-    nsigp2=nsigp1;
-    p2=p1;
-    p1=i;
-    nsigp1=tpcnsigmaarray[i];
-  }
-  else if(nsigp2>tpcnsigmaarray[i])
-  {
-    p2=i;
-    nsigp2=tpcnsigmaarray[i];
-  }
-}
-
-if(nsigp1>TPCnsigMax)
-  pid=0;
-else if(nsigp2>TPCnsigSEP)
-{
-  pid=p1+1;
-}
-else if(track.hasTOF()) //Use TOF
-{
-  pid=p1+1;
-  nsigp1=6;nsigp2=6;
-  for(int i=0;i<3;i++)
-  {
-    if(nsigp1>tofnsigmaarray[i])
-    {
-      nsigp2=nsigp1;
-      p2=p1;
-      p1=i;
-      nsigp1=tofnsigmaarray[i];
-    }
-    else if(nsigp2>tofnsigmaarray[i])
-    {
-      p2=i;
-      nsigp2=tofnsigmaarray[i];
-    }
-  }
-  if(nsigp1<TOFnsigMax)&&(nsigp2>TOFnsigSEP)
-  {
-    pid=p1+1;
-  }
-  else if(ifTOFreject) pid=0; //If we decide to rejct the track when TOF cant identify
-  else pid=p1+1;
-}
-else if(ifTOFreject) pid=0;
-else pid=p1+1;
-
-
-
-
-
-//-------------------------------------------------------------------------------------------------------------------------*/
-
-
 // Copyright 2019-2020 CERN and copyright holders of ALICE O2.
 // See https://alice-o2.web.cern.ch/copyright for details of the copyright holders.
 // All rights not expressly granted are reserved.
@@ -85,73 +20,6 @@ using namespace o2;
 using namespace o2::framework;
 using namespace o2::framework::expressions;
 
-//-----PID Functions-----------------------------------------------------------
-float tpccut,tofcut;
-template <typename T>
-bool NO_PID(T track)
-{
-  return true;
-}
-template <typename T>
-bool PID_PION(T track)
-{
-   tpccut = 2.5, tofcut = 2.5;
-  if (fabs(track.tpcNSigmaPi()) >= tpccut)
-    return false;
-  if (track.pt() >= 0.6) {
-    if (track.hasTOF()) {
-      if (fabs(track.tofNSigmaPi()) >= tofcut)
-        return false;
-    } else {
-      return false;
-    }
-  }
-  return true;
-}
-template <typename T>
-bool PID_KAON(T track)
-{
-   tpccut = 2, tofcut = 2;
-  if (track.pt() < 0.6) {
-    if (track.pt() < 0.45)
-      tpccut = 2;
-    else if (track.pt() < 0.55)
-      tpccut = 1;
-    else
-      tpccut = 0.6;
-    if (fabs(track.tpcNSigmaKa()) > tpccut)
-      return false;
-  } else if (track.hasTOF()) {
-    if ((fabs(track.tpcNSigmaKa()) > tpccut) || (fabs(track.tofNSigmaKa()) > tofcut))
-      return false;
-  } else {
-    return false;
-  }
-  return true;
-}
-template <typename T>
-bool PID_PROTON(T track)
-{
-   tpccut = 2.2, tofcut = 2;
-  if (track.pt() < 1.1) {
-    if (track.pt() < 0.85)
-      tpccut = 2.2;
-    else
-      tpccut = 1;
-    if (fabs(track.tpcNSigmaPr()) > tpccut)
-      return false;
-  } else if (track.hasTOF()) {
-    if ((fabs(track.tpcNSigmaPr()) > tpccut) || (fabs(track.tofNSigmaPr()) > tofcut))
-      return false;
-  } else {
-    return false;
-  }
-  return true;
-}
-//-----------------------------------------------------------------------------
-template <typename T>
-bool (*pidarray[4])(T) = {NO_PID, PID_PION, PID_KAON, PID_PROTON}; // Array of PID functions
-
 namespace o2::aod
 {
 namespace idr2p2columns
@@ -161,28 +29,36 @@ DECLARE_SOA_COLUMN(BinNPIDFlag, binNpid, int8_t); // Flag tracks without proper 
 DECLARE_SOA_TABLE(Flags, "AOD", "Flags", idr2p2columns::BinNPIDFlag);
 } // namespace o2::aod
 struct FillFlagsTable {
-  Produces<aod::Flags> ftable;
-  Configurable<std::vector<std::vector<float>>>TPCnsigmacuts{"TPCnsigmacuts",{{2.5},{2,1,0.6,2},{2.2,1,2.2}},"TPC Nsigma cuts for different particle species"};
-  Configurable<std::vector<std::vector<float>>>TPCpTranges{"TPCpTranges",{{2},{0.45,0,55,0.6,2},{0.85,1.1,2}},"TPC pT ranges for different particle species"};
-  Configurable<std::vector<std::vector<float>>>TOFnsigmacuts{"TOFnsigmacuts",{{2.5},{2},{2}},"TOF Nsigma cuts for different particle species"};
-  Configurable<std::vector<std::vector<float>>>TOFpTranges{"TOFpTranges",{{0.6},{0.6},{1.1}},"TOF pT ranges for different particle species"};
-
+  Configurable<std::vector<float>>TPCnsigmacutsPi{"TPCnsigmacutsPi",{2.5},"TPC Nsigma cuts for Pion"};
+  Configurable<std::vector<float>>TPCpTrangesPi{"TPCpTrangesPi",{2},"TPC pT ranges for Pion"};
+  Configurable<std::vector<float>>TOFnsigmacutsPi{"TOFnsigmacutsPi",{2.5},"TOF Nsigma cuts for Pion"};
+  Configurable<std::vector<float>>TOFpTrangesPi{"TOFpTrangesPi",{0.6},"TOF pT ranges for Pion"};
+  Configurable<std::vector<float>>TPCnsigmacutsKa{"TPCnsigmacutsKa",{2,1,0.6,2},"TPC Nsigma cuts for Kaon"};
+  Configurable<std::vector<float>>TPCpTrangesKa{"TPCpTrangesKa",{0.45,0.55,0.6,2},"TPC pT ranges for Kaon"};
+  Configurable<std::vector<float>>TOFnsigmacutsKa{"TOFnsigmacutsKa",{2},"TOF Nsigma cuts for Kaon"};
+  Configurable<std::vector<float>>TOFpTrangesKa{"TOFpTrangesKa",{0.6},"TOF pT ranges for Kaon"};
+  Configurable<std::vector<float>>TPCnsigmacutsPr{"TPCnsigmacutsPr",{2.2,1,2.2},"TPC Nsigma cuts for Proton"};
+  Configurable<std::vector<float>>TPCpTrangesPr{"TPCpTrangesPr",{0.85,1.1,2},"TPC pT ranges for Proton"};
+  Configurable<std::vector<float>>TOFnsigmacutsPr{"TOFnsigmacutsPr",{2},"TOF Nsigma cuts for Proton"};
+  Configurable<std::vector<float>>TOFpTrangesPr{"TOFpTrangesPr",{1.1},"TOF pT ranges for Proton"};
+//-----Config for alternate PID------------------------
   Configurable<float> TPCnsigMax{"TPCnsigMax",5,"Maximum nsigma for identification (TPC)"};
   Configurable<float> TPCnsigSEP{"TPCnsigSEP",5,"Minimum separation from other particles (TPC)"};
   Configurable<float> TOFnsigMax{"TOFnsigMax",5,"Maximum nsigma for identification (TOF)"};
   Configurable<float> TOFnsigSEP{"TOFnsigSEP",5,"Minimum separation from other particles (TOF)"};
   Configurable<bool> ifTOFreject{"ifTOFreject",false,"Whether track should be rejected when TOF can't identify"};
-
+  Configurable<bool> AlternatePID{"AlternatePID",false,"Enable Alternate PID"};
+//----------------------------------------------------------
   template <typename T>
-  int PID_trial(T track)
+  int8_t PID_trial(T track)
   {
-    float tpcnsigmaarray[3]={fabs(track.tpcNSigmaPi()),fabs(track.tpcNSigmaKa()),fabs(track.tpcNSigmaPr())},
-      tofnsigmaarray[3]={fabs(track.tofNSigmaPi()),fabs(track.tofNSigmaKa()),fabs(track.tofNSigmaPr())};
+    float tpcnsigmaarray[3]={fabs(track.tpcNSigmaPi()),fabs(track.tpcNSigmaKa()),fabs(track.tpcNSigmaPr())};
+//    float tofnsigmaarray[3]={fabs(track.tofNSigmaPi()),fabs(track.tofNSigmaKa()),fabs(track.tofNSigmaPr())};
 
-int p1,p2,pid;
+int8_t p1,p2,pid;
 float nsigp1,nsigp2;
 nsigp1=6;nsigp2=6;
-for(int i=0;i<3;i++)
+for(int8_t i=0;i<3;i++)
 {
   if(nsigp1>tpcnsigmaarray[i])
   {
@@ -203,12 +79,12 @@ if(nsigp1>TPCnsigMax)
 else if(nsigp2>TPCnsigSEP)
 {
   pid=p1+1;
-}
+}/*
 else if(track.hasTOF()) //Use TOF
 {
   pid=p1+1;
   nsigp1=6;nsigp2=6;
-  for(int i=0;i<3;i++)
+  for(int8_t i=0;i<3;i++)
   {
     if(nsigp1>tofnsigmaarray[i])
     {
@@ -229,42 +105,70 @@ else if(track.hasTOF()) //Use TOF
   }
   else if(ifTOFreject) pid=0; //If we decide to rejct the track when TOF cant identify
   else pid=p1+1;
-}
+}*/
 else if(ifTOFreject) pid=0;
 else pid=p1+1;
 
 return pid;
   }
-  bool PID(float trackpt,float tracknsigmatpc,float tracknsigmatof,int species)
+  bool PID(float trackpt,float tracknsigmatpc,float tracknsigmatof,int8_t species)
   {
-    int tpcindex=-1,tofindex=-1;
-    auto tpcpt=(std::vector<std::vector<float>>)TPCpTranges;
-    auto tpcnsigma=(std::vector<std::vector<float>>)TPCnsigmacuts;
-    auto tofpt=(std::vector<std::vector<float>>)TOFpTranges;
-    auto tofnsigma=(std::vector<std::vector<float>>)TOFnsigmacuts;
-    for(int i=0;i<tpcpt[species].size();i++)
-      if(trackpt<tpcpt[species][i])
-        tpcindex=i;
-    for(int i=0;i<tofpt[species].size();i++)
-      if(trackpt<tofpt[species][i])
-        tofindex=i;
-    if((tracknsigmatpc<tpcnsigma[species][tpcindex])&&(tofindex==-1))
-      return true;
-    else if((tracknsigmatpc<tpcnsigma[species][tpcindex])&&(tracknsigmatof<tofnsigma[species][tofindex]))
-        return true;
-    else
+    int8_t tpcindex=-1,tofindex=-1;
+    auto tpcpt=(std::vector<std::vector<float>>){TPCpTrangesPi,TPCpTrangesKa,TPCpTrangesPr};
+    auto tpcnsigma=(std::vector<std::vector<float>>){TPCnsigmacutsPi,TPCnsigmacutsKa,TPCnsigmacutsPr};
+    auto tofpt=(std::vector<std::vector<float>>){TOFpTrangesPi,TOFpTrangesKa,TOFpTrangesPr};;
+    auto tofnsigma=(std::vector<std::vector<float>>){TOFnsigmacutsPi,TOFnsigmacutsKa,TOFnsigmacutsPr};
+    for(int8_t i=0;i<tpcpt[species].size();i++)
+      if(trackpt<tpcpt[species][i]){
+        tpcindex=i; break;}
+    for(int8_t i=0;i<tofpt[species].size();i++)
+      if(trackpt>=tofpt[species][i]){
+        tofindex=i; break;}
+    if(tracknsigmatpc>tpcnsigma[species][tpcindex])
       return false;
+    if((tofindex!=-1)&&(tracknsigmatof>tofnsigma[species][tofindex]))
+      return false;
+    return true;
   }
-  HistogramRegistry histos{"R2P2", {}, OutputObjHandlingPolicy::AnalysisObject};
+  HistogramRegistry histos{"PID", {}, OutputObjHandlingPolicy::AnalysisObject};
   void init(InitContext const&)
   {
-    histos.add("tst","test",kTH1F,{{5,-0.5,4.5,"count"}});
+    const AxisSpec ptaxis{100,0,2,"p_T"},nsigmaaxis{50,-6,6,"N#sigma"},dcaxyaxis{50,-6,6,"DCA_{X}"},dcazaxis{50,-6,6,"DCA_{Z}"};
+    histos.add("nsigmatpcpi","N#sigma_{TPC} Pion",kTH2F,{ptaxis,nsigmaaxis});
+    histos.add("nsigmatofpi","N#sigma_{TOF} Pion",kTH2F,{ptaxis,nsigmaaxis});
+    histos.add("nsigmatpcka","N#sigma_{TPC} Kaon",kTH2F,{ptaxis,nsigmaaxis});
+    histos.add("nsigmatofka","N#sigma_{TOF} Kaon",kTH2F,{ptaxis,nsigmaaxis});
+    histos.add("nsigmatpcpr","N#sigma_{TPC} Proton",kTH2F,{ptaxis,nsigmaaxis});
+    histos.add("nsigmatofpr","N#sigma_{TOF} Proton",kTH2F,{ptaxis,nsigmaaxis});
+    histos.add("dcaxypi","DCA_{XY} Pion",kTH2F,{ptaxis,dcaxyaxis});
+    histos.add("dcazpi","DCA_{Z} Pion",kTH2F,{ptaxis,dcazaxis});
+    histos.add("dcaxyka","DCA_{XY} Kaon",kTH2F,{ptaxis,dcaxyaxis});
+    histos.add("dcazka","DCA_{Z} Kaon",kTH2F,{ptaxis,dcazaxis});
+    histos.add("dcaxypr","DCA_{XY} Proton",kTH2F,{ptaxis,dcaxyaxis});
+    histos.add("dcazpr","DCA_{Z} Proton",kTH2F,{ptaxis,dcazaxis});
+    histos.add("ptpi","p_T distribution Pion",kTH1I,{ptaxis});
+    histos.add("ptka","p_T distribution Kaon",kTH1I,{ptaxis});
+    histos.add("ptpr","p_T distribution Proton",kTH1I,{ptaxis});
 
-    histos.add("nsigmatpc","N#sigma_{TPC}",kTH1F,{{50,0,2.1,"p_T"},{25,-6,6,"N#sigma"}});
-    histos.add("nsigmatof","N#sigma_{TOF}",kTH1F,{{50,0,2.1,"p_T"},{25,-6,6,"N#sigma"}});
+    histos.add("recodcaxypi","DCA_{XY} Pion",kTH2F,{ptaxis,dcaxyaxis});
+    histos.add("recodcazpi","DCA_{Z} Pion",kTH2F,{ptaxis,dcazaxis});
+    histos.add("recodcaxyka","DCA_{XY} Kaon",kTH2F,{ptaxis,dcaxyaxis});
+    histos.add("recodcazka","DCA_{Z} Kaon",kTH2F,{ptaxis,dcazaxis});
+    histos.add("recodcaxypr","DCA_{XY} Proton",kTH2F,{ptaxis,dcaxyaxis});
+    histos.add("recodcazpr","DCA_{Z} Proton",kTH2F,{ptaxis,dcazaxis});
+
+    histos.add("genptpi","Generated p_T distribution Pion",kTH1I,{ptaxis});
+    histos.add("genptka","Generated p_T distribution Kaon",kTH1I,{ptaxis});
+    histos.add("genptpr","Generated p_T distribution Proton",kTH1I,{ptaxis});
+    histos.add("recoptpi","Reconstructed p_T distribution Pion",kTH1I,{ptaxis});
+    histos.add("recoptka","Reconstructed p_T distribution Kaon",kTH1I,{ptaxis});
+    histos.add("recoptpr","Reconstructed p_T distribution Proton",kTH1I,{ptaxis});
+    histos.add("pureidptpi","Identifed w/o impurity p_T distribution Pion",kTH1I,{ptaxis});
+    histos.add("pureidptka","Identifed w/o impurity p_T distribution Kaon",kTH1I,{ptaxis});
+    histos.add("pureidptpr","Identifed w/o impurity p_T distribution Proton",kTH1I,{ptaxis});
   }
-
-  void processData(soa::Join<aod::Tracks, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::TracksExtra> const& tracks)
+  Produces<aod::Flags> ftable;
+  void processData(soa::Join<aod::Tracks, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::TracksExtra,aod::TracksDCA> const& tracks)
   {
     int8_t etabin, phibin, binNpid;
     for (auto track : tracks) {
@@ -274,10 +178,13 @@ return pid;
         binNpid = -1;
       } else {
         float nsigma_array[3]={track.tpcNSigmaPi(),track.tpcNSigmaKa(),track.tpcNSigmaPr()};
+        float tofnsigma_array[3]={track.tofNSigmaPi(),track.tofNSigmaKa(),track.tofNSigmaPr()};
         binNpid = 0;
-        for (int8_t i = 0; i < 4; i++) {
-          if (pidarray<decltype(track)>[i](track))
-            binNpid = binNpid * 10 + i;
+        for (int8_t i = 0; i < 3; i++) {
+          if(AlternatePID)
+            binNpid=PID_trial(track);
+          else if (PID(track.pt(),fabs(nsigma_array[i]),fabs(tofnsigma_array[i]),i))
+            binNpid = binNpid * 10 + i+1;
           if (binNpid > 10) // If a track is identified as two different tracks.
           {
             if (fabs(nsigma_array[(binNpid / 10) - 1]) < fabs(nsigma_array[(binNpid % 10) - 1])) // The track is identified as the particle whose |nsigma| is the least.
@@ -286,20 +193,119 @@ return pid;
               binNpid %= 10;
           }
         }
-        float tofnsigma_array[3]={track.tofNSigmaPi(),track.tofNSigmaKa(),track.tofNSigmaPr()};
-        for (int8_t i = 1; i < 4; i++)
-          if((pidarray<decltype(track)>[i](track))!=PID(track.pt(),fabs(nsigma_array[i-1]),fabs(tofnsigma_array[i-1]),i-1))
-            histos.fill(HIST("tst"),1);
-        histos.fill(HIST("nsigmatpc"),nsigma_array[binNpid]);
-        histos.fill(HIST("nsigmatof"),tofnsigma_array[binNpid]);
+
+        switch(binNpid){
+          case 1:
+          histos.fill(HIST("nsigmatpcpi"),track.pt(),nsigma_array[0]);
+          histos.fill(HIST("nsigmatofpi"),track.pt(),tofnsigma_array[0]);
+          histos.fill(HIST("dcaxypi"),track.pt(),track.dcaXY());
+          histos.fill(HIST("dcazpi"),track.pt(),track.dcaZ());
+          histos.fill(HIST("ptpi"),track.pt());
+          break;
+          case 2:
+          histos.fill(HIST("nsigmatpcka"),track.pt(),nsigma_array[1]);
+          histos.fill(HIST("nsigmatofka"),track.pt(),tofnsigma_array[1]);
+          histos.fill(HIST("dcaxyka"),track.pt(),track.dcaXY());
+          histos.fill(HIST("dcazka"),track.pt(),track.dcaZ());
+          histos.fill(HIST("ptka"),track.pt());
+          break;
+          case 3:
+          histos.fill(HIST("nsigmatpcpr"),track.pt(),nsigma_array[2]);
+          histos.fill(HIST("nsigmatofpr"),track.pt(),tofnsigma_array[2]);
+          histos.fill(HIST("dcaxypr"),track.pt(),track.dcaXY());
+          histos.fill(HIST("dcazpr"),track.pt(),track.dcaZ());
+          histos.fill(HIST("ptpr"),track.pt());
+          break;
+        }
       }
       ftable(binNpid);
     }
   }
   PROCESS_SWITCH(FillFlagsTable,processData,"Process Data",true);
 
-  void processMC(soa::Join<aod::Tracks, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::TracksExtra,aod::McTrackLabels> const& recotracks, aod::McParticles const& gentracks)
+  void processMC(soa::Join<aod::Tracks, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::TracksExtra,aod::TracksDCA,aod::McTrackLabels> const& recotracks, aod::McParticles const& gentracks)
   {
+    int8_t etabin, phibin, binNpid;
+    for (auto track : recotracks) {
+      if(track.has_mcParticle()){
+      etabin = (track.eta() + 0.8) * 15; // 15= 24/1.6
+      phibin = 36 * track.phi() / (2 * constants::math::PI);
+      if ((etabin < 0) || (etabin >= 24) || (phibin < 0) || (phibin >= 36)) {
+        binNpid = -1;
+      } else {
+        float nsigma_array[3]={track.tpcNSigmaPi(),track.tpcNSigmaKa(),track.tpcNSigmaPr()};
+        float tofnsigma_array[3]={track.tofNSigmaPi(),track.tofNSigmaKa(),track.tofNSigmaPr()};
+        binNpid = 0;
+        for (int8_t i = 0; i < 3; i++) {
+          if(AlternatePID)
+            binNpid=PID_trial(track);
+          else if (PID(track.pt(),fabs(nsigma_array[i]),fabs(tofnsigma_array[i]),i))
+            binNpid = binNpid * 10 + i+1;
+          if (binNpid > 10) // If a track is identified as two different tracks.
+          {
+            if (fabs(nsigma_array[(binNpid / 10) - 1]) < fabs(nsigma_array[(binNpid % 10) - 1])) // The track is identified as the particle whose |nsigma| is the least.
+              binNpid /= 10;
+            else
+              binNpid %= 10;
+          }
+        }
+        switch(binNpid){
+          case 1:
+          histos.fill(HIST("nsigmatpcpi"),track.pt(),nsigma_array[0]);
+          histos.fill(HIST("nsigmatofpi"),track.pt(),tofnsigma_array[0]);
+          histos.fill(HIST("dcaxypi"),track.pt(),track.dcaXY());
+          histos.fill(HIST("dcazpi"),track.pt(),track.dcaZ());
+          histos.fill(HIST("ptpi"),track.pt());
+
+          if(abs(track.mcParticle().pdgCode())==211) histos.fill(HIST("pureidptpi"),track.pt());
+          break;
+          case 2:
+          histos.fill(HIST("nsigmatpcka"),track.pt(),nsigma_array[1]);
+          histos.fill(HIST("nsigmatofka"),track.pt(),tofnsigma_array[1]);
+          histos.fill(HIST("dcaxyka"),track.pt(),track.dcaXY());
+          histos.fill(HIST("dcazka"),track.pt(),track.dcaZ());
+          histos.fill(HIST("ptka"),track.pt());
+
+          if(abs(track.mcParticle().pdgCode())==321) histos.fill(HIST("pureidptka"),track.pt());
+          break;
+          case 3:
+          histos.fill(HIST("nsigmatpcpr"),track.pt(),nsigma_array[2]);
+          histos.fill(HIST("nsigmatofpr"),track.pt(),tofnsigma_array[2]);
+          histos.fill(HIST("dcaxypr"),track.pt(),track.dcaXY());
+          histos.fill(HIST("dcazpr"),track.pt(),track.dcaZ());
+          histos.fill(HIST("ptpr"),track.pt());
+
+          if(abs(track.mcParticle().pdgCode())==2212) histos.fill(HIST("pureidptpr"),track.pt());
+          break;
+        }
+        switch(abs(track.mcParticle().pdgCode())){
+          case 211:histos.fill(HIST("recoptpi"),track.pt());
+          histos.fill(HIST("recodcaxypi"),track.pt(),track.dcaXY());
+          histos.fill(HIST("recodcazpi"),track.pt(),track.dcaZ());
+          break;
+          case 321:histos.fill(HIST("recoptka"),track.pt());
+          histos.fill(HIST("recodcaxyka"),track.pt(),track.dcaXY());
+          histos.fill(HIST("recodcazka"),track.pt(),track.dcaZ());
+          break;
+          case 2212:histos.fill(HIST("recoptpr"),track.pt());
+          histos.fill(HIST("recodcaxypr"),track.pt(),track.dcaXY());
+          histos.fill(HIST("recodcazpr"),track.pt(),track.dcaZ());
+          break;
+        }
+      }
+      }
+      else
+        binNpid=-1;
+      ftable(binNpid);
+    }
+    for(auto track:gentracks)
+    {
+      switch(abs(track.pdgCode())){
+          case 211:histos.fill(HIST("genptpi"),track.pt()); break;
+          case 321:histos.fill(HIST("genptka"),track.pt()); break;
+          case 2212:histos.fill(HIST("genptpr"),track.pt()); break;
+        }
+    }
   }
   PROCESS_SWITCH(FillFlagsTable,processMC, "Process MC Data",false);
 };
@@ -321,7 +327,7 @@ struct r2p24id {
     std::shared_ptr<TH1> h1d_1p[2][2];
   } hist;
 
-  int mult1, mult2;
+  unsigned int mult1, mult2;
   uint8_t etabin1, phibin1, etabin2, phibin2;
   int8_t sign1, sign2;
   bool iftrack2;
@@ -343,7 +349,7 @@ struct r2p24id {
 
   void init(InitContext const&)
   {
-    iftrack2 = (((int8_t)pid_particle1 != (int8_t)pid_particle2)&&((bool)ifpid)) || ((bool)iftrackpartition); //denotes whether the partiton1 is different from partition2
+    iftrack2 = (((int8_t)pid_particle1 != (int8_t)pid_particle2)&&(static_cast<bool>(ifpid))) || (static_cast<bool>(iftrackpartition)); //denotes whether the partiton1 is different from partition2
     //-----Defining Histograms---------------------------------------------------
     const AxisSpec phi{36, 0, 2.0 * constants::math::PI, "phi"}, eta{24, -0.8, 0.8, "eta"}, etaphi1{864, 0, 864, "etaphi1"}, etaphi2{864, 0, 864, "etaphi2"};
     histos.add("h1d_n1_phi", "#phi distribution Particle", kTH1D, {phi});
@@ -482,7 +488,7 @@ struct r2p24id {
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
 {
     return WorkflowSpec{
-    adaptAnalysisTask<FillFlagsTable>(cfgc)/*,
-    adaptAnalysisTask<r2p24id>(cfgc),*/
+    adaptAnalysisTask<FillFlagsTable>(cfgc),
+    adaptAnalysisTask<r2p24id>(cfgc),
     };
 }
