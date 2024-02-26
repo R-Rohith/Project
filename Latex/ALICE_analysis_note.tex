@@ -1,0 +1,367 @@
+\documentclass[ALICE,manyauthors]{ALICE_analysis_notes}
+%\documentclass[ALICE,manyauthors]{ALICE_scientific_notes}
+%
+%\newcommand{\jpsi}{\rm J/$\psi$}
+%\newcommand{\psip}{$\psi^\prime$}
+%\newcommand{\jpsiDY}{\rm J/$\psi$\,/\,DY}
+%\newcommand{\dd}{\mathrm{d}}
+%\newcommand{\chic}{$\chi_{\rm c}$}
+%\newcommand{\ezdc}{$E_{\rm ZDC}$}
+%\newcommand{\red}{\textcolor{red}}
+%\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\slfrac}[2]{\left.#1\right/#2}
+\usepackage{rotating}
+\usepackage{lineno}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{caption}
+%
+\begin{document}%
+%%%%%%%%%%%%% ptdr definitions %%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%  Title page %%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{titlepage}
+%
+\PHnumber{ALICE-ANA-2024-xxx} 
+\PHdate{\today}
+%
+%%% Put your own title + short title here:
+\title{R2 \& P2 Correlations of Identified Particles in p-p collisions at \\$\sqrt{s}=13.6$ TeV}%Confirm the Capitalizations!!
+\ShortTitle{R2 \& P2 for Identified Particles in p-p @ 13.6 TeV}   % appears on right page headers
+%
+\author{R Rohith$^{1}$, Sadhana Dash$^2$, and Claude Pruneau$^3$}
+\author{
+1. Indian Institute of Science Education and Research Berhampur, India\\
+2. Indian Institute of Technology Bombay, India\\
+3. Wayne something something...
+}
+\author{email: rohith.rajeev@cern.ch}%Add the other emails
+%
+\ShortAuthor{ALICE Analysis Note 2024}      % appears on left page headers, do not change
+%
+\linenumbers
+\begin{abstract}
+Two particle correlators, R2 \& P2, are calculated for identified particle pairs: $\pi$-$\pi$, k-k, p-p, and also $\pi$-k, $\pi$-p , k-p; for p-p collisions at 13.6 TeV in the pseudorapiditty range of $|\eta|\leq0.8$ and $p_T$ range of 0.2-2.0 GeV/c. The analysis has two main steps, first to identify the particles using data from the TPC and the TOF detectors, and second to calculate R2 and P2 correlators for the different particle pairs. Studies on R2 \& P2 for different particle species gives insight into particle production \& transport mechanisms. The results include plots of R2 and P2 correlations for unlike-sign, like-sign, charge-independent, and charge-dependent particle pairs and their projections.
+\end{abstract}
+\end{titlepage}
+\linenumbers
+\section[Introduction]{Introduction}
+%QGP:what,when, how, and why.
+R2 \& P2 correlations provide insight into phenomena like flow, jet fragmentation, late-stage hadronization, etc. R2 \& P2 of identified particles will help to better understand particle production mechanisms and their transport after the collision. 
+%To study the structure of R2 & P2 correlation  functions for different kind of particles.
+\section{Dataset}
+LHC22m\_apass4
+\section{Event \& Track selection}%Can Add plots showning the accepted track statistics and no.of tracks/events rejected for different filters
+An event is selected only after it passes the following conditions:
+\begin{itemize}[label=$\bullet$]
+	\item Event selection decision 'sel8'
+	\item $|$Collision vertex(z-axis)$| < 10$cm
+\end{itemize}
+A track is slected only if:
+\begin{itemize}[label=$\bullet$]
+	\item $0.2\ GeV/c<p_T<2.0\ GeV/c$
+	\item it is a 'GlobalTrack':
+	\begin{itemize}
+		\item Number of crossed rows in TPC $>$ 70
+		\item Ratio of crossed rows over findable clusters TPC $>$ 0.8
+		\item $\chi^2$ per cluster TPC $<$ 4.0
+		\item $\chi^2$ per cluster ITS $<$ 36.0
+		\item Require TPC refit
+		\item Require ITS refit
+		\item DCA to vertex z $<$ 2.0
+		\item DCA to vertex xy  $<0.0105*0.035/p_T^{1.1}$
+		\item Atleast one hit in 3 innermost ITS layers
+		\item $0.1\ GeV/c<p_T<10.0\ GeV/c$
+		\item $|\eta|<0.8$
+	\end{itemize}
+\end{itemize}
+\section[PID techniques]{Particle IDentification techniques}
+Particles shall be identified using data from the TPC and TOF detectors. For every track, if properly detected, the TPC gives energy loss per unit path($\langle{ dE \over dx}\rangle$) and the TOF gives $\beta$. Plotting them vs momentum(p), reveals how the particles can be identified.\\
+%ADD THE PLOTS
+The different regions of high densities correspond to differnet species of particles. The Bethe-Bloch formula and the equation for $\beta$ as a function of momentum gives the theoretical value of ${dE}over{dx} \& \beta$ at some momentum for each particle species.
+%Add the formulas somewhere here
+The $n\sigma$ value is used to denote the closeness of  a particle's measured value (${dE}over{dx} / \beta$) to the theoretical value of a particle species. In the $n\sigma$ vs p plots, the high density region centered around $n\sigma=0$ consists of the required particles. 
+%ADD nsigma plots
+To identify the particles, momentum dependent $n\sigma$ cuts are used such that only those particles are selected.
+But, one issue that needs to be solved is that of the particles merging after certain momentum($\pi$ and k merge at 0.6 GeV/c, and ($\pi+k$) and p merges at 1.0 GeV/c) in the TPC. As a solution, after those momentum $n\sigma_{TOF}$ shall also be used to differentiate the particles.
+\\
+Thus, the cuts currently used are:
+\begin{enumerate}
+	\item Pion
+	\begin{itemize}[label=@]
+		\item $p_T<0.6GeV/c$
+		\begin{itemize}[label=$\bullet$]
+			\item Allow only tracks with $N\sigma_{TPC} \leq 2.5$
+		\end{itemize}
+		\item $p_T\geq 0.6GeV/c$
+		\begin{itemize}[label=$\bullet$]
+			\item If track has TOF signal
+			\begin{itemize}[label=$\star$]
+				\item Allow  only tracks with $N\sigma_{TPC} \leq 2.5$ \& $N\sigma_{TOF}\leq 2.5$
+			\end{itemize}
+			\item Else reject the track.
+		\end{itemize}
+	\end{itemize}
+	\item Kaon
+	\begin{itemize}[label=@]
+		\item $p_T<0.6GeV/c$
+		\begin{itemize}[label=$\bullet$]
+			\item Allow only tracks with $N\sigma_{TPC} \leq tpccut$
+		\end{itemize}
+		\item $p_T\geq 0.6GeV/c$
+		\begin{itemize}[label=$\bullet$]
+			\item If track has TOF signal
+			\begin{itemize}[label=$\star$]
+				\item Allow  only tracks with $N\sigma_{TPC} \leq 2$ \& $N\sigma_{TOF}\leq 2$
+			\end{itemize}
+			\item Else reject the track.
+		\end{itemize}
+		\item Where:
+		\begin{itemize}[label=]
+			\item $0.2<p_T<0.45$ , tpccut=3
+			\item $0.45<p_T<0.55$ , tpccut=1
+			\item $0.55<p_T<0.6$ , tpccut=0.6
+		\end{itemize}
+	\end{itemize}
+	\item Proton
+	\begin{itemize}[label=@]
+		\item $p_T<1.1GeV/c$
+		\begin{itemize}[label=$\bullet$]
+			\item Allow only tracks with $N\sigma_{TPC} \leq tpccut$
+		\end{itemize}
+		\item $p_T\geq 1.1GeV/c$
+		\begin{itemize}[label=$\bullet$]
+			\item If track has TOF signal
+			\begin{itemize}[label=$\star$]
+				\item Allow  only tracks with $N\sigma_{TPC} \leq 2$ \& $N\sigma_{TOF}\leq 2.2$
+			\end{itemize}
+			\item Else reject the track.
+		\end{itemize}
+		\item Where:	
+		\begin{itemize}[label=]
+			\item $0.2<p_T<0.85$ , tpccut=2.2
+			\item $0.85<p_T<1.1$ , tpccut=1
+		\end{itemize}
+	\end{itemize}
+\end{enumerate}
+\subsection{Quality Assurance of PID}
+The following plots show the effectiveness of the particle identification techniques that are used in this analysis. 
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcpi.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofpi.pdf}
+	\caption{\label{Pion_nsigma}$N\sigma_{TPC}\&N\sigma_{TOF}$ distribution of Pions after applying cuts}
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcka.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofka.pdf}
+	\caption{\label{Kaon_nsigma}$N\sigma_{TPC}\&N\sigma_{TOF}$ distribution of Kaons after applying cuts}
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcpr.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofpr.pdf}
+	\caption{\label{Proton_nsigma}$N\sigma_{TPC}\&N\sigma_{TOF}$ distribution of Protons after applying cuts}
+\end{figure}
+
+%Write the rest after getting the plots.
+\section{R2 \& P2 Plots}
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS.pdf}
+	\\
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS.pdf}
+	\\
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS.pdf}
+	\\
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS.pdf}
+	\\
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi.pdf}
+	\\
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi.pdf}
+	\\
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi.pdf}
+	\\
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi.pdf}
+	\\
+\end{figure}
+\begin{figure}[h!]
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS.pdf}
+	\\
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS.pdf}
+	\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}
+	\\
+\end{figure}
+\begin{figure}[h!]
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS.pdf}
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS.pdf}
+\\
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS.pdf}
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}
+\\
+\end{figure}
+\begin{figure}[h!]
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi.pdf}
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi.pdf}
+\\
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi.pdf}
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi.pdf}
+\\
+\end{figure}
+\begin{figure}[h!]
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi.pdf}
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi.pdf}
+\\
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi.pdf}
+\includegraphics[width=0.5\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi.pdf}
+\\
+\end{figure}
+
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS_projX.pdf}
+	\\
+	\hfill
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS_projY.pdf}
+	\\
+\end{figure}
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS_projX.pdf}
+	\\
+	\hfill
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS_projY.pdf}
+\end{figure}
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi_projX.pdf}
+	\\
+	\hfill
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi_projY.pdf}
+\end{figure}
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projX.pdf}
+	\\
+	\hfill
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projY.pdf}
+\end{figure}
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+	\\
+	\hfill
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+\end{figure}
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+	\\
+	\hfill
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+\end{figure}
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+	\\
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+\end{figure}
+\begin{figure}[h!]
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\\
+	\hfill
+	\centering
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\includegraphics[width=0.24\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+\end{figure}
+
+\section{Summary}
+\section{Appendix}
+List of PWG meetings and References
+%
+%\input{alice_mynote.tex}               %%%%%%%%%%% put the body of the article here
+%Text exclusive for Master's Thesis Starts here.................
+
+\section{Acknowledgements}
+%Add Acknowledgements
+\section{Contents}%Also could add list of figures & Tables
+%Introduction comes here
+\section{The ALICE experiment}
+%Say about Run3
+\subsection{Detectors}
+\subsection{Analysis Software (O2 \& ROOT)}
+\section{R2 \& P2 Two particle correlators}
+
+%And ends here..................................................
+\end{document}

@@ -1,0 +1,954 @@
+\documentclass{beamer}
+%\setbeamertemplate{footline}[frame number]
+\usetheme{Madrid}
+\title{R2 \& P2 correlations of identified particles in pp collisions at $\sqrt{s}=13.6 TeV$}
+\author{Rohith Rajeev, Sadhana Dash, Basanta Kumar Nandi, and Claude Pruneau}
+\begin{document}
+\begin{frame}
+	\titlepage
+\end{frame}
+\begin{frame}
+	\frametitle{Contents}
+	\begin{enumerate}
+		\item Introduction
+		\item R2 \& P2 correlators
+		\item Dataset, event \& track selection
+		\item Particle IDentification
+		\item Same-particle pair correlations
+		\item Cross-correlations
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Introduction}
+	\begin{itemize}
+	\item	Two-particle correlators are sensitive to jets, resonance decays, conservation laws, transport phenomena like radial flow and diffusion.
+	\item	R2 \& P2 are independent of detector efficiency.
+	\item	Studies of R2 \& P2 for identifed particles will provide greater insight into particle production.\\
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	{In the last meeting:}
+	\begin{itemize}
+		\item Analysis done only on 30M events. Not enough statistics for K-K \& p-p correlations, worse for cross-correlations.
+		\item Presence of delta peak at ($\Delta\eta=0$,$\Delta\phi=0$). {\tiny(Suspected to be due to $e^+ \& e^-$)}
+		\item \hyperlink{https://indico.cern.ch/event/1356473/}{https://indico.cern.ch/event/1356473/}
+	\end{itemize}
+\end{frame}
+\begin{frame}{R2 \& P2 Correlators}
+	\begin{definition}
+		$R2(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)}{\rho_1(\eta_1,\phi_1)\rho_1(\eta_2,\phi_2)}-1$\\~\\
+		{\tiny$R2(\Delta\eta,\Delta\phi)=\frac{1}{\Omega(\Delta\eta)}\int R2(\eta_1,\phi_1,\eta_2,\phi_2)\delta(\Delta\eta-\eta_1+\eta_2)\delta(\Delta\phi-\phi_1+\phi_2)d\eta_1 d\phi_1 d\eta_2 d\phi_2$}
+	\end{definition}
+	\begin{definition}
+		$P2(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\langle\Delta p_T \Delta p_T \rangle(\eta_1,\phi_1,\eta_2,\phi_2)}{\langle p_T\rangle^2}$\\~\\
+		{\tiny$P2(\Delta\eta,\Delta\phi)=\frac{1}{\Omega(\Delta\eta)}\int P2(\eta_1,\phi_1,\eta_2,\phi_2)\delta(\Delta\eta-\eta_1+\eta_2)\delta(\Delta\phi-\phi_1+\phi_2)d\eta_1 d\phi_1 d\eta_2 d\phi_2$}
+	\end{definition}
+	\begin{block}{Where,}
+		$\Omega(\Delta\eta)=\eta_0-\Delta\eta$\\
+		$\langle\Delta p_T \Delta p_T\rangle(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\int_{p_{T,min}}^{p_{T,max}}\Delta p_{T,1}\Delta p_{T,2}\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}{\int_{p_{T,min}}^{p_{T,max}}\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}$
+	\end{block}
+\end{frame}
+\begin{frame}{Dataset, event \& track selection}
+	\begin{block}{Dataset}
+		LHC22o\_pass4\_minBias\_medium : 18B(Charged), 10.7B($\pi$), 433M(K), 335M(p)
+	\end{block}
+	\begin{block}{MC Dataset}
+		LHC23k2c\_pass4 : 2B events
+	\end{block}
+	\begin{block}{Event selection}
+		Event selection decision 'sel8'\\
+		$|$Collision vertex(z-axis)$| < 10$cm\\
+		Event should contain atleast two particles, after all selections.
+	\end{block}
+	\begin{block}{Track selection}
+		The track should be a GlobalTrack\\
+		$0.2\ GeV/c<p_T<2.0\ GeV/c$\\
+		$|\eta|\leq 0.8$
+	\end{block}
+\end{frame}
+\begin{frame}
+	\begin{columns}
+		\column{0.5\textwidth}\centering
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/phi.pdf}\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/pt.pdf}
+		\column{0.5\textwidth}\centering
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/eta.pdf}
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/pt_log.pdf}
+	\end{columns}
+\end{frame}
+%------------------PID-------------------------
+\begin{frame}{Particle IDentification}
+	Particles are identified by using $p_T$ dependent $N\sigma$ cuts for each particles.\\
+	To identify particles after they merge in TPC, TOF is used.\\
+	\begin{definition}\centering
+		$N\sigma=\frac{\mathrm{Signal}_\mathrm{measured}-\mathrm{Signal}_\mathrm{expected}}{\sigma}$\\
+	\end{definition}
+	The efficiency of particle identification and the purity of identifed particles are calculated as,\\
+		\centering
+		$\mathrm{Efficiency}=\frac{N_\mathrm{identified}}{N_\mathrm{truth}}$\\
+		$\mathrm{Purity}=\frac{N_\mathrm{pure}}{N_\mathrm{identified}}$
+\end{frame}
+\begin{frame}
+	\frametitle{PID Cuts (Pion)}
+	\begin{columns}
+		\column{0.5\textwidth}
+			\begin{itemize}
+				\item $p_T<0.6GeV/c$
+				\begin{itemize}
+					\item Allow only tracks with $N\sigma_{TPC} \leq 2.5$
+				\end{itemize}
+				\item $p_T\geq 0.6GeV/c$
+				\begin{itemize}
+					\item If track has TOF signal
+					\begin{itemize}
+						\item Allow  only tracks with $N\sigma_{TPC} \leq 2.5$ \& $N\sigma_{TOF}\leq 2.5$
+					\end{itemize}
+					\item Else reject the track.
+				\end{itemize}
+			\end{itemize}
+		\column{0.5\textwidth}
+		\centering
+		{\tiny Data}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcpi.pdf}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofpi.pdf}\\
+		{\tiny MC}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTPC_pi.pdf}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTOF_pi.pdf}\\
+	\end{columns}
+\end{frame}
+\begin{frame}{PID Efficiency \& Purity (Pion)}
+	\begin{columns}
+		\column{0.5\textwidth}\centering
+		$0.2\leq p_T \leq 0.6$ (TPC only)\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCEfficiency1_pi.pdf}\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity1_pi.pdf}
+		\column{0.5\textwidth}\centering
+		$0.6\leq p_T \leq 2.0$ (TPC $\land$ TOF)\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCEfficiency2_pi.pdf}\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity2_pi.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{PID Cuts (Kaon)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\item $p_T<0.6GeV/c$
+			\begin{itemize}
+				\item Allow only tracks with $N\sigma_{TPC} \leq tpccut$
+			\end{itemize}
+			\item $p_T\geq 0.6GeV/c$
+			\begin{itemize}
+				\item If track has TOF signal
+				\begin{itemize}
+					\item Allow  only tracks with $N\sigma_{TPC} \leq 2$ \& $N\sigma_{TOF}\leq 2$
+				\end{itemize}
+				\item Else reject the track.
+			\end{itemize}
+			\item Where:
+			\begin{itemize}
+				\item $0.2<p_T<0.45$ , tpccut=3
+				\item $0.45<p_T<0.55$ , tpccut=1
+				\item $0.55<p_T<0.6$ , tpccut=0.6
+			\end{itemize}
+		\end{itemize}
+		\column{0.5\textwidth}
+		\centering
+		{\tiny Data}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcka.pdf}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofka.pdf}\\
+		{\tiny MC}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTPC_ka.pdf}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTOF_ka.pdf}\\
+	\end{columns}
+\end{frame}
+\begin{frame}{PID Efficiency \& Purity (Kaon)}
+	\begin{columns}
+		\column{0.5\textwidth}\centering
+		$0.2\leq p_T \leq 0.6$ (TPC only)\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCEfficiency1_ka.pdf}\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity1_ka.pdf}
+		\column{0.5\textwidth}\centering
+		$0.6\leq p_T \leq 2.0$ (TPC $\land$ TOF)\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCEfficiency2_ka.pdf}\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity2_ka.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{PID Cuts (Proton)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\begin{itemize}
+			\item $p_T<1.1GeV/c$
+			\begin{itemize}
+				\item Allow only tracks with $N\sigma_{TPC} \leq tpccut$
+			\end{itemize}
+			\item $p_T\geq 1.1GeV/c$
+			\begin{itemize}
+				\item If track has TOF signal
+				\begin{itemize}
+					\item Allow  only tracks with $N\sigma_{TPC} \leq 2$ \& $N\sigma_{TOF}\leq 2.2$
+				\end{itemize}
+				\item Else reject the track.
+			\end{itemize}
+			\item Where:	
+			\begin{itemize}
+				\item $0.2<p_T<0.85$ , tpccut=2.2
+				\item $0.85<p_T<1.1$ , tpccut=1
+			\end{itemize}
+		\end{itemize}
+		\column{0.5\textwidth}
+		\centering
+		{\tiny Data}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcpr.pdf}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofpr.pdf}\\
+		{\tiny MC}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTPC_pr.pdf}\\
+		\includegraphics[width=0.55\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTOF_pr.pdf}\\
+	\end{columns}
+\end{frame}
+\begin{frame}{PID Efficiency \& Purity (Proton)}
+	\begin{columns}
+		\column{0.5\textwidth}\centering
+		$0.2\leq p_T \leq 0.6$ (TPC only)\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCEfficiency1_pr.pdf}\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity1_pr.pdf}
+		\column{0.5\textwidth}\centering
+		$0.6\leq p_T \leq 2.0$ (TPC $\land$ TOF)\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCEfficiency2_pr.pdf}\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity2_pr.pdf}
+	\end{columns}
+\end{frame}
+%--------------PID-END----------------
+%----------------Same particle pair------------
+\begin{frame}
+	\Large Same-particle pair correlations
+\end{frame}
+%--------------R2----------------------
+\begin{frame}
+	\frametitle{R2 (Unlike-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2_DetaDphiUS.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Unlike-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2_DetaDphiUS_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Unlike-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2_DetaDphiUS_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{R2 (Like-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2_DetaDphiLS.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Like-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2_DetaDphiLS_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Like-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2_DetaDphiLS_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{R2 (Charge-Independent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2CI_DetaDphi.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Independent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2CI_DetaDphi_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Independent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2CI_DetaDphi_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{R2 (Charge-Dependent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2CD_DetaDphi.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Dependent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2CD_DetaDphi_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Dependent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_r2CD_DetaDphi_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+%-----------------R2-END---------------------
+%------------------P2--------------------
+\begin{frame}
+	\frametitle{P2 (Unlike-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDpt_DetaDphiUS.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Unlike-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Unlike-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{P2 (Like-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDpt_DetaDphiLS.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Like-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Like-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{P2 (Charge-Independent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDptCI_DetaDphi.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Independent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Independent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{P2 (Charge-Dependent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDptCD_DetaDphi.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Dependent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Dependent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		Charged\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Charged/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\Kaon-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		Pion-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\Proton-pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+%------------------P2-END---------------
+%------------------Cross-correlations--------
+\begin{frame}
+	\Large Cross-correlations
+\end{frame}
+%--------------R2----------------------
+\begin{frame}
+	\frametitle{R2 (Unlike-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiUS.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiUS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Unlike-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiUS_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiUS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Unlike-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiUS_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiUS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{R2 (Like-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiLS.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiLS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Like-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiLS_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiLS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Like-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiLS_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiLS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{R2 (Charge-Independent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CI_DetaDphi.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CI_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Independent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CI_DetaDphi_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CI_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Independent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CI_DetaDphi_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CI_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{R2 (Charge-Dependent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Dependent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{R2 (Charge-Dependent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+%-----------------R2-END---------------------
+%------------------P2--------------------
+\begin{frame}
+	\frametitle{P2 (Unlike-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Unlike-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Unlike-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{P2 (Like-sign)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Like-sign) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Like-sign) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{P2 (Charge-Independent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Independent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Independent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{P2 (Charge-Dependent)}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Dependent) $\Delta\eta$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{P2 (Charge-Dependent) $\Delta\phi$ Projections}
+	\begin{columns}
+		\column{0.5\textwidth}
+		\centering
+		K-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+		\column{0.5\textwidth}
+		\centering
+		$\pi$-K pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\$\pi$-p pair\\
+		\includegraphics[width=0.85\textwidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+%------------------P2-END---------------
+\begin{frame}
+	\centering\Huge Thank You
+\end{frame}
+\end{document}
+%CHeck to center the projections about 0.

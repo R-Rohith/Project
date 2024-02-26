@@ -20,7 +20,7 @@ using namespace o2;
 using namespace o2::framework;
 using namespace o2::framework::expressions;
 
-namespace o2::aod
+namespace o2::aod //Note: Need to account for e/-e
 {
 namespace idr2p2columns
 {
@@ -124,7 +124,7 @@ return pid;
     for(int8_t i=0;i<tofpt[species].size();i++)
       if(trackpt>=tofpt[species][i]){
         tofindex=i; break;}
-    if(tracknsigmatpc>tpcnsigma[species][tpcindex])
+    if((tpcindex!=-1)&&(tracknsigmatpc>tpcnsigma[species][tpcindex]))
       return false;
     if((tofindex!=-1)&&(tracknsigmatof>tofnsigma[species][tofindex]))
       return false;
@@ -146,9 +146,9 @@ return pid;
     histos.add("dcazka","DCA_{Z} Kaon",kTH2F,{ptaxis,dcazaxis});
     histos.add("dcaxypr","DCA_{XY} Proton",kTH2F,{ptaxis,dcaxyaxis});
     histos.add("dcazpr","DCA_{Z} Proton",kTH2F,{ptaxis,dcazaxis});
-    histos.add("ptpi","p_T distribution Pion",kTH1I,{ptaxis});
-    histos.add("ptka","p_T distribution Kaon",kTH1I,{ptaxis});
-    histos.add("ptpr","p_T distribution Proton",kTH1I,{ptaxis});
+    histos.add("ptpi","p_T distribution Pion",kTH1D,{ptaxis});
+    histos.add("ptka","p_T distribution Kaon",kTH1D,{ptaxis});
+    histos.add("ptpr","p_T distribution Proton",kTH1D,{ptaxis});
 
     histos.add("recodcaxypi","DCA_{XY} Pion",kTH2F,{ptaxis,dcaxyaxis});
     histos.add("recodcazpi","DCA_{Z} Pion",kTH2F,{ptaxis,dcazaxis});
@@ -157,15 +157,15 @@ return pid;
     histos.add("recodcaxypr","DCA_{XY} Proton",kTH2F,{ptaxis,dcaxyaxis});
     histos.add("recodcazpr","DCA_{Z} Proton",kTH2F,{ptaxis,dcazaxis});
 
-    histos.add("genptpi","Generated p_T distribution Pion",kTH1I,{ptaxis});
-    histos.add("genptka","Generated p_T distribution Kaon",kTH1I,{ptaxis});
-    histos.add("genptpr","Generated p_T distribution Proton",kTH1I,{ptaxis});
-    histos.add("recoptpi","Reconstructed p_T distribution Pion",kTH1I,{ptaxis});
-    histos.add("recoptka","Reconstructed p_T distribution Kaon",kTH1I,{ptaxis});
-    histos.add("recoptpr","Reconstructed p_T distribution Proton",kTH1I,{ptaxis});
-    histos.add("pureidptpi","Identifed w/o impurity p_T distribution Pion",kTH1I,{ptaxis});
-    histos.add("pureidptka","Identifed w/o impurity p_T distribution Kaon",kTH1I,{ptaxis});
-    histos.add("pureidptpr","Identifed w/o impurity p_T distribution Proton",kTH1I,{ptaxis});
+    histos.add("genptpi","Generated p_T distribution Pion",kTH1D,{ptaxis});
+    histos.add("genptka","Generated p_T distribution Kaon",kTH1D,{ptaxis});
+    histos.add("genptpr","Generated p_T distribution Proton",kTH1D,{ptaxis});
+    histos.add("recoptpi","Reconstructed p_T distribution Pion",kTH1D,{ptaxis});
+    histos.add("recoptka","Reconstructed p_T distribution Kaon",kTH1D,{ptaxis});
+    histos.add("recoptpr","Reconstructed p_T distribution Proton",kTH1D,{ptaxis});
+    histos.add("pureidptpi","Identifed w/o impurity p_T distribution Pion",kTH1D,{ptaxis});
+    histos.add("pureidptka","Identifed w/o impurity p_T distribution Kaon",kTH1D,{ptaxis});
+    histos.add("pureidptpr","Identifed w/o impurity p_T distribution Proton",kTH1D,{ptaxis});
   }
   Produces<aod::Flags> ftable;
   void processData(soa::Join<aod::Tracks, aod::pidTPCPi, aod::pidTOFPi, aod::pidTPCPr, aod::pidTOFPr, aod::pidTPCKa, aod::pidTOFKa, aod::pidTPCEl, aod::TracksExtra,aod::TracksDCA> const& tracks)
@@ -358,7 +358,7 @@ struct r2p24id {
     histos.add("h1d_n1_ptM1", "p_T for -ve_1", kTH1D, {{30, 0, 6, "p_T"}});
     histos.add("h1d_n1_ptP2", "p_T for +ve_2", kTH1D, {{30, 0, 6, "p_T"}});
     histos.add("h1d_n1_ptM2", "p_T for -ve_2", kTH1D, {{30, 0, 6, "p_T"}});
-    histos.add("h1i_n1_multPM", "Multiplicity", kTH1I, {{200, 0, 200, "Multiplicity"}});
+    histos.add("h1i_n1_multPM", "Multiplicity", kTH1D, {{100, -0.5, 99.5, "Multiplicity"}});
     histos.add("h2d_n1_etaPhiP1", "#rho_1 for +ve particle1", kTH2D, {eta, phi});
     histos.add("h2d_n1_etaPhiM1", "#rho_1 for -ve particle1", kTH2D, {eta, phi});
     histos.add("h2d_n1_etaPhiP2", "#rho_1 for +ve particle2", kTH2D, {eta, phi});
