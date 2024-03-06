@@ -1,0 +1,51 @@
+% !TeX program = xelatex
+\documentclass[12pt,a4paper,twoside]{article} 
+%\usepackage{times}
+\usepackage{fontspec-xetex}
+\usepackage{blindtext}
+\usepackage{geometry}
+\usepackage{anyfontsize}
+\geometry{tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1in,marginparwidth=60pt}
+\setmainfont{Times New Roman}[Path= ./Times-New-Roman/, Extension = .ttf,UprightFont=times-new-roman ,BoldFont=times-new-roman-bold, ItalicFont=times-new-roman-italic, BoldItalicFont=times-new-roman-bold-italic]
+
+\newcommand{\firstpagemargin}{\setlength{\headsep}{115pt}\setlength{\textheight}{610pt}}
+\newcommand{\restoremargin}{\setlength{\headsep}{25pt}\setlength{\textheight}{700pt}}
+\newcommand{\usersetfontsize}[2]{\fontsize{#1}{#2}\selectfont}
+\begin{document}
+\firstpagemargin
+{
+\centering
+~\\~\\~\\
+\textbf{\fontsize{16pt}{24pt}\selectfont R2 \& P2 correlations of identified particles in p-p collisions at $\sqrt{s}=13.6 TeV$}\\~\\%Title
+\textit{A dissertation submitted for the partial fulfilment of BS-MS dual degree in Physical Sciences}\\~\\~\\%Sub-title
+{R Rohith\\}%Author
+~\\~\\~\\~\\~\\
+{\usersetfontsize{14}{21}Indian Institute of Science Education and Research, Berhampur\\Registration No. : 19106\\Department of Physical Sciences\\}
+{April 2024}\\
+}
+\newpage
+\pagenumbering{Roman}
+Acknowledgements
+\newpage
+\begin{abstract}
+		Hello
+\end{abstract}
+\newpage
+\pagenumbering{arabic}
+\section{Introduction}\firstpagemargin
+\subsection{Physics of high energy collisions}
+\subsubsection{Hard \& soft processes}
+\subsection{Two particle correlation studies so far}
+\subsection{ALICE, detectors, and analysis}
+\subsection{Why this analysis?}
+\newpage
+\section{R2 \& P2 correlators}\firstpagemargin
+\newpage
+\section{Analysis methodolgy}\firstpagemargin
+\newpage
+\section{Event \& track selection, and Particle Identification}\firstpagemargin
+\newpage
+\section{Results}\firstpagemargin
+\newpage
+\section{Discussion and Conclusions}\firstpagemargin
+\end{document}

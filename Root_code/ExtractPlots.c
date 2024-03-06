@@ -29,6 +29,14 @@ void ExtractPlots()
         projy->Draw("E");
         sprintf(stringbffr,"%s_projY.pdf",histname[i]);
         c1->SaveAs(stringbffr);
+        projx->Rebin();
+        projy->Rebin();
+        projx->Draw("E");
+        sprintf(stringbffr,"%s_projX_rbn.pdf",histname[i]);
+        c1->SaveAs(stringbffr);
+        projy->Draw("E");
+        sprintf(stringbffr,"%s_projY_rbn.pdf",histname[i]);
+        c1->SaveAs(stringbffr);
     }
     delete infile;
 }//TPad::SaveAs
