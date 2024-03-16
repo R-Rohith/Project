@@ -36,7 +36,8 @@ void shiftY(const TH2D & source, TH2D & target, Int_t nbins);
 //--------------DpTDpT-------------------------------
 
 bool sameDimensions2D(const TH2D* h1, const TH2D* h2);
-void calculateDptDpt(const TH2D * spp, const TH2D * spn, const TH2D * snp, const TH2D * snn, const TH1D * avgpt1, const TH1D * avgpt2, const Float_t kMinPt, const Float_t kMaxPt, TH2D * p2DptDpt,  TH2D * dptdpt, Int_t nEta, Int_t nPhi);
+void calculateDptDpt(const TH2D * spp, const TH2D * spn, const TH2D * snp, const TH2D * snn, const TH1D * avgpt1, const TH1D * avgpt2, const Float_t kMinPt, const Float_t kMaxPt, TH2D * p2DptDpt,  TH2D * dptdpt, Int_t nEta, Int_t nPhi,bool flag=true);
+Float_t kMidPt;
 //-------------calculate CI & CD -------------------
 void calculate_CI_CD(const TH2D *hpm, const TH2D *hpp, const TH2D *hmm,  TH2D *hci,  TH2D *hcd);
 //void smoothFunXRebinY(const TH2D *source, const TH2D *target);
@@ -48,7 +49,7 @@ void calculate_B2( const TH2D *hp, const TH2D *hm, const TH2D *hin,  TH2D *hout)
 //typedef enum {kLowPt, kMidPt, kHighPt} switchPtCut_t;
 
 //void R2P2B2_prc_v3(Int_t switchPtCut = kLowPt)
-void R2P2(/*const TString ptCase, const TString strMult, const TString strPt*/)
+void R2P2_crosspt(/*const TString ptCase, const TString strMult, const TString strPt*/)
 {
   cout <<"\n ========== R2P2B2_prc_v3 starts ======= \n" <<endl;
 //  cout <<"R2P2B2_prc_v3: "<<ptCase;<<"\t"<<strMult<<"\t"<< strPt<<endl;
@@ -76,6 +77,7 @@ void R2P2(/*const TString ptCase, const TString strMult, const TString strPt*/)
     }
     kminpt=0.2;
     kmaxpt=2.0;
+    kMidPt=1.0;
   
   cout <<"\nPt Range: "<<kminpt<<"\t"<< kmaxpt<<endl;
 
@@ -339,24 +341,24 @@ void R2P2(/*const TString ptCase, const TString strMult, const TString strPt*/)
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_r2_DetaDphiLS
     = new TH2D("h2d_r2_DetaDphiLS",
-               "R2 Like-sign;#Delta#eta;#Delta#phi",
+               "h2d_r2_DetaDphiLS",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_r2_DetaDphiUS
     = new TH2D("h2d_r2_DetaDphiUS",
-               "R2 Unlike-sign;#Delta#eta;#Delta#phi",
+               "h2d_r2_DetaDphiUS",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
 
 
   TH2D *h2d_r2CI_DetaDphi
     = new TH2D("h2d_r2CI_DetaDphi",
-               "R2 Charge-Independent;#Delta#eta;#Delta#phi",
+               "h2d_r2CI_DetaDphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_r2CD_DetaDphi
     = new TH2D("h2d_r2CD_DetaDphi",
-               "R2 Charge-Dependent;#Delta#eta;#Delta#phi",
+               "h2d_r2CD_DetaDphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_B2_DetaDphi
@@ -620,12 +622,12 @@ void R2P2(/*const TString ptCase, const TString strMult, const TString strPt*/)
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_p2DptDpt_DetaDphiLS
     = new TH2D("h2d_p2DptDpt_DetaDphiLS",
-               "P2 Like-sign;#Delta#eta;#Delta#phi",
+               "h2d_p2DptDpt_DetaDphiLS",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_p2DptDpt_DetaDphiUS
     = new TH2D("h2d_p2DptDpt_DetaDphiUS",
-               "P2 Unlike-sign;#Delta#eta;#Delta#phi",
+               "h2d_p2DptDpt_DetaDphiUS",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_DptDpt_DetaDphiUS
@@ -636,12 +638,12 @@ void R2P2(/*const TString ptCase, const TString strMult, const TString strPt*/)
 
   TH2D *h2d_p2DptDptCI_DetaDphi
     = new TH2D("h2d_p2DptDptCI_DetaDphi",
-               "P2 Charge-Independent;#Delta#eta;#Delta#phi",
+               "h2d_p2DptDptCI_DetaDphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
   TH2D *h2d_p2DptDptCD_DetaDphi
     = new TH2D("h2d_p2DptDptCD_DetaDphi",
-               "P2 Charge-Dependent;#Delta#eta;#Delta#phi",
+               "h2d_p2DptDptCD_DetaDphi",
                nBins_Deta, kmindeta, kmaxdeta,
                knphibins, -(0.5+1.0/36.0) * TMath::Pi(), (1.5-1.0/36.0) * TMath::Pi());
 TH2D *h2d_p2DptDptCD_DetaDphiRebined
@@ -802,7 +804,7 @@ TH1I *h1i_n1_multPM = (TH1I*)ftpcorr->Get("r2p24id/h1i_n1_multPM");
                   kminpt,
                   kmaxpt,
                   h2d_p2DptDpt_eta1Phi1Eta2Phi2PM21, h2d_DptDpt_eta1Phi1Eta2Phi2PM21,
-                  knetabins,  knphibins);
+                  knetabins,  knphibins,false);
 
   calculateDptDpt(h2d_ptpt_eta1Phi1Eta2Phi2PP, h2d_ptn_eta1Phi1Eta2Phi2PP,
                   h2d_npt_eta1Phi1Eta2Phi2PP, h2d_n2_eta1Phi1Eta2Phi2PP,
@@ -1599,7 +1601,7 @@ bool sameDimensions2D(const TH2D* h1, const TH2D* h2)
 
 }
 
-void calculateDptDpt(const TH2D * spp, const TH2D * spn, const TH2D * snp, const TH2D * snn, const TH1D * avgpt1, const TH1D * avgpt2, const Float_t kMinPt, const Float_t kMaxPt, TH2D * p2DptDpt,  TH2D * dptdpt, Int_t nEta, Int_t nPhi) {
+void calculateDptDpt(const TH2D * spp, const TH2D * spn, const TH2D * snp, const TH2D * snn, const TH1D * avgpt1, const TH1D * avgpt2, const Float_t kMinPt, const Float_t kMaxPt, TH2D * p2DptDpt,  TH2D * dptdpt, Int_t nEta, Int_t nPhi,bool flag =true) {
   if (!sameDimensions2D(spp, spn)) return;
   if (!sameDimensions2D(spp, snp)) return;
   if (!sameDimensions2D(spp, snn)) return;
@@ -1608,10 +1610,17 @@ void calculateDptDpt(const TH2D * spp, const TH2D * spn, const TH2D * snp, const
 
   Double_t v1, ev1, v2, ev2, v3, ev3, v4, ev4, v5, ev5;
   Double_t v6, ev6, v7, ev7, p1, p2;
-  Int_t k, k1, k2;
-
-  Int_t lowBinPt1 = avgpt1->GetXaxis()->FindBin(kMinPt +0.01);
-  Int_t highBinPt1 = avgpt1->GetXaxis()->FindBin(kMaxPt - 0.01);
+  Int_t k, k1, k2,lowBinPt1,highBinPt1,lowBinPt2,highBinPt2;
+if(flag){
+  lowBinPt1 = avgpt1->GetXaxis()->FindBin(kMinPt +0.01);
+  highBinPt1 = avgpt1->GetXaxis()->FindBin(kMidPt -0.01);
+  lowBinPt2 = avgpt1->GetXaxis()->FindBin(kMidPt +0.01);
+  highBinPt2 = avgpt1->GetXaxis()->FindBin(kMaxPt - 0.01);}
+  else{
+  lowBinPt1 = avgpt1->GetXaxis()->FindBin(kMidPt +0.01);
+  highBinPt1 = avgpt1->GetXaxis()->FindBin(kMaxPt -0.01);
+  lowBinPt2 = avgpt1->GetXaxis()->FindBin(kMinPt +0.01);
+  highBinPt2 = avgpt1->GetXaxis()->FindBin(kMidPt - 0.01);}
 
   /*  cout << "lowPt1: " << kMinPt << "\t"
        << "highPt1: " << kMaxPt <<  endl;
@@ -1629,7 +1638,9 @@ void calculateDptDpt(const TH2D * spp, const TH2D * spn, const TH2D * snp, const
     x1 = avgpt1->GetXaxis()->GetBinCenter(ipt1);
     sum1     += v1;
     xSum1    += v1 * x1;
-
+  }
+  for (Int_t ipt1 = lowBinPt2; ipt1 <= highBinPt2; ++ipt1)
+  {
     v2 = avgpt2->GetBinContent(ipt1);
     x2 = avgpt2->GetXaxis()->GetBinCenter(ipt1);
     sum2     += v2;

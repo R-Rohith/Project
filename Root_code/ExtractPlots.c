@@ -19,6 +19,7 @@ void ExtractPlots()
         Thist2d=(TH2D*)infile->Get(histname[i]);
         projx=Thist2d->ProjectionX();
         projy=Thist2d->ProjectionY();
+        Thist2d->SetLineWidth(1);
         Thist2d->Draw("SURF3Z");// SPEC a(1,44,180)");
 //        Thist2d->Draw("SURF3 SAME");
         sprintf(stringbffr,"%s.pdf",histname[i]);
