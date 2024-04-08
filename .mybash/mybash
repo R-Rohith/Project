@@ -69,10 +69,10 @@ case $1 in
 #		root outfile.root
 	;;
 	"2")
-		cd ~/Tutorials
+#		cd ~/Tutorials
 #		time o2-practice-slfr2 -b --aod-file AO2D.root
-		time o2-practice-slfr2 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option
-		root AnalysisResults.root
+		time o2-practice-slfr2 $option | o2-analysis-event-selection $option | o2-analysis-track-propagation $option | o2-analysis-timestamp $option | o2-analysis-trackselection $option | o2-analysis-pid-tpc $option | o2-analysis-pid-tpc-base $option | o2-analysis-pid-tof $option | o2-analysis-pid-tof-base $option | o2-analysis-pid-tof-beta $option | o2-analysis-bc-converter $option | o2-analysis-tracks-extra-converter $option | o2-analysis-multiplicity-table $option
+#		root AnalysisResults.root
 	;;
 	"3")
 #		cd ~/Tutorials

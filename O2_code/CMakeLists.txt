@@ -21,5 +21,9 @@ o2physics_add_dpl_workflow(test
                   SOURCES test.cxx
                   PUBLIC_LINK_LIBRARIES O2Physics::AnalysisCore
                   COMPONENT_NAME Practice)
+o2physics_add_dpl_workflow(slfr2
+                  SOURCES slfr2.cxx
+                  PUBLIC_LINK_LIBRARIES O2Physics::AnalysisCore
+                  COMPONENT_NAME Practice)
 
 
