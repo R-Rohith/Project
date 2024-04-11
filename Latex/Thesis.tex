@@ -1,10 +1,31 @@
 % !TeX program = xelatex
-\documentclass[12pt,a4paper,twoside]{article} 
+\documentclass[12pt,a4paper,twoside]{report} 
 %\usepackage{times}
 \usepackage{fontspec-xetex}
+\usepackage{amsmath}
 \usepackage{blindtext}
 \usepackage{geometry}
 \usepackage{anyfontsize}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+\setlength{\arrayrulewidth}{0.5mm}
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.5}
+\hypersetup{
+	frenchlinks=true,
+	linkbordercolor=0 1 1,
+	filebordercolor=0 1 0,      
+	urlbordercolor=0 0 1,
+	pdftitle={R2 \& P2 correlations of identified particles in p-p collisions at $\mathbf{\sqrt{s}=13.6 TeV}$}
+}
+
 \geometry{tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1in,marginparwidth=60pt}
 \setmainfont{Times New Roman}[Path= ./Times-New-Roman/, Extension = .ttf,UprightFont=times-new-roman ,BoldFont=times-new-roman-bold, ItalicFont=times-new-roman-italic, BoldItalicFont=times-new-roman-bold-italic]
 
@@ -12,40 +33,835 @@
 \newcommand{\restoremargin}{\setlength{\headsep}{25pt}\setlength{\textheight}{700pt}}
 \newcommand{\usersetfontsize}[2]{\fontsize{#1}{#2}\selectfont}
 \begin{document}
-\firstpagemargin
+\usersetfontsize{12pt}{18pt}
+\begin{titlepage}
 {
-\centering
-~\\~\\~\\
-\textbf{\fontsize{16pt}{24pt}\selectfont R2 \& P2 correlations of identified particles in p-p collisions at $\sqrt{s}=13.6 TeV$}\\~\\%Title
-\textit{A dissertation submitted for the partial fulfilment of BS-MS dual degree in Physical Sciences}\\~\\~\\%Sub-title
-{R Rohith\\}%Author
-~\\~\\~\\~\\~\\
-{\usersetfontsize{14}{21}Indian Institute of Science Education and Research, Berhampur\\Registration No. : 19106\\Department of Physical Sciences\\}
-{April 2024}\\
-}
-\newpage
+	\centering
+	%use \vspace{length} instead
+	\vspace*{2in}
+	\textbf{\fontsize{16pt}{24pt}\selectfont R2 \& P2 correlations of identified particles in p-p collisions at $\mathbf{\sqrt{s}=13.6 TeV}$}%Title
+	\\ \vspace*{0.25in}
+	\textit{A dissertation submitted for the partial fulfilment of BS-MS dual degree in Physical Sciences}%Sub-title
+	\\ \vspace*{0.5in}
+	{R Rohith}%Author
+	\\ \vspace*{3in}
+	\begin{figure}[H]
+		\centering
+		%\includegraphics[width=0.5\linewidth]{./Images/iiserbprlogo.png}
+	\end{figure}
+	{\usersetfontsize{14}{21}Indian Institute of Science Education and Research, Berhampur\\Registration No. : 19106\\Department of Physical Sciences\\}~\\
+	{April 2024}\\
+}	
+\end{titlepage}
 \pagenumbering{Roman}
 Acknowledgements
 \newpage
-\begin{abstract}
+%\begin{abstract}
 		Hello
-\end{abstract}
+%\end{abstract}
 \newpage
 \pagenumbering{arabic}
-\section{Introduction}\firstpagemargin
-\subsection{Physics of high energy collisions}
-\subsubsection{Hard \& soft processes}
+\chapter{Introduction}\label{Ch:Introduction}
+The field of high-energy physics (HEP) or particle physics is the study of elementary particles and their forces of interaction. Studies in HEP led to the develpoment of the Standard model of particle physics, that describes three of the four known elementary forces and, classifies all the known elementary particles. Experiments in HEP involve conducting high-energy collisions of particles like, electrons, protons, or nuclei, and studying the properties of the ejected particles. The aim is to study the structure and composition of elementary particles like protons, neutrons, electrons, etc. High-energy collisions are created by propelling colliding particles into each other at relativistic speeds, acheived using particle accelerators like the LHC. The trajectory, energy, type, and other properties of the particles provide insight into the state of matter during the collision and the forces acting on it. Two-particle correlators have been a simple and effective tool for studying phenomena like jets, resonance decays, flow, diffusion, jet fragmentation, late-stage hadronisation, and momentum and charge conservation. Two-particle correlators have provided valuable contributions to the study of quark-gluon plasma (QGP). They have so far, detected phenomena like jet quenching and radial flow, that are tell-tale signs of QGP. Studying the two particle correlators of each kind of particle ($\pi$, K, p) will help to understand resonance decays and particle production mechanisms in greater detail. This thesis calculates the R2 \& P2 correlators of: $\pi$-$\pi$, K-K, p-p, $\pi$-K, $\pi$-p, and K-p particle pairs in the transverse momentum range $0.2<p_\mathrm{T}<2.0 GeV/c$. The focus will be on primary particles in the acceptance range of $0<\phi<2\pi$ and $-0.8<\eta<0.8$. This thesis is organised as follows: the rest of chapter \ref{Ch:Introduction} acts as a brief recap of experimental high-energy physics, chapter \ref{Ch:R2P2} defines and explains the R2 \& P2 two-particle correlators, chapter \ref{Ch:Methodology} describes the methods used to carry out the analysis, chapter \ref{Ch:Selections} shows how the particles are filtered and then identified, chapter \ref{Ch:Results} contains the calculated correlations of all the particle pairs, and chapter \ref{Ch:Conclusions} concluding the findings of this thesis and future steps.
+\newpage
+\section{Standard Model}
+The Standard Model of particle physics describes three of the four known elementary forces, and classifies all the known elementary particles. The theory was developed in stages through the 20th century and finalized in the 1970s. According to the theory, all elementary particles can be divided, on the basis of their spin, in to two groups: fermions and bosons. Fermions are patricles that have half-integer spin, they contain two kinds of particles: leptons and quarks. These leptons and quarks may be subdivided into different generations according to their flavour quantum number and mass, but their electric and strong interactions are identical. Bosons are integer spin particles and are of two types, gauge bosons and scalar bosons.
+\subsection{Leptons}
+Leptons have no color charge and they do not take part in strong interactions. They do participate in gravitation, weak interaction, and electromagnetism (except neutrinos) There are six flavours of leptons grouped into three generations, shown below.\\  
+\begin{table}[H]
+	\setlength{\tabcolsep}{2pt}
+	\begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+		\hline
+		\textbf{Generation} & \textbf{Particle} & \textbf{Charge} & \textbf{Symbol} & \textbf{Anti-particle} & \textbf{Charge} & \textbf{Symbol} \\
+		\hline
+		\multirow{2}{*}{First} & Electron & -1 & $e^-$ & Positron & +1 & $e^+$ \\
+		& Electron neutrino & 0 & $\nu_e$ & Electron antineutrino & 0 & $\bar{\nu_e}$ \\
+		\hline
+		\multirow{2}{*}{Second} & Muon & -1 & $\mu^-$ & Antimuon & +1 & $\mu^+$ \\
+		& Muon neutrino & 0 & $\nu_\mu$ & Muon antineutrino & 0 & $\bar{\nu_\mu}$ \\
+		\hline
+		\multirow{2}{*}{Third} & Tauon & -1 & $\tau^-$ & Antitau & +1 & $\tau^+$ \\
+		& Tau neutrino & 0 & $\nu_\tau$ & Tau antineutrino & 0 & $\bar{\nu_\tau}$ \\
+		\hline
+	\end{tabularx}
+\caption{\label{tbl:Leptons}Table of discovered leptons}
+\end{table}
+Among these, electron is the most known lepton and the one with the least mass among charged leptons. Muon and tauons are produced only in high-energy collisions like those involving cosmic rays or particle accelerators, and they quickly dacay into electrons and neutrinos. Neutrinos are neutral in charge and almost massless, and thus do not interact with normal matter and pass through undetected.
+\subsection{Quarks}
+Quarks combine to form hadrons like, protons, neutrons etc. They have an intrinsic property called color charge, and because of the phenomenon of color confinement, quarks can never be found in isolation. Quarks are able to experience all four of the fundamental interactions. There are six flavors of quarks, also divided into three generations.\\
+\begin{table}[H]
+	\setlength{\tabcolsep}{2pt}
+	\begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+		\hline
+		\textbf{Generation} & \textbf{Particle} & \textbf{Charge} & \textbf{Symbol} & \textbf{Anti-particle} & \textbf{Charge} & \textbf{Symbol} \\
+		\hline
+		\multirow{2}{*}{First} & up & $+\frac{2}{3}$ & u & antiup & $-\frac{2}{3}$ & $\bar{\mathrm{u}}$ \\
+		& down & $-\frac{1}{3}$ & d & antidown & $+\frac{1}{3}$ & $\bar{\mathrm{d}}$ \\
+		\hline
+		\multirow{2}{*}{Second} & charm & $+\frac{2}{3}$ & c & anticharm & $-\frac{2}{3}$ & $\bar{\mathrm{c}}$ \\
+		& strange & $-\frac{1}{3}$ & s & antistrange & $+\frac{1}{3}$ & $\bar{\mathrm{s}}$ \\
+		\hline
+		\multirow{2}{*}{Third} & top & $+\frac{2}{3}$ & t & antitop & $-\frac{2}{3}$ & $\bar{\mathrm{t}}$ \\
+		& bottom & $-\frac{1}{3}$ & b & antibottom & $+\frac{1}{3}$ & $\bar{\mathrm{b}}$ \\
+		\hline
+	\end{tabularx}
+\caption{\label{tbl:Quarks}Table of discovered quarks}
+\end{table}
+The up and down quark are the lightest of all the other quarks. The heavier quarks decay rapidly into up and down quarks. Quarks were proven to exist after performing deep-inelastic scattering experiments. The heavier quarks are produced only in interaction with cosmic ray or in particle accelerators.
+\subsection{Gauge bosons}
+Gauge bosons are spin 1 particles, and are the force carriers of the universe. They consist of photon, W \& Z bosons, and gluons. Photons are involved in electromagnetic interactions, whereas the W \& Z bosons are in weak interactions. Gluons are the `force carrier'/`mediator' particles of the strong force. Gluons got its name from its glue-like nature holding the nucleus together. There are eight types of gluons differentiated using color charge (color octet).
+\subsection{Scalar bosons}
+The scalar bosons are spin 0 particles. Only one scalar boson has been discovered, the Higgs boson. It was discovered by the CMS and ATLAS experiments at LHC in 2012. The Higgs boson is a massive scalar boson which has no electric or color charge, and it is very unstable. The Higgs boson is its own antiparticle. <H boson gives the rest mass to W and Z bosons>
+\subsection{Hadrons}
+Hadrons are composite particles made up of different combinations of quarks and held together by gluons. Hadrons are of two types: mesons with even number of quarks (mostly two), and baryons with odd number of quarks (mostly three). Since quarks themselves are fermions, baryons are also fermions whereas, mesons, having even number of quarks, are bosons. Except protons all free hadrons are unstable (or protons take a very long time to decay, more than $10^{34}$ years).\\
+The property of a hadron is determined by the properties of its constituent quarks. For example, proton is made up of two up quarks and one down quark, adding up each of their electric charge (refer table \ref{tbl:Quarks}) we get proton's electric charge as +1. <color confinement>
+ 
+The Standard Model is good, but it can be better. The Standard Model fails to explain the strong CP problem, neutrino oscillations, matter-antimatter asymmetry, and the nature of dark matter and dark energy.%Womersley, J. (February 2005). "Beyond the Standard Model" (PDF). Symmetry Magazine. Archived from the original (PDF) on 2007-10-17. Retrieved 2010-11-23.
+<QCD>\\
+As mentioned earlier the Standard Model can only explain the strong force, weak force, and electromagnetism, and not gravity. Thus further studies are needed and theories made to explain these phenomena, and go Beyond the Standard Model (BSM).\\
+\section{High Energy particle collisions}
+Experiments in high-energy physics involve accelerating particles to relativistic speeds and colliding them with each other and then study the properties of the collision. Particle accelerators, like the Large Hadron Collider (LHC), Relativistic Heavy Ion Collider (RHIC), and Tevatron, are utilized to accelerate particles like electrons, protons, or nuclei (Au/Pb/Zr) to relativistic speeds. The accelerated particles, after reaching a target energy, are made to collide with each other and the properties of ejected particles like their species, charge, momentum, trajectory, etc, are studied.\\
+<Studying these properties of collisions helps us understand high energy physics>\\
+The energy of the collision controls the type of collision that occurs and the physics that can be observed. At very low energies the collision tends to be elastic, but as the energy increases the collision becomes inelastic and leads to increase in density and temperature of particle matter. In the intermediate energy range of 10-100 A.MeV, properties of hot nuclear matter, like nuclear liquid-gas phase transition, is studied. Energies of 100 A.MeV-10 A.GeV are of astrophysical relevance as the physics of neutron stars and supernova explosions can be studied. At ultrarelativistic energies, above 10 A.GeV, we start to see formation of Quark Gluon Plasma.
+The energy of a collision is directly related to the nuclear density during the collisions; higher enegy=higher density.\\
+In the 1970s, deep inelastic collisions experiments on protons revealed the internal structure of nucleons.\\
+\subsection{Hard \& soft processes}
 \subsection{Two particle correlation studies so far}
-\subsection{ALICE, detectors, and analysis}
-\subsection{Why this analysis?}
+Jet quenching was observed using dihadron correlations, by the STAR collaboration. They observed that for Au-Au collisions the correlation at $\Delta\phi=\pi$ was suppressed compared to p-p and d-Au collisions.\\
+The ATLAS experiment reported the presence of a near-side structure at large $\Delta\eta$, popularly known as the long-range ridge.They also reported a double hump structure, which has been found out to be due to different flow harmonics.\\
+In p-p, Pb-Pb, Pb-p collisions ALICE has found the presence of radial flow through the observation of the narrowing of the balance function (a kind of correlation function).\\ They found out that charge balancing occurs within a jet cone and is unaffected by medium expansion.\\
+\section{ALICE, detectors, and analysis}<Mention triger and detection window>\\
+The ALICE (A Large Ion Collider Experiment) Experiment was formed in 1993, and is situated at the Large Hadron Collider (LHC) of CERN, the European Organisation for Nuclear Research, near Geneva, Switzerland. The LHC is the world's largest and most powerful circular particle accelerator. It has a radius of 27 km, and situated 175 m below the surface at the France-Switzerland border.\\
+ALICE is one of the four big experiments at the LHC,and is used, mainly, to study heavy-ion collisions at energies upto 5.36 TeV and investigate the physics of strongly-interacting matter and quark-gluon plasma. The experiment also involves collisions of lighter nuclei across a vast range of energies upto 13.6 TeV for p-p collisions. The ALICE detector setup is specially designed to accurately measure the charge, momentum, and identity, of the huge amount of particles created in a heavy-ion collision.\\
+The ALICE detector setup consists of 11 detectors, where 7 of them are part of the 'central barrel' which covers the whole azhimuth and polar angles $45^\circ-135^\circ$. The central barrel is embedded in a large solenoid magnet of 0.5 Tesla.\\
+<Calorimeters can detect uncharged particles>
+\subsection{Central Barrel Detectors}
+\subsubsection{Inner Tracking System (TPC)}
+This is the first detector a particle would encounter after a collision. It is used to reconstruct the primary and secondary vertices of a particle track, identify charged particles with a low $p_T$ cuttoff and to improve the momentum resolution at high $p_T$. The ITS consists of seven concentric thin detector layers of CMOS pixel sensors, which tracks the trajectory of the particles.
+\subsubsection{Time Projection Chamber (TPC)}
+The TPC detector is the second detector from the beam pipe in the central barrel. It is the primary device used for tracking charged particles and particle identification. It is designed to cope with the highest conceivable charged-particle multiplicities produced in heavy-ion collisions. It has an acceptance range of $2\pi$ in the azhimuthal angle and pseudorapidity $|\eta|<0.9$. The TPC is a big gas-filled cylinder with Gas Electron Multiplier (GEM) detectors at the two endplates. The endplates used to be multi-wire proportional chambers, but were replaced by GEM as it features a continuous readout mode that helps in tracking all tracks produced in the collisions. The two endplates and a central electrode mid-way through the axis creates an electric field in the TPC volume.\\
+Charged particles travelling through the TPC volume ionise the gas along their path, causing the electrons to drift towards the endplates due to the electric field inside the volume. The electrons detected by the GEM detectors in the endplates are used to plot the trajectories of every particles. The TPC data is used to calculate the average energy loss per unit distance ($\frac{dE}{dx}$), and thus use this value along with particle momentum to identify the particle. 
+\subsubsection{Transition Radiation Detector (TRD)}
+The TRD is located located above the TPC. The TRD is specially used for distinguishing electrons from other charged particles. This based on the emission of transition radiation from electrons when it passes through the detector. The TRD is composed of 522 individual detectors filled with a Xenon-CO2 gas mixture. The individdual detectors are arranged in 18 sectors in azhimuth and 30 layers in the longitudinal direction. The detector is 70 cm deep and 7 m long.
+\subsubsection{Time of Flight (TOF) Detector}
+The TOF detctor measure the time each particle takes to reach the detector from the vertex, with a precision better than a tenth of a billionth of a second. The TOF is used to identify particles in the intermediate momentum range. Time measurement from the TOF detector, momentum and track length are used to calculate the particle mass. The TOF detector is based on Multigap Resistive Plate Chambers, and has a time resolution better than 50 ps.
+\subsubsection{Electromagnetic Calorimeter (EMCal)}
+The EMCal is a lead-scintillator sampling calorimeter with an acceptance of $110\deg$ of azhimuth and pseudorapidity $|\eta|<0.7$. The EMCal contains 100,00 individual scintillator tiles.\\
+In the opposite azhimuth of the EMCal there is the Di-jet Calorimeter (DCal), a large lead-scintillator detector with photo-diode readout. This detector in conjuction with the EMCal is used to study back-to-back jets.
+\subsubsection{Photon Spectrometer (PHOS)}
+The PHOS is a hi-res electromagnetic calorimeter which measures the photons emitted from the collision. PHOS has limited acceptance, covers only central rapidity. It uses lead tungstate crystals, that glows or scintillates when striken by high-energy photons, and avalanche photodiodes to measure the glow. The PHOS works in conjunction with a Charged-Particle Veto (CPV) detector, designed to suppress detection of charged particles hitting the front surface of the PHOS.
+\subsubsection{High Momentum Particle Identification Detector (HMPID)}
+The HMPID is used to identify charged particles in the high momentum range. It is a ring imaging cherenkov detector consisting of two main parts: a radiator medium, that emits the Cherenkov radiation, and a photon detector to measuring the radiation.
+\subsection{Forward Detectors}
+\subsubsection{Fast Interaction Trigger (FIT)}
+The FIT has multiple roles in ALICE, it is the fastest trigger, online luminometer, initial indicator of the vertex position, and the forward multiplicity counter. The FIT consists of a large-size scintillator ring and two arrays of Cherenkov radiators with Multichannel Plate - Photomultiplier Tube (MCP-PMT) sensors. The FIT provides the precise collision time used for the TOF-based particle identification.
+\subsubsection{Muon Forward Tracker (MFT)}
+The MFT is a tracking detector which aims to enhance the vertexing capability of the muon spectrometer. The MFT surrounds the beam-pipe, and is postioned along the beam axis between the ITS and the muon spectrometer. A silicon pixel sensor is used as the basic detection element in the MFT.
+\subsubsection{Muon Spectrometer}
+The Muon Spectrometer is used for detecting heavy quark resonances via their decay products: $\mu^{+}$ \& $\mu^{-}$. It detects the muons produced in the forward region of the collision. The detector uses a 'Muon Magnet' to bend the trajectories of the high momentum muons. It has three main parts: front absorber, tracking system, and trigger system; and the magnet lies in the middle of the tracking system.
+\subsubsection{Zero Degree Calorimeter (ZDC)}
+The ZDC is used to measure the energies of the particles travelling along the beam pipe after the collision. These particles are usually the spectator nucleons, and measuring their energy gives a good estimate of the number participants in the collision and thus the centrality of the collision. A ZDC is placed on either side of the collision point. On each side the ZDC has two component detectors, one for measuring neutron energy and the other for proton energy. The detector is based on the Cherenkov radiation phenomena.
+\subsection{ALICE O2 (Online-Offline)}
+A heavy-ion collision produces tens of thousands of particles, which are detected by the detectors above. This when considered with the high luminosity of the LHC means that a huge (petabytes) amount of data is produced by the detector which then analysts have to then analyse for understanding the physics.\\<Mention how data is collected reconstructed and stored>
+
+\chapter{R2 \& P2 correlators}\label{Ch:R2P2}
+\section{Kinematic variables}
+Before defining the correlators, let's define the coordinates that'll be used to describe particle trajectories. We will be mainly using three variables to define a trajectory: pseudorapidity ($\eta$), azhimuthal angle ($\phi$), and transverse momentum ($p_T$).\\
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{./Images/Variables.pdf}
+	\caption{Schematic representation of particle collision and coordinate systems}
+	\label{fig:Variables}
+\end{figure}
+In figure \ref{fig:Variables}, the colliding protons travel along the beam axis which is in the z direction. After collision, particles are ejected in all directions. The component of momentum perpendicular to the beam axis is called a particle's transverse momentum ($p_T$). The angle between the $p_T$ vector and the x coordinate is defined as the azhimuthal angle. The pseudorapidity of a particle is defined as,
+\[\eta=-\ln\left(\tan\left(\frac{\theta}{2}\right)\right)\]
+The azhimuthal angle ($\phi$) can be calculated as,
+\[\phi=\tan^{-1}\left(\frac{p_y}{p_x}\right)\]
+\section{Basic idea of two-particle correlators}
+First consider the situation of a parent particle decaying into two daughter particles (figure \ref{fig:v-vs-theta}). If the velocity of the parent is zero, as a consequence of the conservation of angular momentum, the daughter particles will decay and eject out in opposite directions. Using the same conservation of momentum arguement, if the parent has some velocity, the daughter particles will be ejected out at an angle $\theta<\pi$. If the parent is travelling at relativistic speeds, the daughters will be ejected at an angle $\theta\approx0$.
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{./Images/Decay.pdf}
+	\caption{Trajectories of a pair of daughter particles after decay, when the parent is stationary (left), travelling at small velocity (center), and at relativistic speeds (right).}
+	\label{fig:v-vs-theta}
+\end{figure}
+Now consider the collision in figure \ref{fig:Examples::example1}, we shall focus only on those two jets of particles ejected from the collision. Figure \ref{fig:Examples::example2} shows the two-particle correlation vs the azhimuthal angle between a pair of particles. The correlation plot has two peaks, a near-side peak (at $\Delta\phi=0$) taller than the far-side peak (at $\Delta\phi=\pi$). The near peak represents the correlation between the particles of the same jet. The far side peak represents the correlation between particles from jets travelling back-to-back. All particles in a jet are correlated with each other as they would have been probably decay products of a parent travelling in the direction of the jet. To conserve momentum, the daughters end up travelling as a jet of particles in the same direction. Right after the collision matter is ejected in all directions conserving momentum, so there will also be a jet travelling approximately in the opposite direction as the previous jet. Thus the particles in this second jet are correlated with the particles in the first jet, and is shown as the far-side peak.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{./Images/example1.pdf}
+		\caption{Two jets from a particle collision}
+		\label{fig:Examples::example1}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{./Images/example2.pdf}
+		\caption{Correlation vs $\Delta\phi$}
+		\label{fig:Examples::example2}
+	\end{subfigure}
+	\caption{Figure depicting jets ejected from a collision, and the correlation expected from such collisions.}
+	\label{fig:Examples}
+\end{figure}
+\section{Definition}
+The R2 correlation  is defined as,
+\begin{equation}\label{eq:R2(e1p1e2p2)}
+	R2(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)}{\rho_1(\eta_1,\phi_1)\rho_1(\eta_2,\phi_2)}-1
+\end{equation}
+\begin{equation}\label{eq:R2(dedp)}
+	R2(\Delta\eta,\Delta\phi)=\frac{1}{\Omega(\Delta\eta)}\int R2(\eta_1,\phi_1,\eta_2,\phi_2)\delta(\Delta\eta-\eta_1+\eta_2)\delta(\Delta\phi-\phi_1+\phi_2)d\eta_1 d\phi_1 d\eta_2 d\phi_2
+\end{equation}
+The P2 correlator is defined as,
+\begin{equation}\label{eq:P2(e1p1e2p2)}
+	P2(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\langle\Delta p_T \Delta p_T \rangle(\eta_1,\phi_1,\eta_2,\phi_2)}{\langle p_T\rangle^2}
+\end{equation}
+	where, $\langle\Delta p_T \Delta p_T\rangle(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\int_{p_{T,min}}^{p_{T,max}}\Delta p_{T,1}\Delta p_{T,2}\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}{\int_{p_{T,min}}^{p_{T,max}}\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}$
+\begin{equation}\label{eq:P2(dedp)}
+	P2(\Delta\eta,\Delta\phi)=\frac{1}{\Omega(\Delta\eta)}\int P2(\eta_1,\phi_1,\eta_2,\phi_2)\delta(\Delta\eta-\eta_1+\eta_2)\delta(\Delta\phi-\phi_1+\phi_2)d\eta_1 d\phi_1 d\eta_2 d\phi_2
+\end{equation}
+Here, $\rho_1(\eta_1,\phi_1)$ is the single particle density at $(\eta_1,\phi_1)$, and $\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)$ is the two particle density, i.e. the density of particles simultaneously ejected, at $(\eta_1,\phi_1)$ \& $(\eta_2,\phi_2)$.\\
+
+P2 has some advantages over R2. P2 is more sensitive to angular orering than R2.<read more>\\
+P2 is weighted by $p_\mathrm{T}$, which makes it sensitive to the hardness of the collision. Hardness is the measure of what kind of momentum pair the particles are (high $p_T$ - high $p_T$ > high $p_T$ - low $p_T$ > low $p_T$ - low $p_T$ > low $p_T$ - low $p_T$). 
+\subsection{Effect of efficiency}
+The R2 \& P2 correlators were chosen for this analysis as they are independent of detector efficiency. Let's prove that now.\\
+Suppose the efficiencies for detecting single \& pairs of particles are $\epsilon_1$ \& $\epsilon_2$, respectively, and the single-particle \& two-particle densities measured by the detector is $N_1(\phi_1,\eta_1)$ \& $N_2(\phi_1,\eta_1,\phi_2,\eta_2)$, respectively. Then,
+\begin{equation}\label{eq:rho1rho2eff}
+	\rho_1(\phi_1,\eta_1)=\frac{N_1(\phi_1,\eta_1)}{\epsilon_1}\ \ \ \rho_2(\phi_1,\eta_1,\phi_2,\eta_2)=\frac{N_2(\phi_1,\eta_1,\phi_2,\eta_2)}{\epsilon_2}
+\end{equation}
+\\
+Substituting this in equation \ref{eq:R2(e1p1e2p2)} we can see,
+\begin{equation}
+	R2(\phi_1,\eta_1,\phi_2,\eta_2)=\frac{N_2(\phi_1,\eta_1,\phi_2,\eta_2)/\epsilon_2}{[N_1(\phi_1,\eta_1)/\epsilon_1][N_1(\phi_2,\eta_2)/\epsilon_1]}-1=\frac{N_2(\phi_1,\eta_1,\phi_2,\eta_2)}{N_1(\phi_1,\eta_1)N_1(\phi_2,\eta_2)}-1
+\end{equation}
+\\
+This proves that R2 is independent of detector efficiency.\\
+
+In the definition of, P2, notice that P2 depends on $\langle\Delta p_T \Delta p_T\rangle(\eta_1,\phi_1,\eta_2,\phi_2)$ and $\langle p_T\rangle$. 
+Substituting equation \ref{eq:rho1rho2eff} into the numerator of equation \ref{eq:P2(e1p1e2p2)},
+\begin{align}\nonumber
+	\langle\Delta p_T \Delta p_T\rangle(\eta_1,\phi_1,\eta_2,\phi_2)&=\frac{\int_{p_{T,min}}^{p_{T,max}}\Delta p_{T,1}\Delta p_{T,2}[N_2(\eta_1,\phi_1,\eta_2,\phi_2)/\epsilon_2]d p_{T,1}d p_{T,2}}{\int_{p_{T,min}}^{p_{T,max}}[N_2(\eta_1,\phi_1,\eta_2,\phi_2)/\epsilon_2]d p_{T,1}d p_{T,2}}\\&=\frac{\int_{p_{T,min}}^{p_{T,max}}\Delta p_{T,1}\Delta p_{T,2}N_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}{\int_{p_{T,min}}^{p_{T,max}}N_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}
+\end{align}
+Thus $\langle\Delta p_T \Delta p_T\rangle(\eta_1,\phi_1,\eta_2,\phi_2)$ is independent of detector efficiency. Now if $\langle p_T\rangle$ remains approximately constant through every collision, then P2 becomes independent of detector efficiency.
+\chapter{Analysis methodolgy}\label{Ch:Methodology}
+First the Data is filtered. Then the particles are identified. Then correlations are calculated for each particle pair.\\
+This analysis was performed on Run3 data from the ALICE detector taken in the year 2022 (LHC22o\_pass4\_minBias\_medium).\\ 
+After event \& track selection, and particle identifiaction, all that's left is to calculate the two particle correlators. Recall equations \ref{eq:R2(e1p1e2p2)} \& \ref{eq:P2(e1p1e2p2)}, to calculate R2 \& P2 we need to calculate $\rho_1(\eta,\phi)$, $\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)$, and $\langle\Delta p_T\Delta p_T\rangle(\eta_1,\phi_1,\eta_2,\phi_2)$.\\
+$\rho_1(\eta,\phi)$ is stored using a 2-D histogram, with $\eta$ as the x-axis (24) and $\phi$ as the y-axis (36), that is filled with the number of particles at $\eta$ and $\phi$. $\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)$ is also stored in a 2D histogram filled with the number of pairs of particles in a collision at $(\eta_1,\phi_1)$ and $(\eta_2,\phi_2)$. <this might be pointless>\\
+
+In this analysis we find the R2 \& P2 correlations for different identified particle pairs, $\pi$-$\pi$, K-K, p-p, etc. To better understand the particle production mechanisms, for every identified particle pair, we shall calculate R2 \& P2 of unlike-sign pairs (US) and like-sign pairs (LS). The US correlation is the correlation between a positive and a negative particle, and the LS correlation is the correlation between two positive or two negative particles. In our analysis we calculate the correlations of negative pair particles ($O^{--}$) and positive pair particles ($O^{++}$), and the average them to get LS correlation. In addition to this we shall also calculate charge-independent (CI) and charge-dependent (CD) correlations. These are calculated using the following formula,
+\begin{equation*}
+	\mathrm{CI}=\frac{\mathrm{US}+\mathrm{LS}}{2}\ , \ \ \mathrm{CD}=\frac{\mathrm{US}-\mathrm{LS}}{2}
+\end{equation*}
+The CI correlation is the average of the US and LS correlations <signifiance>. It is observed that an equal number of positive and negative particles with a similar $p_T$ spectra is produced at LHC energies. This implies that azhimuthal collectivity and momentum conservation affects US and LS correlations equally. The CD correlation being the difference between US and LS is thus not affected by azhimuthal collectivity and momentum conservation, it is sensitive to only charged pair production and diffusion processes.
+\chapter{Event \& track selection, and Particle IDentification}\label{Ch:Selections}
+\section{Event \& track selection}
+As mentioned earlier, the detector detects all the particles passing through it during the time frame of the collision. During which, particles can also be emitted from collisions with beam gas, beam pipe, or interaction with detectors. Particles emitted from such collisions should not be used for calculating correlations. To identify and reject all particles from such collisions and badly-tracked particles, we use event selection and track selection criteria, respectively.\\ 
+
+Only those collisions that pass the following event selection criteria are accepted to calculate the correlation.
+\begin{itemize}[label=$\bullet$]
+	\item Event selection decision 'sel8'
+	\item $|$Collision vertex(z-axis)$| < 10$cm
+\end{itemize}
+<Explain event sel descision 8>. Only collisions with their centers between -10 cm to 10 cm are accepted because in collisions beyond this range the particles will not be detected with an acceptable efficiency.\\
+
+From the selected events, tracks are filtered on the basis of a track selection criteria as shown,
+\begin{itemize}[label=$\bullet$]
+	\item $0.2\ GeV/c<p_T<2.0\ GeV/c$
+	\item it is a 'GlobalTrack':
+	\begin{itemize}
+		\item Number of crossed rows in TPC $>$ 70
+		\item Ratio of crossed rows over findable clusters TPC $>$ 0.8
+		\item $\chi^2$ per cluster TPC $<$ 4.0
+		\item $\chi^2$ per cluster ITS $<$ 36.0
+		\item Require TPC refit
+		\item Require ITS refit
+		\item DCA to vertex z $<$ 2.0
+		\item DCA to vertex xy  $<0.0105*0.035/p_T^{1.1}$
+		\item Atleast one hit in 3 innermost ITS layers
+		\item $0.1\ GeV/c<p_T<10.0\ GeV/c$
+		\item $|\eta|<0.8$
+	\end{itemize}
+\end{itemize}
+The 'GlobalTrack' criteria ensures that the particle has been tracked properly, and the DCA conditions ensure that the particle is a primary particle and not a daughter from a resonance decay.
+After the event \& track selection, the tracks/particles are identifed as $\pi$, K, p, or unidentified/others.
+\section{PID}
+In ALICE, particles are identified, mainly, using data from the TPC and TOF detectors. For every track, if properly detected, the TPC can measure the energy loss per unit path($\langle{ \frac{dE}{dx}}\rangle$) of the particle. Plotting $\langle{ \frac{dE}{dx}}\rangle$ of each track against its transverse momentum, we get figure<>. The TOF detector on the other hand measures the time a particle takes to reach the detector from the collision vetrex, from which $\beta$ of a particle is calculated. Plotting $\beta$ vs momentum we get figure<>. The different bands of high density hints how the particles can be identified.\\
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/1/BB.pdf}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/1/Beta.pdf}
+	\end{subfigure}
+\end{figure}
+The different regions of high densities correspond to different species of particles. The Bethe-Bloch formula, equation \ref{eq:Bethe-Bloch}, defines the relation between momentum and $\langle{ \frac{dE}{dx}}\rangle$ for a particle of mass $m$ and charge $z$. Using the values of $m$ and $z$ of the different particles ($\pi$, K, \& p), in the Bethe-Bloch formula we can create a <p> vs $\langle{ \frac{dE}{dx}}\rangle$ plot. Super-imposing the previous two plots we get the plot in figure<>, where the lines each represent a species of particle. Closer a track/particle lies near a line, more probable it is to be that respective species of particle. Similarily, a plot can be created using the equation for $\beta$ as a function of momentum and rest mass, and then superimposed to get figure<>.
+\begin{align}\label{eq:Bethe-Bloch}
+	-\langle\frac{dE}{dx}\rangle=\frac{4\pi}{m_{e}c^2}\cdot\frac{nz^2}{\beta^2}\cdot(\frac{e^2}{4\pi\varepsilon_0})^2\cdot[\ln(\frac{2m_ec^2\beta^2}{I\cdot(1-\beta^2)})-\beta^2]
+	\\\nonumber\\\nonumber
+	n=\frac{N_A\cdot Z\cdot\rho}{A\cdot M_u}
+\end{align}
+Here, $m_e$ is the rest mass of electron, $e$ is the charge of electron,  $n$ is the electron density of the TPC gas, $z$ is the atomic number of the TPC gas, $\varepsilon_0$ is the electric permittivity of the TPC gas, and $I$ is its mean excitation energy. $n$ is the electron density of the gas, $N_a$ is Avogadro number, $Z$ the atomic number, $\rho$ is density, $A$ is relative atomic mass, and $M_u$ is the Molar mass constant.
+\begin{equation}
+	\beta=\frac{v}{c}=\frac{p}{\gamma mc}=\frac{p}{\sqrt{m^2c^2+p^2}}\ , \ \
+	\gamma=\frac{1}{\sqrt{1-\frac{v^2}{c^2}}}
+\end{equation}
+Where, $v$ is the velocity, $m$ is the rest mass, and $p$ the momentum of the particle.
+\\
+
+The closer a point lies to a line, higher the probablity that the corresponding track is the kind of particle represented by the line. To quantify the closeness of a track to the line, the $n\sigma$ value (defined below) is used. If we plot the $n\sigma$ value, for a particle species, of all tracks against their momentum, the high density region centered around $n\sigma=0$ consists of the required particles.
+\begin{equation}
+	N\sigma=\frac{\mathrm{Signal}_\mathrm{measured}-\mathrm{Signal}_\mathrm{expected}}{\sigma}
+\end{equation}
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Nsigmatpcpi.pdf}
+		\caption{Pion $N\sigma_\mathrm{TPC}$ of all charged particles}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Nsigmatofpi.pdf}
+		\caption{Pion $N\sigma_\mathrm{TOF}$ of all charged particles}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Nsigmatpcpr.pdf}
+		\caption{Proton $N\sigma_\mathrm{TPC}$ of all charged particles}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Nsigmatofpr.pdf}
+		\caption{Proton $N\sigma_\mathrm{TOF}$ of all charged particles}
+	\end{subfigure}
+	\caption{}
+\end{figure}
+To correctly identify the particles in the whole momentum range, momentum dependent $n\sigma$ cuts are used such that only the correct particles are selected.\\
+We shall use TPC to identify the particles across the whole momentum range. But, there's one issue. In figures<>, notice that the particles merge after certain momentum, $\pi$ and K merge at 0.6 GeV/c, and ($\pi+\mathrm{K}$) \& p merges at 1.0 GeV/c in the TPC. We solve this by identifying the particles using TPC and TOF, but only when they merge. So after the earlier mentioned momentum points, $n\sigma_\mathrm{TOF}$ shall also be used to differentiate the particles. TOF has greatly lesser efficiency than TPC, as not all of the particles (especially the low momentum particles) are not able to reach the TOF detector. Thus it is to be noted that although using both TPC and TOF cuts for the whole momentum range will give better purity in identification, the efficiency will be reduced considerably.
+\\
+In this analysis, the following cuts were used to identify $\pi$, K, \& p:\\
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{Pion} \\
+		\hline
+		$p_T\ (GeV/c)$ & $N\sigma_\mathrm{TPC}$ cut & use TOF & $N\sigma_\mathrm{TOF}$ cut \\
+		\hline
+		0.2 - 0.6 & 2.5 & No & - \\
+		0.6 - 2.0 & 2.5 & Yes & 2.5 \\
+		\hline
+	\end{tabular}
+\\\vspace*{1cm}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{Kaon} \\
+		\hline
+		$p_T\ (GeV/c)$ & $N\sigma_\mathrm{TPC}$ cut & use TOF & $N\sigma_\mathrm{TOF}$ cut \\
+		\hline
+		0.2 - 0.45 & 3 & No & - \\
+		0.45 - 0.55 & 1 & No & - \\
+		0.55 - 0.6 & 0.6 & No & -\\
+		0.6 - 2.0 & 2 & Yes & 2 \\
+		\hline
+	\end{tabular}
+\\\vspace*{1cm}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{Proton} \\
+		\hline
+		$p_T\ (GeV/c)$ & $N\sigma_\mathrm{TPC}$ cut & use TOF & $N\sigma_\mathrm{TOF}$ cut \\
+		\hline
+		0.2 - 0.85 & 2.2 & No & - \\
+		0.85 - 1.1 & 1 & No & - \\
+		1.1 - 2.0 & 2 & Yes & 2.2 \\
+		\hline
+	\end{tabular}
+\caption{\label{tbl:pidcuts}$N\sigma$ cuts for identifying pions, kaons, and protons}
+\end{table}
+Whenever TOF cuts need to be used first check if the particle is detected in the TOF detector, if its not detected the particle should be rejected.
+\subsection{Quality Assurance of PID}
+Here we shall calculate how well the PID cuts were able to identify the particles. Figures \ref{Pion_nsigma}, \ref{Kaon_nsigma}, \ref{Proton_nsigma} show the $N\sigma$ distribution, after applying $p_{T}$-dependent cuts, of the particles that are identified to be a pion, kaon, or proton. 
+\begin{figure}[H]
+	\begin{subfigure}{\linewidth}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcpi.pdf}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofpi.pdf}
+	\caption{Data}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTPC_pi.pdf}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTOF_pi.pdf}
+	\caption{MC}
+	\end{subfigure}
+	\caption{\label{Pion_nsigma}$N\sigma_\mathrm{TPC}\&N\sigma_\mathrm{TOF}$ distribution of Pions after applying cuts}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}{\linewidth}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcka.pdf}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofka.pdf}
+	\caption{Data}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTPC_ka.pdf}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTOF_ka.pdf}
+	\caption{MC}
+	\end{subfigure}
+	\caption{\label{Kaon_nsigma}$N\sigma_\mathrm{TPC}\&N\sigma_\mathrm{TOF}$ distribution of Kaons after applying cuts}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}{\linewidth}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tpcpr.pdf}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/tofpr.pdf}
+	\caption{Data}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTPC_pr.pdf}
+	\includegraphics[width=0.49\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCNsigmaTOF_pr.pdf}
+	\caption{MC}
+	\end{subfigure}
+	\caption{\label{Proton_nsigma}$N\sigma_\mathrm{TPC}\&N\sigma_\mathrm{TOF}$ distribution of Protons after applying cuts}
+\end{figure}
+A few things to notice from the above figures, the reduction in particle density while using both TPC and TOF to identify particles can be seen clearly. In the $N\sigma_\mathrm{TOF}$ plots, we can clearly see the TOF cuts coming into play after the particles merge in the TPC.
+The efficiency and the purity for the identified particles are calculated and plotted below in figures \ref{fig:efficiency} \& \ref{fig:purity}. The efficiency is calculated as,
+\[\mathrm{Efficiency}=\frac{N_{\mathrm{identified}}}{N_{\mathrm{truth}}}\]
+The purity is calculated as,
+\[\mathrm{Purity}=\frac{N_{\mathrm{pure}}}{N_{\mathrm{identified}}}\]
+, where $N_\mathrm{pure}$ is the number of tracks that have been identified correctly.
 \newpage
-\section{R2 \& P2 correlators}\firstpagemargin
-\newpage
-\section{Analysis methodolgy}\firstpagemargin
-\newpage
-\section{Event \& track selection, and Particle Identification}\firstpagemargin
-\newpage
-\section{Results}\firstpagemargin
-\newpage
-\section{Discussion and Conclusions}\firstpagemargin
+\begin{figure}[H]
+	\begin{subfigure}{\linewidth}
+	\begin{subfigure}{0.49\linewidth}
+	\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPIDEfficiency1_pi.pdf}
+	\caption*{$0.2\leq p_T \leq 0.6$GeV/c}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+	\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPIDEfficiency2_pi.pdf}
+	\caption*{$0.6\leq p_T \leq 2.0$GeV/c}
+	\end{subfigure}
+	\caption{Pion}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+	\begin{subfigure}{0.49\linewidth}
+	\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPIDEfficiency1_ka.pdf}
+	\caption*{$0.2\leq p_T \leq 0.6$GeV/c}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+	\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPIDEfficiency2_ka.pdf}
+	\caption*{$0.6\leq p_T \leq 2.0$GeV/c}
+	\end{subfigure}
+	\caption{Kaon}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+	\begin{subfigure}{0.49\linewidth}
+	\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPIDEfficiency1_pr.pdf}
+	\caption*{$0.2\leq p_T \leq 1.1$GeV/c}
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+	\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPIDEfficiency2_pr.pdf}
+	\caption*{$1.1\leq p_T \leq 2.0$GeV/c}
+	\end{subfigure}
+	\caption{Proton}
+	\end{subfigure}
+	\caption{\label{fig:efficiency}Efficiency in identification of particles}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}{\linewidth}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity1_pi.pdf}
+			\caption*{TPC only}
+		\end{subfigure}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity2_pi.pdf}
+			\caption*{TPC$\land$TOF}
+		\end{subfigure}
+		\caption{Pion}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity1_ka.pdf}
+			\caption*{TPC only}
+		\end{subfigure}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity2_ka.pdf}
+			\caption*{TPC$\land$TOF}
+		\end{subfigure}
+		\caption{Kaon}
+	\end{subfigure}
+	\begin{subfigure}{\linewidth}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity1_pr.pdf}
+			\caption*{TPC only}
+		\end{subfigure}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/MC/Original/MCPurity2_pr.pdf}
+			\caption*{TPC$\land$TOF}
+		\end{subfigure}
+		\caption{Proton}
+	\end{subfigure}
+	\caption{\label{fig:purity}Purity of identified particles}
+\end{figure}
+Now the effect of using both TPC and TOF is obvious, it increases purity but significantly reduced efficiency in identification. Also the effect of the more restrictive cuts can be seen in figure \ref{fig:efficiency} for kaon and proton where the efficiency reduces as the cuts become more restrictive.
+\chapter{Results}\label{Ch:Results}
+After identification of particles, the R2 \& P2 correlations are calculated for $\pi$-$\pi$, K-K, \& p-p pairs and are presented in sections<>,<>,and<> respectively. The correlations are calculated for unlike-sign(+-) pairs and like-sign(-\-\&++) pairs. The delta-peaks at $(\Delta\eta=0,\Delta\phi=0)$ are ignored for now.
+In general the far peak is more significant in P2 than R2.
+\section{Pion pair correlations}
+\subsection{Unlike-sign correlations}
+The near peak in R2 seems to be very similar to the near peak that is observed for charged particles. The far-peak in R2 also features a dip at $\Delta\phi=\pi$.
+This same dip can be seen in P2. Compared to R2, in P2 the near peak is thinner, which is expected<pls explain>. A major difference in P2 is the presence of ridges that can be seen as the multiple peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025\&\pm1.43$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Like-sign correlations}
+The near peak in both R2 \& P2 is narrower compared to unlike-sign correlation. The far peak here doesn't feature the dip seen earlier, although in P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features more prominent ridges at $\Delta\eta=\pm1.025\&\pm1.43$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Independent correlations}
+We observe, in R2, a near peak that's wide in the $\Delta\eta$ projection and narrower in the $\Delta\phi$ projection. In P2 ,we still see the presence of the ridges. The dip structure in the far-peak is considerably shallow this time.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Dependent correlations}
+A sharp dip is observed in the near peak at $(\Delta\phi=0,\Delta\eta=0)$ in both R2 \& P2. The far peak also has a significant dip in both cases. The ridges observed previously in P2 is considerbaly muted this time.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\section{Kaon pair correlations}
+\subsection{Unlike-sign correlations}
+The near peak in both R2 \& P2 seems to be very different.<more on difference> The far-peak in R2 \& P2 also features a dip at $\Delta\phi=\pi$. In P2 also has the presence of ridges that can be seen as the multiple peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025\&\pm1.43$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Like-sign correlations}
+The near peak in both R2 \& P2 is narrower compared to unlike-sign correlation. The far peak in the $\Delta\phi$ projections is more prominent than in unlike-sign correlations, and it doesn't feature the dip seen earlier, although in P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features more prominent ridges at $\Delta\eta=\pm1.025\&\pm1.43$. The R2 correlation seems to have an overall concaveness with the minimum at $\Delta\eta=0$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Independent correlations}
+The near peak in R2 \& P2 retains the same unique structure. In the $\Delta\phi$ projections we see that dip in the far peak is absent in P2.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Dependent correlations}
+The correlations have almost similar structure to charge-independent correlations. The far peak in P2 now features the dip.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\section{Proton pair correlations}
+\subsection{Unlike-sign correlations}
+The near peak in R2 seems to be wider at the top compared to the near peak that is observed for charged particles. The far-peak seems to be absent in R2. Although in P2, the far peak features a shallow dip at $\Delta\phi=\pi$.
+P2 again has the presence of ridges that can be seen as peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025$. At $\Delta\eta=\pm1.43$, there does seem to be a structure.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Like-sign correlations}
+Both R2 \& P2 has an overall concave shape with the minimum at $\Delta\eta=0$. Most notable feature is the absence of a discernable near-peak. The far peak, thus, is the most prominent feature in both R2 \& P2. In P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features the previous ridges at $\Delta\eta=\pm1.025$, but also a new ridge at $\Delta\eta=0.4$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Independent correlations}
+The R2 \& P2 correlations now seem to have the usual shape, with exception being the ridges in P2.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Dependent correlations}
+The near peak in R2 features a slight dip visible in the $\Delta\eta$ projection. P2 features a sharp dip at $(\Delta\eta=0,\Delta\phi=0)$. R2 doesn't have the far peak, and in P2 the far-peak is small and features a dip at $\Delta\eta=0$. The ridges seen earlier in P2 are absent now.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\section{Pion-kaon pair correlations}
+\subsection{Unlike-sign correlations}
+The R2 correlation is similar to the R2 correlation of $\pi-\pi$ pairs. Although the near peak is wider and more rounder at the top in the $\Delta\eta$ projection, and the far peak has a dip in the center, and two peaks at<>, and two sharp dips at<>. P2 has a narrow near side peak and ridges, in the $\Delta\eta$ projection, at<>. The near peak has a sudden rise at<>. The far peak features a shallow dip at $\Delta\phi=\pi$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Like-sign correlations}
+Again the R2 correlation is similar to that of $\pi-\pi$, with the near peak being narrower and the far peak being more prominent thatn in unlike-sign correlations. The P2 correlation has ridges at <>, and the far peak peak has two additional peak-like structures at <>.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Independent correlations}
+The R2 far peak here has a similar structure to what was seen in the far peak of R2:unlike-sign. The near peak in P2 rises sharply from $|\Delta\phi|=1$, and is narrow.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Dependent correlations}
+The near peaks in both R2 and P2 have a unique structure, the top has a wide shallow dip, and a delta dip at $(\Delta\phi=0,\Delta\eta=0)$. The far peak is absent in R2. P2 has valleys at $|\Delta\eta|\approx1$, and a small far-side peak.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\section{Kaon-proton pair correlations}
+\subsection{Unlike-sign correlations}
+R2 has a shorter near peak and, in the $\Delta\eta$ projection the peak is not smooth, probably from the contribution of kaons. The far peak in R2 has a dip at $\Delta\phi=\pi$ and a shallower dip in P2.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Like-sign correlations}
+R2 has a cncave shape in general, and in the $\Delta\phi$ projection the near peak is significantly smaller making the far peak more prominent. Although in the 2D plot, notice that the far peak is more like a ridge along $\Delta\phi=\pi$. In P2, the far peak has to additional structures.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Independent correlations}
+R2 and P2 are very similar to the unlike-sign correlations, with the only difference being the far peak in P2 now doesn't have the dip at $\Delta\phi=\pi$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Dependent correlations}
+The far peak in both R2 \&  P2 has a dip at $\Delta\phi=\pi$, and the near peak in P2 has a sharp dip at $\Delta\eta=0,\Delta\phi=0$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\section{Pion-proton pair correlations}
+\subsection{Unlike-sign correlations}
+The far peak in R2 has a dip at $\Delta\phi=\pi$, and in P2 the far peak has a shallower dip.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Like-sign correlations}
+The far peak in P2 has additional structures at<>.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Independent correlations}
+The far peak in R2 has a flat top, whereas in P2 the far peak is more prominent.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\subsection{Charge-Dependent correlations}
+In both R2 \& P2 the near peak in flat on top and features a sharp dip at $\Delta\eta=0,\Delta\phi=0$, and the far peak is small and also has a sharp dip at $\Delta\phi=\pi$.
+\begin{figure}[H]
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.49\linewidth}
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}\\
+		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}\\
+	\end{subfigure}
+	\caption{Hey}
+\end{figure}
+\chapter{Discussion and Conclusions}\label{Ch:Conclusions}
 \end{document}
