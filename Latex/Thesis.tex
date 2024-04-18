@@ -61,7 +61,7 @@
 \vspace*{1in}
 {\centering\Large \textbf{Declaration}\\}
 \vspace*{0.5in}
-The work presented in this dissertation has been carried out by me under the guidance of Dr. Sadhana Dash at the Indian Institute of Technology, Bombay. This work has not been submitted in part or in full for a degree, a diploma, or a fellowship to any other university or institute. Whenever contributions of others are involved, every effort is made to indicate this clearly, with due acknowledgement of collaborative research and discussions. This thesis is a bona fide record of original work done by me and all sources listed within have been detailed in the bibliography.
+The work presented in this dissertation has been carried out by me under the guidance of \textbf{Dr. Sadhana Dash} at the \textbf{Indian Institute of Technology, Bombay}. This work has not been submitted in part or in full for a degree, a diploma, or a fellowship to any other university or institute. Whenever contributions of others are involved, every effort is made to indicate this clearly, with due acknowledgement of collaborative research and discussions. This thesis is a bona fide record of original work done by me and all sources listed within have been detailed in the bibliography.
 \vspace*{2.5in}
 \begin{flushright}
 	Candidate: R Rohith\\
@@ -89,10 +89,12 @@ Certifacte by supervisor
 \pagenumbering{arabic}
 \pagestyle{headings}
 \chapter{Introduction}\label{Ch:Introduction}
-The field of high-energy physics (HEP) or particle physics is the study of elementary particles and their forces of interaction. Studies in HEP led to the develpoment of the Standard model of particle physics, that describes three of the four known elementary forces and, classifies all the known elementary particles. Experiments in HEP involve conducting high-energy collisions of particles like, electrons, protons, or nuclei, and studying the properties of the ejected particles. The aim is to study the structure and composition of elementary particles like protons, neutrons, electrons, etc. High-energy collisions are created by propelling colliding particles into each other at relativistic speeds, acheived using particle accelerators like the LHC. The trajectory, energy, type, and other properties of the particles provide insight into the state of matter during the collision and the forces acting on it. Two-particle correlators have been a simple and effective tool for studying phenomena like jets, resonance decays, flow, diffusion, jet fragmentation, late-stage hadronisation, and momentum and charge conservation. Two-particle correlators have provided valuable contributions to the study of quark-gluon plasma (QGP). They have so far, detected phenomena like jet quenching \cite{Ref:jetQ-paper1}\cite{Ref:jetQ-paper2} and radial flow\cite{Ref:flow-paper}, that are tell-tale signs of QGP. Studying the two particle correlators of each kind of particle ($\pi$, K, p) will help to understand resonance decays and particle production mechanisms in greater detail. This thesis calculates the R2 \& P2 correlators of: $\pi$-$\pi$, K-K, p-p, $\pi$-K, $\pi$-p, and K-p particle pairs in the transverse momentum range $0.2<p_\mathrm{T}<2.0 GeV/c$. The focus will be on primary particles in the acceptance range of $0<\phi<2\pi$ and $-0.8<\eta<0.8$. The thesis is organised as follows: the rest of chapter \ref{Ch:Introduction} acts as a brief on high-energy physics and ALICE, chapter \ref{Ch:R2P2} defines and explains the R2 \& P2 two-particle correlators, chapter \ref{Ch:Methodology} describes the methods used to carry out the analysis, chapter \ref{Ch:Selections} shows how the particles are filtered and then identified, chapter \ref{Ch:Results} contains the calculated correlations of all the particle pairs, and chapter \ref{Ch:Conclusions} concluding the findings of this thesis and future steps.
+The field of high-energy physics (HEP) or particle physics is the study of elementary particles and their forces of interaction. Studies in HEP led to the develpoment of the Standard model of particle physics, that describes three of the four known elementary forces and, classifies all the known elementary particles. Experiments in HEP involve conducting high-energy collisions of particles like, electrons, protons, or nuclei, and studying the properties of the ejected particles. The aim is to study the structure and composition of elementary particles like protons, neutrons, electrons, etc. High-energy collisions are created by propelling colliding particles into each other at relativistic speeds, acheived using particle accelerators like the LHC. The trajectory, energy, type, and other properties of the particles provide insight into the state of matter during the collision and the forces acting on it. Two-particle correlators have been a simple and effective tool for studying phenomena like jets, resonance decays, flow, diffusion, jet fragmentation, late-stage hadronisation, and momentum and charge conservation. Two-particle correlators have provided valuable contributions to the study of quark-gluon plasma (QGP). They have so far, detected phenomena like jet quenching \cite{Ref:jetQ-paper1} \cite{Ref:jetQ-paper2} and radial flow\cite{Ref:flow-paper}, that are tell-tale signs of QGP. Studying the two particle correlators of each kind of particle ($\pi$, K, p) will help to understand resonance decays and particle production mechanisms in greater detail.\\
+
+This thesis calculates the R2 \& P2 correlators of: $\pi$-$\pi$, K-K, p-p, $\pi$-K, $\pi$-p, and K-p particle pairs in the transverse momentum range $0.2<p_\mathrm{T}<2.0 GeV/c$. The focus will be on primary particles in the acceptance range of $0<\phi<2\pi$ and $-0.8<\eta<0.8$. The thesis is organised as follows: the rest of chapter \ref{Ch:Introduction} acts as a brief on high-energy physics and ALICE, chapter \ref{Ch:R2P2} defines and explains the R2 \& P2 two-particle correlators, chapter \ref{Ch:Methodology} describes the methods used to carry out the analysis, chapter \ref{Ch:Selections} shows how the particles are filtered and then identified, chapter \ref{Ch:Results} contains the calculated correlations of all the particle pairs, and chapter \ref{Ch:Conclusions} concluding the findings of this thesis and future steps.
 \newpage
 \section{Standard Model}
-The Standard Model of particle physics describes three of the four known elementary forces, and classifies all the known elementary particles. The theory was developed in stages through the 20th century and finalized in the 1970s. According to the theory, all elementary particles can be divided, on the basis of their spin, in to two groups: fermions and bosons. Fermions are patricles that have half-integer spin, they contain two kinds of particles: leptons and quarks. These leptons and quarks may be subdivided into different generations according to their flavour quantum number and mass, but their electric and strong interactions are identical. Bosons are integer spin particles and are of two types, gauge bosons and scalar bosons.
+The Standard Model of particle physics describes three of the four known elementary forces, and classifies all the known elementary particles. The theory was developed in stages through the 20th century and finalized in the 1970s. According to the theory, all elementary particles can be divided, on the basis of their spin, into two groups: fermions and bosons. Fermions are patricles that have half-integer spin and follow Fermi-Dirac statistics, they contain two kinds of particles: leptons and quarks. These leptons and quarks may be further subdivided into different generations based on their flavour quantum number and mass, but their strong/electric interactions remain same. Bosons are integer spin particles that follow Bose-Einstein statistics and are of two types, gauge bosons and scalar bosons.
 \subsection{Leptons}
 Leptons have no color charge and they do not take part in strong interactions. They do participate in gravitation, weak interaction, and electromagnetism (except neutrinos) There are six flavours of leptons grouped into three generations, shown below.\\  
 \begin{table}[H]
@@ -113,7 +115,7 @@ Leptons have no color charge and they do not take part in strong interactions. T
 	\end{tabularx}
 \caption{\label{tbl:Leptons}Table of discovered leptons}
 \end{table}
-Among these, electron is the most known lepton and the one with the least mass among charged leptons. Muon and tauons are produced only in high-energy collisions like those involving cosmic rays or particle accelerators, and they quickly dacay into electrons and neutrinos. Neutrinos are neutral in charge and almost massless, and thus do not interact with normal matter and pass through undetected.
+Among these, electron is the most known lepton and the one with the least mass among charged leptons. Muon and tauons are produced only in high-energy collisions from cosmic rays or particle accelerators, and they quickly dacay into electrons and neutrinos. Neutrinos are neutral in charge and almost massless, and thus do not interact with normal matter and pass through undetected.
 \subsection{Quarks}
 Quarks combine to form hadrons like, protons, neutrons etc. They have an intrinsic property called color charge, and because of the phenomenon of color confinement, quarks can never be found in isolation. Quarks are able to experience all four of the fundamental interactions. There are six flavors of quarks, also divided into three generations.\\
 \begin{table}[H]
@@ -134,34 +136,36 @@ Quarks combine to form hadrons like, protons, neutrons etc. They have an intrins
 	\end{tabularx}
 \caption{\label{tbl:Quarks}Table of discovered quarks}
 \end{table}
-The up and down quark are the lightest of all the other quarks. The heavier quarks decay rapidly into up and down quarks. Quarks were proven to exist after performing deep-inelastic scattering experiments. The heavier quarks are produced only in interaction with cosmic ray or in particle accelerators.
+The up and down quark are the lightest of all the other quarks. The heavier quarks decay rapidly into up and down quarks. Quarks were proven to exist after performing deep-inelastic scattering experiments \cite{Ref:quarkpaper1} \cite{Ref:quarkpaper2}. The heavier quarks are produced only in interactions with cosmic rays or in particle accelerators.
 \subsection{Gauge bosons}
-Gauge bosons are spin 1 particles, and are the force carriers of the universe. They consist of photon, W \& Z bosons, and gluons. Photons are involved in electromagnetic interactions, whereas the W \& Z bosons are in weak interactions. Gluons are the `force carrier'/`mediator' particles of the strong force. Gluons got its name from its glue-like nature holding the nucleus together. There are eight types of gluons differentiated using color charge (color octet).
+Gauge bosons are spin 1 particles, and are the force carriers of the universe. They consist of photon, W \& Z bosons, and gluons. Photons are involved in electromagnetic interactions, whereas the W \& Z bosons are in weak interactions. Gluons are the `force carrier/mediator' particles of the strong force. Gluons got its name from its glue-like nature holding the nucleus together. There are eight types of gluons differentiated using color charge (color octet).
 \subsection{Scalar bosons}
 The scalar bosons are spin 0 particles. Only one scalar boson has been discovered, the Higgs boson. It was discovered by the CMS and ATLAS experiments at LHC in 2012.\cite{Ref:higgs-ATLAS}\cite{Ref:higgs-CMS} The Higgs boson is a massive scalar boson which has no electric or color charge, and it is very unstable. The Higgs boson is its own antiparticle. The Higgs boson gives the rest mass to all the other particles.
 \subsection{Hadrons}
-Hadrons are composite particles made up of different combinations of quarks and held together by gluons. Hadrons are of two types: mesons with even number of quarks (mostly two), and baryons with odd number of quarks (mostly three). Since quarks themselves are fermions, baryons are also fermions whereas, mesons, having even number of quarks, are bosons. Except protons \& anti-protons all free hadrons are unstable (or protons take a very long time to decay, more than $10^{34}$ years). Hadrons have excited states called resonances that decay extremely qiuckly through the strong force.\\
-The property of a hadron is determined by the properties of its constituent quarks. For example, proton is made up of two up quarks and one down quark, adding up each of their electric charge (refer table \ref{tbl:Quarks}) we get proton's electric charge as +1. Quarks have color charge, and all hadrons should have zero color charge. This is due to the phenomenon of color confinement. Color confinement is the phenomenon in quantum chromodynamics (QCD) that color-charged particles cannot be isolated and thus cannot be observed in normal conditions. Only `colorless/white particles' can exist in normal conditions, thus quarks and glouns come together to form hadrons that do not have a total color charge. A union of particles will be colorless if either its a color-anticolor pair or a union of all the colors or anticolors. So mesons contain color-anticolor pairs of quarks, and baryons contain quarks of all color. According to color confinement, a colorless hadron is the lowest energy state the constituent quarks/gluons can be in. Consider a meson made of a quark-antiquark pair, if we pull the pair apart the energy stored between them increases and after a point it becomes more favourable to just form a new quark-antiquark pair between them.\\
-The strong force between particles diminishes with energy. QCD predicts that given sufficient energy quarks and gluons won't be confined into hadrons. This property is called asymptotic freedom and has been experimentally proved through the discovery of quark-gluon plasma (QGP). We shall go into more detail in the next section.\\
+Hadrons are composite particles made up of different combinations of quarks and held together by gluons. Hadrons are of two types: \textbf{mesons} with even number of quarks (mostly two), and \textbf{baryons} with odd number of quarks (mostly three). Since quarks themselves are fermions, baryons are also fermions whereas, mesons, having even number of quarks, are bosons. Except protons \& anti-protons all free hadrons are unstable (or protons take a very long time to decay, more than $10^{34}$ years). Hadrons have excited states called resonances that decay extremely qiuckly through the strong force.\\
+
+The property of a hadron is determined by the properties of its constituent quarks. For example, proton is made up of two up quarks and one down quark, adding up each of their electric charge (refer table \ref{tbl:Quarks}) we get proton's electric charge as +1. Quarks have color charge, and all hadrons should have zero color charge. This is due to the phenomenon of \textbf{color confinement}. Color confinement is the phenomenon in quantum chromodynamics (QCD) that color-charged particles cannot be isolated and thus cannot be observed in normal conditions. Only `colorless/white' particles can exist in normal conditions, thus quarks and glouns come together to form hadrons that do not have a total color charge. A union of particles will be colorless if either its a color-anticolor pair or a union of all the colors or anticolors. So mesons contain color-anticolor pair of quarks, and baryons contain quarks of all color. According to color confinement, a colorless hadron is the lowest energy state the constituent quarks/gluons can be in. Consider a meson made of a quark-antiquark pair, if we pull the pair apart the energy stored between them increases and after a point it becomes more favourable to just form a new quark-antiquark pair between them, than pull the two quarks together.\\
+The strong force between particles diminishes with energy. QCD predicts that given sufficient energy, quarks and gluons won't be confined into hadrons and can exist freely (only in a certain region). This property is called \textbf{asymptotic freedom} and has been experimentally proved through the discovery of quark-gluon plasma (QGP). We shall go into more detail in the next section.\\
  
-The Standard Model is good, but it can be better. The Standard Model, as it  is currently, fails to explain the strong CP problem\cite{Ref:CPviolation}, neutrino oscillations\cite{Ref:neutrino-oscill}, matter-antimatter asymmetry\cite{Ref:matter-antimatter-prob}, and the nature of dark matter and dark energy\cite{Ref:dark-matter-y-energy}. As mentioned earlier the Standard Model can only explain the strong force, weak force, and electromagnetism, and not gravity. Thus further studies are needed and theories made to explain these phenomena, and go beyond the Standard Model.\\
+The Standard Model is good, but it can be better. The Standard Model, as it  is currently, fails to explain the strong CP problem\cite{Ref:CPviolation}, neutrino oscillations\cite{Ref:neutrino-oscill}, matter-antimatter asymmetry\cite{Ref:matter-antimatter-prob}, and the nature of dark matter and dark energy\cite{Ref:dark-matter-y-energy}. Also, as mentioned earlier, the Standard Model can only explain the strong force, weak force, and electromagnetism, and not gravity. Thus further studies are needed and theories made to explain these phenomena, and go \textbf{beyond the Standard Model}.\\
 \section{High Energy particle collisions}
 Experiments in high-energy physics involve accelerating particles to relativistic speeds, colliding them with each other and then study the properties of the collision. Particle accelerators, like the Large Hadron Collider (LHC), Relativistic Heavy Ion Collider (RHIC), and Tevatron, are utilized to accelerate particles like electrons, protons, or nuclei (Au/Pb/Zr) to relativistic speeds. The accelerated particles, after reaching a target energy, are made to collide with each other and the properties of ejected particles like, their species, charge, momentum, trajectory, etc. are studied.\\
 Studying these properties of collisions helps us verify the current theories in particle physics and also observe any new unexpected behaviours, that will help improve our understanding. High-energy collision experiments have lead to the discovery of the existence of quarks \cite{Ref:quarkpaper1}\cite{Ref:quarkpaper2}, nucleon structure, the presence of quark-gluon plasma (QGP) \cite{Ref:QGP-discovery}, the Higgs boson \cite{Ref:higgs-ATLAS}\cite{Ref:higgs-CMS}, etc.\\
 The energy of the collision controls the type of collision that occurs and the physics that can be observed. At very low energies the collision tends to be elastic, but as the energy increases the collision becomes inelastic and leads to increase in density and temperature of particle matter. In the intermediate energy range of 10-100 A.MeV, properties of hot nuclear matter, like nuclear liquid-gas phase transition, is studied. Energies of 100 A.MeV-10 A.GeV are of astrophysical relevance as the physics of neutron stars and supernova explosions can be studied. At ultrarelativistic energies, above 10 A.GeV, we start to see formation of Quark Gluon Plasma. The energy of a collision is directly related to the density of parton matter during the collisions; higher energy=higher density \cite{Ref:Csernai}.\\
 \subsection{Quark-gluon plasma}
-So as we achieve higher and higher beam energies in our accelerators, the density and temperature at the collision vertex increases to a point where the quarks and gluons no longer needs to be confined into hadrons. This state of matter where quarks and gluons can exist and interact freely is called quark-gluon plasma. The quarks and gluons are not truly free, as they have to stay within the energetically dense region.\\
-QGP was first detected at CERN in the year 2000 \cite{Ref:QGP-discovery}.\\
-QGP can be created experimentally by colliding two heavy-ions at relativistic energies, such that the matter is heated well above the Hagedorn temperature $T_\mathrm{H}=150MeV$ per particle($1.66\times10^{12}$ K) \cite{Ref:Hagedorn}. Heavy nuclei like gold or lead is used and accelerated at powerfull particle accelerators like LHC and RHIC to study QGP. Upon collision the partons form a `fireball' of QGP wich then expands, cools and forms hadrons. This is explained in detail under `Hydrodynamic evolution'.
+So as we achieve higher and higher beam energies in our accelerators, the density and temperature at the collision vertex increases to a point where the quarks and gluons no longer needs to be confined into hadrons. This state of matter where quarks and gluons can exist and interact freely is called \textbf{quark-gluon plasma}. The quarks and gluons are not truly free, as they have to stay within the energetically dense region.\\
+
+QGP was first detected at CERN in the year 2000 \cite{Ref:QGP-discovery}. QGP can be created experimentally by colliding two heavy-ions at relativistic energies, such that the matter is heated well above the Hagedorn temperature $T_\mathrm{H}=150MeV$ per particle($1.66\times10^{12}$ K) \cite{Ref:Hagedorn}. Heavy nuclei like gold or lead is used and accelerated at powerfull particle accelerators like LHC and RHIC to study QGP. Upon collision the partons form a `fireball' of QGP wich then expands, cools and forms hadrons. This is explained in detail under `Hydrodynamic evolution'.
 QCD which gives rise to color confinement and QGP, has been tested experimentally mostly in the low temperatures and densities. Studying QGP will allow the testing of QCD and the Standard Model at energetically high conditions.\\
 In the Big Bang theory, the universe is believed to be intitially in the quark-guon plasma state. Thus studies on QGP is essential in understanding the 
 early moments of the universe.
 \subsection{Hydrodynamic evolution}
-Relativistic hydrodynamics can be used to explain the evolution of QGP after collision. When QGP is formed, the matter should be in local thermal equilibrium such that the mean free path of the partons doesn't exceed the sixe of the medium.\\
+Relativistic hydrodynamics can be used to explain the evolution of QGP after a collision. When QGP is formed, the matter should be in local thermal equilibrium such that the mean free path of the partons doesn't exceed the size of the medium.\\
+
 Figure \ref{fig:hydrodynamics}, visualizes the evolution of QGP with time. The partons after collision go though a pre-equilibrium phase to form QGP. Then they expand and start cooling and hadronizing through the mixed phase and hadron gas to finally form the particle that are detected by the detectors.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\linewidth]{./Images/Hevolution.pdf}
+	\includegraphics[width=0.5\linewidth]{./Images/Hevolution.pdf}
 	\caption{\label{fig:hydrodynamics}Schematic diagram of hydrodynamic evolution of QGP}
 \end{figure}
 \subsubsection{Pre-equilibrium phase}
@@ -177,10 +181,14 @@ After chemical freeze-out hadrons still interact elastically until the temperatu
 
 The evolution of the system without QGP, shown on the left in figure \ref{fig:hydrodynamics}, is seen in p-p collisions and is a very interesting area in physics. In this evoultion the system goes through a pre-hadronic phase into hadronization and then kinetic freeze-out.
 \subsection{Hard \& soft processes}
-In high-energy collisions we observe mainly two types of processes: hard processes and soft processes. Hard processes involve the high momentum transfer scatterings that occur initially in the collision, that are charecterized using perturbative QCD. Particles from these hard processes contain information about the medium. This provides us a way to detect QGP by analysing jet quenching \cite{Ref:jetQ-paper3}. Most of the particles produced in a collision involve soft processes charecterized by non-perturbative QCD. All such particles contain information on the last stages of the evolution of the media. Anisotropic flow is one such process that helps in identifying QGP.
+In high-energy collisions we observe mainly two types of processes: hard processes and soft processes. Hard processes involve the high momentum transfer scatterings that occur initially in the collision, that are charecterized using perturbative QCD. Particles from these hard processes contain information about the medium. This provides us a way to detect QGP by analysing \textbf{jet quenching} \cite{Ref:jetQ-paper3}. Most of the particles produced in a collision involve soft processes charecterized by non-perturbative QCD. All such particles contain information on the last stages of the evolution of the media. Anisotropic flow is one such process that helps in identifying QGP.
 \subsubsection{Jets}
 Hard processes creates jets from scattering quarks or gluons with high momenta transfers. When the quarks and gluons hadronizes, they form a collimated spray of particles called jets. Jets of very low $p_T$ are called minijets, and they consist mostly of gluons. The trajectories of all the jets from a collision are defined by the conservation of momentum.\\
-Suppose two quarks undergo hard scattering and produces two quarks travelling at high momenta. Because of the location of the point of scattering say one quark goes straight into vacuum, whereas the other quark travels through the hot and dense media, losing energy and momenta. After hadronization the jets from the quark that lost energy will have significantly less momentum than the other quark. This is known as jet quenching.
+Suppose two quarks undergo hard scattering and produces two quarks travelling at high momenta, like in figure \ref{fig:JetQ}. Because of the location of the point of scattering say one quark goes straight into vacuum, whereas the other quark travels through the hot and dense media, losing energy and momenta. After hadronization the jets from the quark that lost energy will have significantly less momentum than the other quark. This is known as jet quenching.
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{./Images/Jetq.pdf}
+	\caption{\label{fig:JetQ}Diagram describing jet quenching}
+\end{figure}
 \subsubsection{Flow}
 The fireball produced in the collision is considered as a hot fluid of quarks and gluons at thermal equilibrium. The velocity of the particles in the fireball is dependent on the pressure gradients that cause the system to expand. As a result the particles have collective motion as if produced by a single source. This is called collective flow. Flow velocity can be resolved into a component perpendicular to the reaction plane, known as radial flow, and along the beam axis, known as anisotropic flow.
 \subsection{Two particle correlation studies so far}
@@ -583,11 +591,11 @@ The purity is calculated as,
 \end{figure}
 Now the effect of using both TPC and TOF is obvious, it increases purity but significantly reduced efficiency in identification. Also the effect of the more restrictive cuts can be seen in figure \ref{fig:efficiency} for kaon and proton where the efficiency reduces as the cuts become more restrictive.
 \chapter{Results}\label{Ch:Results}
-After filtering and identifying the particles, the R2 \& P2 correlations are calculated for $\pi$-$\pi$, K-K, p-p, $\pi$-K, $\pi$-p, \& K-p pairs, and are presented in the below sections. For each particle species pair from above, unlike-sign (+-), like-sign (-\ - \& ++), charge-independent, and charge dependent correlations are calculated. In all the correlations below, we see a contribution from electron-positron pair production in the form of delta-peaks at $(\Delta\eta=0,\Delta\phi=0)$. Notice that there are contaminations from electron and positrons, as they intersect with the different species in figure \ref{fig:PID-TPC-TOF}. Preliminary (crude) tests show that rejecting electrons and positron from the identified particles will remove these peaks. For now, the peaks shall be ignored.
+After filtering and identifying the particles, the R2 \& P2 correlations are calculated for $\pi$-$\pi$, K-K, p-p, $\pi$-K, $\pi$-p, \& K-p pairs, and are presented in the below sections. For each particle species pair from above, unlike-sign (+-), like-sign (-\ - \& ++), charge-independent, and charge-dependent correlations are calculated. In all the correlations below, we see a contribution from electron-positron pair production in the form of delta-peaks at $(\Delta\eta=0,\Delta\phi=0)$. Notice that there are contaminations from electron and positrons, as they intersect with the different species in figure \ref{fig:PID-TPC-TOF}. Preliminary (crude) tests show that rejecting electrons and positron from the identified particles will remove these peaks. For now, the peaks shall be ignored.
 \section{Pion pair correlations}
 \subsection{Unlike-sign correlations}
 The near peak in R2 seems to be very similar to the near peak that is observed for charged particles, as majority of the charged particles produced in a p-p collision are pions. The far-peak in R2 also features a dip at $\Delta\phi=\pi$.
-This same dip can be seen in P2. Compared to R2, in P2 the near peak is thinner, which is expected<pls explain>. A major difference in P2 is the presence of ridges that can be seen as the multiple peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025\&\pm1.43$.
+This same dip can be seen in P2. Compared to R2, in P2 the near peak is thinner. A major difference in P2 is the presence of troughs that can be seen as the multiple peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025\&\pm1.43$.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiUS.pdf}\\
@@ -602,7 +610,7 @@ This same dip can be seen in P2. Compared to R2, in P2 the near peak is thinner,
 	\caption{R2 (left) \& P2 (right) unlike-sign correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of pion pairs.}
 \end{figure}
 \subsection{Like-sign correlations}
-The near peak in both R2 \& P2 is narrower compared to unlike-sign correlation. The far peak here doesn't feature the dip seen earlier, although in P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features more prominent ridges at $\Delta\eta=\pm1.025\&\pm1.43$.
+The near peak in both R2 \& P2 is narrower compared to unlike-sign correlation. The far peak here doesn't feature the dip seen earlier, although in P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features more prominent troughs at $\Delta\eta=\pm1.025\&\pm1.43$.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2_DetaDphiLS.pdf}\\
@@ -617,7 +625,7 @@ The near peak in both R2 \& P2 is narrower compared to unlike-sign correlation. 
 	\caption{R2 (left) \& P2 (right) like-sign correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of pion pairs.}
 \end{figure}
 \subsection{Charge-Independent correlations}
-We observe, in R2, a near peak that's wide in the $\Delta\eta$ projection and narrower in the $\Delta\phi$ projection. In P2 ,we still see the presence of the ridges. The dip structure in the far-peak is considerably shallow this time.
+We observe, in R2, a near peak that's wide in the $\Delta\eta$ projection and narrower in the $\Delta\phi$ projection. In P2 ,we still see the presence of the troughs. The dip structure in the far-peak is considerably shallow this time.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CI_DetaDphi.pdf}\\
@@ -632,7 +640,7 @@ We observe, in R2, a near peak that's wide in the $\Delta\eta$ projection and na
 	\caption{R2 (left) \& P2 (right) charge-independent correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of pion pairs.}
 \end{figure}
 \subsection{Charge-Dependent correlations}
-A sharp dip is observed in the near peak at $(\Delta\phi=0,\Delta\eta=0)$ in both R2 \& P2. The far peak also has a significant dip in both cases. The ridges observed previously in P2 is considerbaly muted this time.
+A sharp dip is observed in the near peak at $(\Delta\phi=0,\Delta\eta=0)$ in both R2 \& P2. The far peak also has a significant dip in both cases. The troughs observed previously in P2 is considerbaly muted this time.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi.pdf}\\
@@ -648,7 +656,7 @@ A sharp dip is observed in the near peak at $(\Delta\phi=0,\Delta\eta=0)$ in bot
 \end{figure}
 \section{Kaon pair correlations}
 \subsection{Unlike-sign correlations}
-The near peak in both R2 \& P2 seems to be very different.<more on difference> The far-peak in R2 \& P2 also features a dip at $\Delta\phi=\pi$. In P2 also has the presence of ridges that can be seen as the multiple peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025\&\pm1.43$.
+The near peak in both R2 \& P2 seems to be very different.<more on difference> The far-peak in R2 \& P2 also features a dip at $\Delta\phi=\pi$. In P2 also has the presence of troughs that can be seen as the multiple peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025\&\pm1.43$.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiUS.pdf}\\
@@ -663,7 +671,7 @@ The near peak in both R2 \& P2 seems to be very different.<more on difference> T
 	\caption{R2 (left) \& P2 (right) unlike-sign correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of kaon pairs.}
 \end{figure}
 \subsection{Like-sign correlations}
-The near peak in both R2 \& P2 is narrower compared to unlike-sign correlation. The far peak in the $\Delta\phi$ projections is more prominent than in unlike-sign correlations, and it doesn't feature the dip seen earlier, although in P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features more prominent ridges at $\Delta\eta=\pm1.025\&\pm1.43$. The R2 correlation seems to have an overall concaveness with the minimum at $\Delta\eta=0$.
+The near peak in both R2 \& P2 is narrower compared to unlike-sign correlation. The far peak in the $\Delta\phi$ projections is more prominent than in unlike-sign correlations, and it doesn't feature the dip seen earlier, although in P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features more prominent troughs at $\Delta\eta=\pm1.025\&\pm1.43$. The R2 correlation seems to have an overall concaveness with the minimum at $\Delta\eta=0$.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2_DetaDphiLS.pdf}\\
@@ -710,7 +718,7 @@ The correlations have almost similar structure to charge-independent correlation
 \section{Proton pair correlations}
 \subsection{Unlike-sign correlations}
 The near peak in R2 seems to be wider at the top compared to the near peak that is observed for charged particles. The far-peak seems to be absent in R2. Although in P2, the far peak features a shallow dip at $\Delta\phi=\pi$.
-P2 again has the presence of ridges that can be seen as peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025$. At $\Delta\eta=\pm1.43$, there does seem to be a structure.
+P2 again has the presence of troughs that can be seen as peaks on either side of the main peak in the $\Delta\eta$ projection at $\Delta\eta=\pm1.025$. At $\Delta\eta=\pm1.43$, there does seem to be a structure.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiUS.pdf}\\
@@ -725,7 +733,7 @@ P2 again has the presence of ridges that can be seen as peaks on either side of 
 	\caption{R2 (left) \& P2 (right) unlike-sign correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of proton pairs.}
 \end{figure}
 \subsection{Like-sign correlations}
-Both R2 \& P2 has an overall concave shape with the minimum at $\Delta\eta=0$. Most notable feature is the absence of a discernable near-peak. The far peak, thus, is the most prominent feature in both R2 \& P2. In P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features the previous ridges at $\Delta\eta=\pm1.025$, but also a new ridge at $\Delta\eta=0.4$.
+Both R2 \& P2 has an overall concave shape with the minimum at $\Delta\eta=0$. Most notable feature is the absence of a discernable near-peak. The far peak, thus, is the most prominent feature in both R2 \& P2. In P2 there are secondary structures in the far peak. The $\Delta\eta$ projection features the previous troughs at $\Delta\eta=\pm1.025$, but also a new trough at $\Delta\eta=0.4$.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2_DetaDphiLS.pdf}\\
@@ -740,7 +748,7 @@ Both R2 \& P2 has an overall concave shape with the minimum at $\Delta\eta=0$. M
 	\caption{R2 (left) \& P2 (right) like-sign correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of proton pairs.}
 \end{figure}
 \subsection{Charge-Independent correlations}
-The R2 \& P2 correlations now seem to have the usual shape, with exception being the ridges in P2.
+The R2 \& P2 correlations now seem to have the usual shape, with exception being the troughs in P2.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CI_DetaDphi.pdf}\\
@@ -755,7 +763,7 @@ The R2 \& P2 correlations now seem to have the usual shape, with exception being
 	\caption{R2 (left) \& P2 (right) charge-independent correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of proton pairs.}
 \end{figure}
 \subsection{Charge-Dependent correlations}
-The near peak in R2 features a slight dip visible in the $\Delta\eta$ projection. P2 features a sharp dip at $(\Delta\eta=0,\Delta\phi=0)$. R2 doesn't have the far peak, and in P2 the far-peak is small and features a dip at $\Delta\eta=0$. The ridges seen earlier in P2 are absent now.
+The near peak in R2 features a slight dip visible in the $\Delta\eta$ projection. P2 features a sharp dip at $(\Delta\eta=0,\Delta\phi=0)$. R2 doesn't have the far peak, and in P2 the far-peak is small and features a dip at $\Delta\eta=0$. The troughs seen earlier in P2 are absent now.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi.pdf}\\
@@ -771,7 +779,7 @@ The near peak in R2 features a slight dip visible in the $\Delta\eta$ projection
 \end{figure}
 \section{Pion-kaon pair correlations}
 \subsection{Unlike-sign correlations}
-The R2 correlation is similar to the R2 correlation of $\pi-\pi$ pairs. Although the near peak is wider and more rounder at the top in the $\Delta\eta$ projection, and the far peak has a dip in the center, and two peaks at<>, and two sharp dips at<>. P2 has a narrow near side peak and ridges, in the $\Delta\eta$ projection, at<>. The near peak has a sudden rise at<>. The far peak features a shallow dip at $\Delta\phi=\pi$.
+The R2 correlation is similar to the R2 correlation of $\pi-\pi$ pairs. Although the near peak is wider and more rounder at the top in the $\Delta\eta$ projection, and the far peak has a dip in the center, and two peaks at<>, and two sharp dips at<>. P2 has a narrow near side peak and troughs, in the $\Delta\eta$ projection, at<>. The near peak has a sudden rise at<>. The far peak features a shallow dip at $\Delta\phi=\pi$.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiUS.pdf}\\
@@ -786,7 +794,7 @@ The R2 correlation is similar to the R2 correlation of $\pi-\pi$ pairs. Although
 	\caption{R2 (left) \& P2 (right) unlike-sign correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of pion-kaon pairs.}
 \end{figure}
 \subsection{Like-sign correlations}
-Again the R2 correlation is similar to that of $\pi-\pi$, with the near peak being narrower and the far peak being more prominent thatn in unlike-sign correlations. The P2 correlation has ridges at <>, and the far peak peak has two additional peak-like structures at <>.
+Again the R2 correlation is similar to that of $\pi-\pi$, with the near peak being narrower and the far peak being more prominent thatn in unlike-sign correlations. The P2 correlation has troughs at <>, and the far peak peak has two additional peak-like structures at <>.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2_DetaDphiLS.pdf}\\
@@ -847,7 +855,7 @@ R2 has a shorter near peak and, in the $\Delta\eta$ projection the peak is not s
 	\caption{R2 (left) \& P2 (right) unlike-sign correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of kaon-proton pairs.}
 \end{figure}
 \subsection{Like-sign correlations}
-R2 has a concave shape in general, and in the $\Delta\phi$ projection the near peak is significantly smaller making the far peak more prominent. Although in the 2D plot, notice that the far peak is more like a ridge along $\Delta\phi=\pi$. In P2, the far peak has to additional structures.
+R2 has a concave shape in general, and in the $\Delta\phi$ projection the near peak is significantly smaller making the far peak more prominent. Although in the 2D plot, notice that the far peak is more like a trough along $\Delta\phi=\pi$. In P2, the far peak has to additional structures.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS.pdf}\\
@@ -938,7 +946,7 @@ The far peak in R2 has a flat top, whereas in P2 the far peak is more prominent.
 	\caption{R2 (left) \& P2 (right) charge-independent correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of pion-proton pairs.}
 \end{figure}
 \subsection{Charge-Dependent correlations}
-In both R2 \& P2 the near peak in flat on top and features a sharp dip at $\Delta\eta=0,\Delta\phi=0$, and the far peak is small and also has a sharp dip at $\Delta\phi=\pi$.
+In both R2 \& P2 the near peak is flat on top and features a sharp dip at $\Delta\eta=0,\Delta\phi=0$, and the far peak is small and also has a sharp dip at $\Delta\phi=\pi$.
 \begin{figure}[H]
 	\begin{subfigure}{0.49\linewidth}
 		\includegraphics[width=\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi.pdf}\\
@@ -953,9 +961,20 @@ In both R2 \& P2 the near peak in flat on top and features a sharp dip at $\Delt
 	\caption{R2 (left) \& P2 (right) charge-dependent correlations and their $\Delta\eta$ \& $\Delta\phi$ projections of pion-proton pairs.}
 \end{figure}
 \chapter{Discussion and Conclusions}\label{Ch:Conclusions}
-%The baseline, the physics mechanism underlying all correlations, is the global conservation of energy and momentum as well as strangeness, baryon number, and electric charge. It results in a “− cos(∆ϕ)”-like shape spanning the entire phase-space.[]
-The baseline correlation structure, the near and far peaks, is the result of conservation of momentum and energy. The near peak is mostly due to jetty events, and the far peak is the result of momentum conservation.
-<In general the far peak is more prominent in P2 than R2.>
+The baseline correlation structure, the near and far peaks, is the result of conservation of momentum and energy. The near peak is mostly due to jetty events, and the far peak is the result of momentum conservation of particles travelling back-2-back. Deviations from this baseline shape indicates other physics phenomena at play.\\
+In all the correlations calculated there have been some common structures. In unlike-sign correlations, there exists a trough along $\Delta\phi=\pi$, which can be seen clearly as a dip at $\Delta\phi=\pi$ in the $\Delta\phi$ projection. The dip is shallower in P2 than in R2. The same dip can be seen charge-independent and charge-depedent correlations, but its shallower because of the contribution from like-sign correlations.<reason> In like-sign P2 correlations the far peak has a structure akin to a ridge along $\Delta\phi=\pi$ with a trough on either side. No such structure is seen in R2 correlations, which suggests the structure is influenced by the momentum distibution of particles. It was also observed that in charge-dependent correlations of R2 \& P2, a dip at ($\Delta\eta=0,\Delta\phi=0$).<this is due to HBT> In addition to this in all types of correlations of particle species pair we observe several ridgess of different heights along $\Delta\eta=0, \pm0.39, \pm1.02, \pm1.43$, though in several cases they are overshadowed by the other features.<explain><most probably due to the particle identification.\\
+\section{Pion-pion pair correlation}
+The pion pair correlations are pretty much similar to the charged particle correlations that have been calculated in other previous studies. The US \& CD correlations has an overall ridge-like shape along $\Delta\eta=0$. This suggests that unlike-sign particles travel very close together in accordance with local charge conservation. The similar width of the near peak in both LS correlations indiactes that most of the like-sign particles are of high momenta, compared to the average momenta, possibly created from hard processes. The dip at ($\Delta\eta=0,\Delta\phi=0$) is beleived to be due to HBT correlations.
+\section{Kaon-kaon pair correlation}
+In Kaon correlations the US near peak has a unique structure not seen in any other correlations. The R2 near peak shows a near side correlation peak which can be considered in two parts: the wide peak in the bottom, and the short narrow peak on top. Comparing with P2 we can deduce, that the narrow peak corresponds to high momenta jet particles and the broad peak is due to mini-jets. In the LS correlations the structure is concave in shape with minimum along $\Delta\eta=0$. This reveals that like-sign kaons either travel together at high $p_T$ or travel apart from each other in $\eta$ or back-2-back (hinted by the large away-side correlation). The similarity between the CI \& CD correlations would mean momentum conservation is not a huge factor in kaon production.
+\section{Proton-proton pair correlation}
+In US the near-side correlation in R2 can be deduced to be due to minijets as the near peak in P2 has low correlation, indicating low momenta. The US correlations indicate very low charge conservation in particles travelling back-2-back. The LS correlations show a strong correlation in particle pairs with $\Delta\phi=\pi$ and anti-correlation in the near side. This can be partially explained as the properties of fermions, where particles of same state cannot exist together. From CI correlations and CI anti-correlation at the away-side, it is clear that back-2-back jets are independent of charge conservation. 
+\section{Pion-kaon pair correlation}
+The difference in R2 \& P2 widths of US correlations indicate the near-side particles to be majorly part of mini-jets. The LS correlations features a prominent long-range (in $\eta$) ridge at $\Delta\phi=\pi$, suggesting a strong correlation between identical particles travelling in opposite directions. The far-side correlations in CI and CD indicate the absence of charge conservation in back-to-back particles.
+\section{Kaon-proton pair correlation}
+The US correlations indicate high momentum jets following charge conservation. The long-range far-side ridge in LS indicate kaon-proton like-sign pairs mostly form back-2-back travelling particles. The LS correlations also shows very less correlation between kaon-proton pairs travelling close to each-other. Here also back-2-back jets do not conserve charge.
+\section{Pion-proton pair correlation}
+The US correlations indicate presence of high-momenta unlike-sign particle pairs within the same jet. The LS correlations indicate the near-side peak being due to minijets. The far-side ridge, interestingly, has a saddle-like shape with the minimum at $\Delta\eta=0$. The CI and CD far-side correlations indicate back-2-back particles produce without charge conservation. The structure of CD re-enforces the finding that majority particle pairs are travel together, and charge is conserved.
 
 \input{References}
 \end{document}
