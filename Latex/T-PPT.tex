@@ -2,7 +2,7 @@
 \usetheme{Madrid}
 \usepackage{multirow}
 \setlength{\arrayrulewidth}{0.25mm}
-\setlength{\tabcolsep}{10pt}
+\setlength{\tabcolsep}{8pt}
 \title[R2 \& P2 of identified particles]{R2 \& P2 correlations of identified particles in pp collisions at $\sqrt{s}=13.6 TeV$}
 \author{R Rohith}
 \begin{document}
@@ -27,39 +27,110 @@
 \begin{frame}{Aim}
 	To study two particle correlations of identified particle pairs, using R2 \& P2 correlators, from p-p collisions to better understand particle production mechanisms.
 \end{frame}
-\subsection{Standard Model}
 \begin{frame}{Standard Model}
 	\renewcommand{\arraystretch}{1.5}
 	\begin{table}\tiny
-	\begin{tabular}{|c|c|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|}
 		\hline
-		\multicolumn{8}{|c|}{Elementary Particles}\\
+		\multicolumn{4}{|c|}{Elementary Particles}\\
 		\hline
-		\multicolumn{6}{|c|}{Fermions} & \multicolumn{2}{|c|}{Bosons}\\
+		\multicolumn{2}{|c|}{Fermions (half-integer spin)} & \multicolumn{2}{|c|}{Bosons (integer spin)}\\
 		\hline
-		\multicolumn{3}{|c|}{Quarks} & \multicolumn{3}{|c|}{Leptons} & Gauge bosons & Scalar Bosons\\
+		Quarks & Leptons & Gauge bosons & Scalar Bosons\\
+		(have color charge) & (no color charge) & (spin=1, force carriers) & (spin=0)\\
 		\hline
-		up & $+\frac{2}{3}$ & u & Electron & -1 & $e^-$ & \multirow{2}{*}{photon} & \multirow{6}{*}{Higgs boson} \\
-		down & $-\frac{1}{3}$ & d & Electron neutrino & 0 & $\nu_e$ & &\\
-		charm & $+\frac{2}{3}$ & c & Muon & -1 & $\mu^-$ & \multirow{2}{*}{W \& Z bosons} &\\
-		strange & $-\frac{1}{3}$ & s & Muon neutrino & 0 & $\nu_\mu$ & &\\
-		top & $+\frac{2}{3}$ & t & Tauon & -1 & $\tau^-$ & \multirow{2}{*}{gluons} &\\
-		bottom & $-\frac{1}{3}$ & b & Tau neutrino & 0 & $\nu_\tau$ & &\\
+		up & Electron & 1. photon & \multirow{6}{*}{Higgs boson} \\
+		down & Electron neutrino & (EM interactions) &\\
+		charm & Muon & 2. W \& Z bosons &\\
+		strange & Muon neutrino & (weak interactions) &\\
+		top & Tauon & 3. gluons (8 types) &\\
+		bottom & Tau neutrino & (strong interactions) &\\
 		\hline
 	\end{tabular}
 	\end{table}
+Every quark and gluon has their own anti-particle.
 \end{frame}
 \begin{frame}{Hadrons}
-	
+	\begin{itemize}
+		\item Hadrons are groups of quarks held together by gluons.
+		\item Since quarks and gluons have color charge, they cannot exist freely, they must combine to form hadrons which are colorless. This is called `\textbf{color confinement}'. 
+		\item \textbf{2 types of hadrons}:
+	\end{itemize}
+\begin{columns}
+%what about gluons....odd and even
+	\column{0.5\linewidth}
+	\centering
+	Baryons (odd no. of quarks)\\\scriptsize
+	\includegraphics[width=0.25\linewidth]{../Images/proton-struct.pdf}\\
+	Proton\\~\\
+	\includegraphics[width=0.25\linewidth]{../Images/neutron-struct.pdf}\\
+	Neutron
+	\column{0.5\linewidth}
+	\centering
+	Mesons (even no. of quarks)\\\scriptsize
+	\includegraphics[width=0.25\linewidth]{../Images/pion-struct.pdf}\\
+	Pion\\~\\
+	\includegraphics[width=0.25\linewidth]{../Images/kaon-struct.pdf}\\
+	Kaon
+\end{columns}
 \end{frame}
-\begin{frame}{Quantum Chromodynamics (QCD)}
-	<About QCD>
+\begin{frame}{Color confinement}
+	\begin{itemize}
+		\item Color confinement is a phenomenon of QCD. QCD is the study of the strong force.
+		\item The strong force between two quarks is independent of the distance between them.
+		\item If two quarks of a hadron is pulled apart, the energy increases to a point where it is more favourable to form a new quark-antiquark pair.
+	\end{itemize}
+	\includegraphics[width=\linewidth]{../Images/confinement.pdf}
 \end{frame}
 \begin{frame}{High-energy collisions}
-	content...
+	\begin{itemize}
+		\item Acheived at particle accelerators like RHIC, LHC, Tevatron, where particles are accelerated to relativistic speeds and collided.
+		\item The collision (fireball) ejects several particles, and studying them gives info on the state of matter at high energy density.
+		\item Higher the energy of the colliding beams, higher the temperature and density of collision.
+		\item Due to similar condition of matter at Big Bang, helps to study the origin of the universe.
+	\end{itemize}
+	\centering
+	\includegraphics[width=0.5\linewidth]{../Images/particle-coll.pdf}
+	\includegraphics[width=0.4\linewidth]{../Images/collision.pdf}
 \end{frame}
-\begin{frame}{Quark-Gluon Plasma}
-	content...
+\begin{frame}{Hydrodynamic evolution}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\begin{itemize}
+			\item According to the energy and mass of the colliding particles, the fireball evolves in the two ways: with or without QGP.
+			\item Quark-Gluon Plasma is formed in heavy-ion collisions.
+			\item It is very hot \& dense fireball at local thermal equilibrium where the quarks and gluons are de-confined.
+		\end{itemize}
+		\column{0.5\linewidth}
+		\includegraphics[width=\linewidth]{../Images/Hevolution.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Particle production processes}
+	\begin{itemize}
+		\item Particles are produced in two main processes: hard process \& soft process.
+		\item Hard processes involve high momentum transfer scatterings, initially in the collision, that are characterized using perturbative QCD.
+		\item Soft process is the evolution of the fireball leading to the production of majority of the ejected particles. Characterized by non-perturbative QCD.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Hard process: Jets}
+	\begin{itemize}
+		\item Hard processes create \textbf{jets} from high momentum transfer scattering of quarks or gluons.
+		\item Jets of low momentum are called \textbf{minijets}.
+		\item The jets of quarks and gluons later hadronizes to form a collimated spray of particles.
+		\item Jets can be used to probe the collision media.
+	\end{itemize}
+	\centering
+	\includegraphics[width=0.3\linewidth]{../Images/Jetq.pdf}
+\end{frame}
+\begin{frame}{Soft process: Flow}
+	\begin{itemize}
+		\item The hot \& dense fireball, like a fluid, expands and cools, and finally hadronizes. The expansion is called \textbf{flow}.
+		\item The velocity of the particles produced are dependent on pressure gradients that cause the fireball expansion.
+		\item In central collision the gradients are equal everywhere and thus the fireball expands uniformly. This is called \textbf{radial flow}.
+		\item In non-central heavy-ion collision the asymmetric shape leads to varied gradients and \textbf{elliptic/anistropic flow}.
+	\end{itemize}
+	\centering
+	\includegraphics[width=0.4\linewidth]{../Images/flow.pdf}
 \end{frame}
 \begin{frame}{ALICE \& its detectors}
 	\includegraphics[width=\linewidth]{../Images/ALICE-detector.pdf}
@@ -85,7 +156,7 @@
 		$P2(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\langle\Delta p_T \Delta p_T \rangle(\eta_1,\phi_1,\eta_2,\phi_2)}{\langle p_T\rangle^2}$\\~\\
 		{\tiny$P2(\Delta\eta,\Delta\phi)=\frac{1}{\Omega(\Delta\eta)}\int P2(\eta_1,\phi_1,\eta_2,\phi_2)\delta(\Delta\eta-\eta_1+\eta_2)\delta(\Delta\phi-\phi_1+\phi_2)d\eta_1 d\phi_1 d\eta_2 d\phi_2$}
 	\end{definition}
-	\begin{block}{Where,}
+	\begin{block}{where,}
 		$\Omega(\Delta\eta)=\eta_0-\Delta\eta$\\
 		$\langle\Delta p_T \Delta p_T\rangle(\eta_1,\phi_1,\eta_2,\phi_2)=\frac{\int_{p_{T,min}}^{p_{T,max}}\Delta p_{T,1}\Delta p_{T,2} \ \rho_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}{\int_{p_{T,min}}^{p_{T,max}}\rho_2(\eta_1,\phi_1,\eta_2,\phi_2)d p_{T,1}d p_{T,2}}$
 	\end{block}
@@ -100,11 +171,12 @@
 \vspace*{0.5in}
 	The unlike-sign (US), like-sign (LS), charge-independent (CI), and charge-dependent (CD) R2 \& P2 correlations shall be calculated for every particle species pair.
 	\[\mathrm{CI}=\frac{\mathrm{US}+\mathrm{LS}}{2}\ , \ \ \mathrm{CD}=\frac{\mathrm{US}-\mathrm{LS}}{2}\]
+	
 \end{frame}
 \section{Event \& track selection and particle identification}
 \begin{frame}{Event \& track selection}
 	\begin{columns}
-	\column{0.48\linewidth}
+	\column{0.5\linewidth}
 	\begin{block}{Event selection}
 		\begin{itemize}
 			\item Event selection decision 'sel8'
@@ -117,7 +189,7 @@
 		\item It is a 'GlobalTrack'.
 	\end{itemize}
 	\end{block}
-	\column{0.49\linewidth}
+	\column{0.47\linewidth}
 	\begin{block}{Global track}
 		\tiny
 		\begin{itemize}
@@ -245,7 +317,7 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\item The 2D plots are shown using `SURF3' plot style in ROOT.
 	\end{itemize}
 \end{frame}
-\begin{frame}{Pion-Pion Correlations}
+\begin{frame}{Pion-Pion R2 Correlations}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -257,7 +329,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Pion Correlations ($\Delta\eta$ projections)}
+\begin{frame}{Pion-Pion P2 Correlations}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Pion R2 Correlations ($\Delta\eta$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -269,7 +353,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projX.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Pion Correlations ($\Delta\phi$ projections)}
+\begin{frame}{Pion-Pion P2 Correlations ($\Delta\eta$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Pion R2 Correlations ($\Delta\phi$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -281,7 +377,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_r2CD_DetaDphi_projY.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Kaon-Kaon Correlations}
+\begin{frame}{Pion-Pion P2 Correlations ($\Delta\phi$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pi/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Kaon R2 Correlations}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -293,7 +401,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Kaon-Kaon Correlations ($\Delta\eta$ projections)}
+\begin{frame}{Kaon-Kaon P2 Correlations}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Kaon R2 Correlations ($\Delta\eta$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -305,7 +425,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projX.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Kaon-Kaon Correlations ($\Delta\phi$ projections)}
+\begin{frame}{Kaon-Kaon P2 Correlations ($\Delta\eta$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Kaon R2 Correlations ($\Delta\phi$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -317,7 +449,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_r2CD_DetaDphi_projY.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Proton-Proton Correlations}
+\begin{frame}{Kaon-Kaon P2 Correlations ($\Delta\phi$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Ka/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Proton-Proton R2 Correlations}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -329,7 +473,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Proton-Proton Correlations ($\Delta\eta$ projections)}
+\begin{frame}{Proton-Proton P2 Correlations}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Proton-Proton R2 Correlations ($\Delta\eta$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -341,7 +497,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projX.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Proton-Proton Correlations ($\Delta\phi$ projections)}
+\begin{frame}{Proton-Proton P2 Correlations ($\Delta\eta$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Proton-Proton R2 Correlations ($\Delta\phi$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -353,7 +521,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_r2CD_DetaDphi_projY.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Kaon Correlations}
+\begin{frame}{Proton-Proton P2 Correlations ($\Delta\phi$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pr-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Kaon R2 Correlations}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -365,7 +545,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Kaon Correlations ($\Delta\eta$ projections)}
+\begin{frame}{Pion-Kaon P2 Correlations}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Kaon R2 Correlations ($\Delta\eta$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -377,7 +569,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi_projX.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Kaon Correlations ($\Delta\phi$ projections)}
+\begin{frame}{Pion-Kaon P2 Correlations ($\Delta\eta$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Kaon R2 Correlations ($\Delta\phi$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -389,7 +593,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_r2CD_DetaDphi_projY.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Proton Correlations}
+\begin{frame}{Pion-Kaon P2 Correlations ($\Delta\phi$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Ka/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Proton R2 Correlations}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -401,7 +617,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Proton Correlations ($\Delta\eta$ projections)}
+\begin{frame}{Pion-Proton P2 Correlations}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Proton R2 Correlations ($\Delta\eta$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -413,7 +641,19 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi_projX.pdf}
 	\end{columns}
 \end{frame}
-\begin{frame}{Pion-Proton Correlations ($\Delta\phi$ projections)}
+\begin{frame}{Pion-Proton P2 Correlations ($\Delta\eta$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Pion-Proton R2 Correlations ($\Delta\phi$ projections)}
 	\begin{columns}
 		\column{0.5\linewidth}
 		\centering
@@ -424,51 +664,104 @@ NOTE: TOF has very low efficiency, hence shall be used only in such situations.
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CI_DetaDphi_projY.pdf}\\~\\
 		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_r2CD_DetaDphi_projY.pdf}
 	\end{columns}
-\end{frame}\begin{frame}{Kaon-Proton Correlations}
-\begin{columns}
-	\column{0.5\linewidth}
-	\centering
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS.pdf}\\~\\
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS.pdf}
-	\column{0.5\linewidth}
-	\centering
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi.pdf}\\~\\
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi.pdf}
-\end{columns}
 \end{frame}
-\begin{frame}{Kaon-Proton Correlations ($\Delta\eta$ projections)}
-\begin{columns}
-	\column{0.5\linewidth}
-	\centering
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projX.pdf}\\~\\
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projX.pdf}
-	\column{0.5\linewidth}
-	\centering
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projX.pdf}\\~\\
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projX.pdf}
-\end{columns}
+\begin{frame}{Pion-Proton P2 Correlations ($\Delta\phi$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Pi-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
 \end{frame}
-\begin{frame}{Kaon-Proton Correlations ($\Delta\phi$ projections)}
-\begin{columns}
-	\column{0.5\linewidth}
-	\centering
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projY.pdf}\\~\\
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projY.pdf}
-	\column{0.5\linewidth}
-	\centering
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projY.pdf}\\~\\
-	\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projY.pdf}
-\end{columns}
+\begin{frame}{Kaon-Proton R2 Correlations}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Proton P2 Correlations}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Proton R2 Correlations ($\Delta\eta$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projX.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Proton P2 Correlations ($\Delta\eta$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS_projX.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi_projX.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi_projX.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Proton R2 Correlations ($\Delta\phi$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiUS_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2_DetaDphiLS_projY.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CI_DetaDphi_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_r2CD_DetaDphi_projY.pdf}
+	\end{columns}
+\end{frame}
+\begin{frame}{Kaon-Proton P2 Correlations ($\Delta\phi$ projections)}
+	\begin{columns}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiUS_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDpt_DetaDphiLS_projY.pdf}
+		\column{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCI_DetaDphi_projY.pdf}\\~\\
+		\includegraphics[width=0.85\linewidth]{~/Data/Analysis/Hyperloop/0.2-2.0/Ka-Pr/h2d_p2DptDptCD_DetaDphi_projY.pdf}
+	\end{columns}
 \end{frame}
 \section{Conclusion}
 \begin{frame}{Conclusion}
-	
+	\begin{itemize}
+		\item We were able to observe several small intricacies in particle productions and transport.
+		\item Need to try and improve PID, if possible.
+		\item Calculate the systematic errors.
+	\end{itemize}
 \end{frame}
 \begin{frame}{Acknowledgements}
 	\begin{itemize}
 		\item Thanks to Dr. Sadhana Dash for her guidance and support.
 		\item Thanks to the PhDs at IIT Bombay who helped me in the project.
-		\item Thanks to the ALICE collaboration for providing their insight, data and tools fordoing this project.
+		\item Thanks to the ALICE collaboration for providing their insight, data and tools for doing this project.
 	\end{itemize}
 \end{frame}
 \begin{frame}
