@@ -1,1 +1,1 @@
-Repository containing the code and data used for my Master's project
+Repository containing the code used for my Master's thesis.
